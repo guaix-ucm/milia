@@ -3,7 +3,7 @@
 ## $Id$
 
 
-#SUBDIRS = EMIRTypes.l EMIRFilters.l EMIRRecipes.l RunProcessDarkFrame.p \
-	tests
-
 EXTRA_DIST = autogen.sh
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = milia.pc
