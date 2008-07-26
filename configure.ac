@@ -16,5 +16,6 @@ AC_DISABLE_SHARED
 AM_PROG_LIBTOOL
 
 AC_CONFIG_FILES([Makefile 
-		milia.pc])
+		milia.pc
+		milia/Makefile])
 AC_OUTPUT

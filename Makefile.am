@@ -1,8 +1,7 @@
-## Process this file with automake to produce Makefile.in
-
 ## $Id$
 
 
+SUBDIRS = milia
 EXTRA_DIST = autogen.sh
 
 pkgconfigdir = $(libdir)/pkgconfig
