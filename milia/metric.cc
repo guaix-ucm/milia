@@ -20,20 +20,13 @@
 
 // $Id $
 
-#ifndef _MILIA_EXCEPTION_H_
-#define _MILIA_EXCEPTION_H_
-
-#include <exception>
+#include "metric.h"
+#include "exception.h"
 
 namespace milia {
 
-class exception : public std::exception {
+metric::metric(double hubble, double matter, double lambda) {
 	
-	virtual ~exception() throw();
-	
-	const char* what() const throw();
-};
+}
 
 } // namespace milia
-
-#endif /* _MILIA_EXCEPTION_H_ */

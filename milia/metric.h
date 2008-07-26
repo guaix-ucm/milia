@@ -20,20 +20,26 @@
 
 // $Id $
 
-#ifndef _MILIA_EXCEPTION_H_
-#define _MILIA_EXCEPTION_H_
-
-#include <exception>
+#ifndef _MILIA_METRIC_H_
+#define _MILIA_METRIC_H_
 
 namespace milia {
 
-class exception : public std::exception {
-	
-	virtual ~exception() throw();
-	
-	const char* what() const throw();
+/**
+ * The Friedmann-Lemaître-Robertson-Walker metric
+ */
+class metric {
+public:
+	metric(double hubble_constant, double matter_density, double lambda_density);
+private:
 };
+
+/**
+ * Long name of the metric
+ */
+typedef metric flrw_metric;
 
 } // namespace milia
 
-#endif /* _MILIA_EXCEPTION_H_ */
+
+#endif /* _MILIA_METRIC_H_ */
