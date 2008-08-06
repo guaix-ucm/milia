@@ -18,15 +18,43 @@
  * 
  */
 
-// $Id $
+// $Id$
 
-#include "metric.h"
+#include "flrw.h"
 #include "exception.h"
 
 namespace milia {
 
-metric::metric(double hubble, double matter, double lambda) {
-	
+namespace metrics {
+
+flrw::flrw(double hubble, double matter, double lambda) :
+	m_hu(hubble), m_om(matter), m_ol(lambda)
+
+{
+	// om < 0
+	if (m_om < 0)
+		throw milia::exception();
+	//ol < 0
+	if (m_ol < 0)
+		throw milia::exception();
 }
+
+double flrw::distance_luminosity(double redshift) const {
+	return 0;
+}
+
+double flrw::distance_comoving(double redshift) const {
+	return 0;
+}
+
+double flrw::distance_angular(double redshift) const {
+	return 0;
+}
+
+double flrw::time_lookback(double redshift) const {
+	return 0;
+}
+
+} // namespace metrics
 
 } // namespace milia

@@ -1,7 +1,7 @@
 ## $Id$
 
 
-SUBDIRS = milia
+SUBDIRS = milia tests
 EXTRA_DIST = autogen.sh
 
 pkgconfigdir = $(libdir)/pkgconfig

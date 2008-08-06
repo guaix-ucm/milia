@@ -3,18 +3,17 @@
 # $Id$
 
 AC_INIT(milia,0.1.0)
-AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([config.h.in])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_REVISION($Revision$)
-AC_PROG_MAKE_SET
 
 AC_PROG_CXX
+AC_PROG_LIBTOOL
 
-AM_PROG_LIBTOOL
-
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_FILES([Makefile 
 		milia.pc
-		milia/Makefile])
+		milia/Makefile
+		tests/Makefile])
 AC_OUTPUT

@@ -18,7 +18,7 @@
  * 
  */
 
-// $Id $
+// $Id$
 
 #ifndef _MILIA_EXCEPTION_H_
 #define _MILIA_EXCEPTION_H_
@@ -28,6 +28,8 @@
 namespace milia {
 
 class exception : public std::exception {
+public:
+	exception();
 	
 	virtual ~exception() throw();
 	

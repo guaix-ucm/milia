@@ -18,26 +18,43 @@
  * 
  */
 
-// $Id $
+// $Id$
 
-#ifndef _MILIA_METRIC_H_
-#define _MILIA_METRIC_H_
+#ifndef _MILIA_FLRW_H_
+#define _MILIA_FLRW_H_
 
 namespace milia {
+
+namespace metrics {
 
 /**
  * The Friedmann-Lemaître-Robertson-Walker metric
  */
-class metric {
+class flrw {
 public:
-	metric(double hubble_constant, double matter_density, double lambda_density);
+	flrw(double hubble_constant, double matter_density, double lambda_density);
+
+	double distance_luminosity(double redshift) const;
+	double distance_comoving(double redshift) const;
+	double distance_angular(double redshift) const;
+	double time_lookback(double redshift) const;
+
 private:
+	//!Hubble radius
+	static const double ms_hubble_radius;
+	//!Hubble time
+	static const double ms_hubble_time;
+
+	//!Hubble constant
+	double m_hu;
+	//!Matter density
+	double m_om;
+	//!cosmologyologycal constant density
+	double m_ol;
+
 };
 
-/**
- * Long name of the metric
- */
-typedef metric flrw_metric;
+} // namespace metrics
 
 } // namespace milia
 

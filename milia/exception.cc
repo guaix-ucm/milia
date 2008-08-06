@@ -18,11 +18,14 @@
  * 
  */
 
-// $Id $
+// $Id$
 
 #include "exception.h"
 
 namespace milia {
+
+exception::exception() {
+}
 
 exception::~exception() throw() {
 }
