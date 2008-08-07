@@ -24,18 +24,20 @@
 #include <config.h>
 #endif
 
-#define M_SQRT3 1.73205080757
-#define PREC GSL_PREC_SINGLE
-#define EPS 1e-4
-
 #include <cmath>
-#include <cfloat>
 #include <iostream>
 
 #include <gsl/gsl_errno.h>
+
+// Provides M_SQRT3
+#include <gsl/gsl_math.h> 
+
+// For the numerical integration case
 #include <gsl/gsl_integration.h>
+
 #include <gsl/gsl_sf_ellint.h>
 
+#include "flrw_prec.h"
 #include "flrw.h"
 
 /* 
@@ -114,8 +116,8 @@ double flrw::age(double z) const {
 
 // m_ol=0 CASE: OL_1,OL_2,OL_3
 double flrw::tolz(double z) const {
-	const double pre0=1.0-m_om;
-	const double prez=sqrt(1.0+m_om*z);
+	const double pre0 = 1.0 - m_om;
+	const double prez = sqrt(1.0 + m_om * z);
 	switch (m_case) {
 	case OL_1:
 		//ol=0 0<m_om<1
@@ -139,25 +141,25 @@ double flrw::tomz(double z) const {
 // CASE A1
 double flrw::ta1(double z) const {
 	gsl_set_error_handler_off();
-	int status=0;
+	int status = 0;
 	gsl_sf_result result;
-	const double vk=pow(m_kap*(m_b-1.0)+sqrt(m_b*(m_b-2.0)), 1.0/3.0);
+	const double vk = cbrt(m_kap * (m_b - 1.0) + sqrt(m_b * (m_b - 2.0)));
 	const double y1=(m_kap*(vk+1.0/vk)-1.0)/3.0;
-	const double A=sqrt(y1*(3.0*y1+2.0));
-	const double k=sqrt((2.0*A+m_kap*(1+3.0*y1))/(4.0*A));
-	double arg0=m_kap*y1+m_om*(1.0+z)/fabs(m_ok);
-	double phi=acos((arg0-A)/(arg0+A));
-	const double sin_phi=sin(phi);
+	const double A = sqrt(y1*(3.0*y1+2.0));
+	const double k = sqrt((2.0*A+m_kap*(1+3.0*y1))/(4.0*A));
+	double arg0 = m_kap*y1+m_om*(1.0+z)/fabs(m_ok);
+	double phi = acos((arg0 - A)/(arg0 + A));
+	const double sin_phi = sin(phi);
 	double n=-0.25*(A+m_kap*y1)*(A+m_kap*y1)/(A*m_kap*y1);
 	double phi_null=asin(1/sqrt(-n));
 	double arg2, arg3;
 	double hm, hp;
 	double pre;
 	double arg1=(1.0+z)*m_om/m_ok;
-	if (fabs(1.0+n*sin_phi*sin_phi)<EPS) {
+	if (fabs(1.0 + n * gsl_pow_2(sin_phi)) < EPS) {
 		n=-y1*(1.0+y1)/(A-m_kap*y1)/(A-m_kap*y1);
 		//  EQUATION 22, a very special case of b = 27*(2+sqrt(2))/8.
-		if (fabs(1.0+n*sin_phi*sin_phi)<EPS) {
+		if (fabs(1.0 + n * gsl_pow_2(sin_phi)) < EPS) {
 			phi=acos(-1.0-arg1/M_SQRT2+1.0-arg1);
 			const double arg2=(1.0-arg1)*sqrt(arg1*arg1+(arg1+M_SQRT1_2)*(1
 					+M_SQRT1_2));
@@ -178,15 +180,14 @@ double flrw::ta1(double z) const {
 			hp=arg1+arg2;
 			arg1=gsl_sf_ellint_F(phi, k, PREC)/(m_kap*y1*sqrt(A));
 			status=gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+			// If the elliptical function fails, we finally do numerical integration
 			if (status) {
-				//cerr<<"error: "<<gsl_strerror(status)<<" on "
-				//    <<__FILE__<<" "<<__LINE__<<endl;
 				return integrate_time(z);
 			}
-			arg2=(A-m_kap)/(y1*(1.0+y1)*sqrt(A))*result.val;
-			arg3=log(fabs(hm/hp))/(m_kap*y1*sqrt(m_kap*(y1+1)));
-			pre=0.5*m_om/fabs(m_ok)/sqrt(fabs(m_ok));
-			return m_t_h*pre*(arg1+arg2+arg3);
+			arg2 = (A-m_kap)/(y1*(1.0+y1)*sqrt(A))*result.val;
+			arg3 = log(fabs(hm/hp))/(m_kap*y1*sqrt(m_kap*(y1+1)));
+			pre = 0.5*m_om/fabs(m_ok)/sqrt(fabs(m_ok));
+			return m_t_h * pre * (arg1 + arg2 + arg3);
 		}
 	}
 	//       EQUATION 10.
@@ -195,9 +196,8 @@ double flrw::ta1(double z) const {
 		hm=sqrt(((1.0+y1)*(y1-arg1))/(y1*y1+(1.0+arg1)*(y1+arg1)));
 		arg1=-gsl_sf_ellint_F(phi, k, PREC)/(A+m_kap*y1);
 		status=gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+		// If the elliptical function fails, we finally do numerical integration
 		if (status) {
-			//cerr<<"error: "<<gsl_strerror(status)<<" on "
-			//    <<__FILE__<<" "<<__LINE__<<endl;
 			return integrate_time(z);
 		}
 		arg2=-0.5*(A-m_kap*y1)/(m_kap*y1*(A+m_kap*y1))*result.val;
@@ -212,7 +212,8 @@ double flrw::ta2(double z) const {
 	//       EQUATION 19, a very special case of b = 2.
 	if (m_case==A2_1) {
 		const double arg=(1.0+z)*m_om/m_ok;
-		return -m_t_h*(M_SQRT3*log(1.0-2.0/(sqrt(1.0/3.0-arg)+1.0))+log(1.0+2.0/(sqrt(1.0-3.0*arg)-1.0)))/sqrt(m_ol);
+		return -m_t_h*(M_SQRT3*log(1.0-2.0/(sqrt(1.0/3.0-arg)+1.0))+log(1.0+2.0
+				/(sqrt(1.0-3.0*arg)-1.0)))/sqrt(m_ol);
 	}
 	//       EQUATION 15.
 	if (m_case==A2_2) {
@@ -230,9 +231,8 @@ double flrw::ta2(double z) const {
 		const double n=-y1/arg3;
 		const double arg4=y1*fabs(m_ok)*sqrt(-arg3*m_ok);
 		status=gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+		// If the elliptical function fails, we finally do numerical integration
 		if (status) {
-			//cerr<<"error: "<<gsl_strerror(status)<<" on "
-			//    <<__FILE__<<" "<<__LINE__<<endl;
 			return integrate_time(z);
 		}
 		return 2.0*m_t_h*m_om/arg4*(result.val-gsl_sf_ellint_F(phi, k, PREC));

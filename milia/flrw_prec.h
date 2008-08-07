@@ -1,0 +1,34 @@
+/* 
+ * Copyright 2008 Sergio Pascual
+ * 
+ * This file is part of Milia
+ * 
+ * Milia is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Milia is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+// $Id: metric.h 9 2008-08-06 16:08:42Z spr $
+
+#ifndef _MILIA_FLRW_PREC_H_
+#define _MILIA_FLRW_PREC_H_
+
+#include <limits>
+#define EPS std::numeric_limits<float>::epsilon()
+
+#include <gsl/gsl_mode.h>
+/* Precision of the elliptical funcions in gsl */
+/* Single is about 10^-7 */
+#define PREC GSL_PREC_SINGLE
+
+#endif /* _MILIA_FLRW_PREC_H_ */
