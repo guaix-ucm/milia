@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2008 Sergio Pascual
  * 
  * This file is part of Milia
@@ -20,22 +20,50 @@
 
 // $Id$
 
-#ifndef _MILIA_EXCEPTION_H_
-#define _MILIA_EXCEPTION_H_
+#ifndef MILIA_EXCEPTION_H
+#define MILIA_EXCEPTION_H
 
 #include <exception>
+#include <string>
 
-namespace milia {
+namespace milia
+{
 
-class exception : public std::exception {
-public:
-	exception();
-	
-	virtual ~exception() throw();
-	
-	const char* what() const throw();
-};
+    class exception : public std::exception
+    {
+    public:
+        exception(const std::string& information);
+
+        virtual ~exception() throw();
+
+        const char* what() const throw();
+
+    private:
+        std::string m_message;
+    };
+
+    class recollapse : public milia::exception
+    {
+    public:
+        recollapse(const std::string& information);
+
+        virtual ~recollapse() throw();
+            
+    };
+
+    class no_big_bang : public milia::exception
+    {
+    public:
+        no_big_bang(const std::string& information);
+
+        virtual ~no_big_bang() throw();
+        
+    };
+
+
+
+
 
 } // namespace milia
 
-#endif /* _MILIA_EXCEPTION_H_ */
+#endif /* MILIA_EXCEPTION_H */

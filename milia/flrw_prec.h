@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2008 Sergio Pascual
  * 
  * This file is part of Milia
@@ -18,10 +18,10 @@
  * 
  */
 
-// $Id: metric.h 9 2008-08-06 16:08:42Z spr $
+// $Id$
 
-#ifndef _MILIA_FLRW_PREC_H_
-#define _MILIA_FLRW_PREC_H_
+#ifndef MILIA_FLRW_PREC_H
+#define MILIA_FLRW_PREC_H
 
 #include <limits>
 #define EPS std::numeric_limits<float>::epsilon()
@@ -31,4 +31,4 @@
 /* Single is about 10^-7 */
 #define PREC GSL_PREC_SINGLE
 
-#endif /* _MILIA_FLRW_PREC_H_ */
+#endif /* MILIA_FLRW_PREC_H */

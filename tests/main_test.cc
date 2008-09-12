@@ -20,19 +20,26 @@
 
 // $Id$
 
-#ifndef MILIA_METRIC_H
-#define MILIA_METRIC_H
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
 
-#include "flrw.h"
 
-namespace milia
+int main()
 {
+    // Get the top level suite from the registry
+    CppUnit::Test *suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
 
-    using metrics::flrw;
+    // Adds the test to the list of test to run
+    CppUnit::TextUi::TestRunner runner;
+    runner.addTest( suite );
 
-    typedef flrw metric;
+    // Change the default outputter to a compiler error format outputter
+    runner.setOutputter(new CppUnit::CompilerOutputter(&runner.result(), std::cerr));
+    
+    // Run the tests.
+    bool wasSucessful = runner.run();
 
-} // namespace milia
-
-
-#endif /* MILIA_METRIC_H */
+    // Return error code 1 if the one of test failed.
+    return wasSucessful ? 0 : 1;
+}

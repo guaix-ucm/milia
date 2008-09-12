@@ -1,12 +1,10 @@
 ## $Id
 
-TESTS = test01 test02
-XFAIL_TESTS = test02
+TESTS = main_test
 
-check_PROGRAMS = test01 test02
+check_PROGRAMS = main_test
 
-test01_SOURCES = test01.cc
-test02_SOURCES = test02.cc
+main_test_SOURCES = main_test.cc FlrwTest.h FlrwTest.cc
 
-AM_CPPFLAGS = -I$(top_srcdir)
-LDADD = $(top_builddir)/milia/libmilia.la $(STUFF_LIBS)
+AM_CPPFLAGS = -I$(top_srcdir) -I$(CPPUNIT_CFLAGS)
+LDADD = $(top_builddir)/milia/libmilia.la $(STUFF_LIBS) $(CPPUNIT_LIBS)

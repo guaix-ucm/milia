@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2008 Sergio Pascual
  * 
  * This file is part of Milia
@@ -22,15 +22,37 @@
 
 #include "exception.h"
 
-namespace milia {
+namespace milia
+{
 
-exception::exception() {
-}
+    exception::exception(const std::string& information) :
+            m_message(information)
+    {}
 
-exception::~exception() throw() {
-}
+    exception::~exception() throw()
+    {}
 
-const char* exception::what() const throw() {
-	return "Milia exception";
-}
+    const char* exception::what() const throw()
+    {
+        return m_message.c_str();
+    }
+
+
+    recollapse::recollapse(const std::string& information) :
+            exception(information)
+    {}
+
+    recollapse::~recollapse() throw()
+    {}
+
+
+    no_big_bang::no_big_bang(const std::string& information) :
+            exception(information)
+    {}
+
+    no_big_bang::~no_big_bang() throw()
+    {}
+
+
+
 }
