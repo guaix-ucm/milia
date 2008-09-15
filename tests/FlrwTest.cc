@@ -83,20 +83,27 @@ void FlrwTest::testNoBigBangThrows24()
 
 void FlrwTest::testLuminosityDistance()
 {
-    const milia::metric test00(50, 1, 0);
-    const int val = 5;
-    const double tabulated_values[val][3] = {{5.99734, 0.001, 1e-5},                                            
-                                            {60.1076, 0.01, 1e-4},
-                                            {613.868, 0.1, 1e-3},
-                                            {7024.56, 1, 1e-2},
-                                            {92136.6, 10, 1e-1}};
+    /* test cases
+     * O_m == 0 and O_v == 0               case OM_OV_0
+     * O_m == 0 and O_v != 0               case OM
+     * 0 < O_m < 1 and O_v == 0            case OV_1
+     * O_m > 1 and O_v == 0                case OV_2
+     * O_m == 1 and O_v == 0               case OV_3
+     * O_v != 0 and O_m + O_v == 1         case OM_OV_1
+     * O_m + O_v != 1 and b == 2           case A2_1
+     * O_m + O_v != 1 and (b > 2 or b < 0) case A1
+     * O_m + O_v != 1 and 0 < b < 2        case A2_2
+     */
 
-    for(int i = 0; i < val; ++i)
-        CPPUNIT_ASSERT_DOUBLES_EQUAL(tabulated_values[i][0],
-                                     test00.distance_luminosity(tabulated_values[i][1]),
-                                     tabulated_values[i][2]);    
+    // Number of lum_models
+    const int val = 1;
+    for(int j = 0; j < val; ++j) {
+        //std::cout << lum_model[j][0] << " " <<  lum_model[j][1] << " " << lum_model[j][2] << '\n';
+        const milia::metric test00(lum_model[j][0], lum_model[j][1], lum_model[j][2]);
+        for(int i = 0; i < val; ++i) {
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(lum_table[j][i][0],
+                                         test00.distance_luminosity(lum_table[j][i][1]),
+                                         lum_table[j][i][2]);
+        }
+    }
 }
-
-
-
-

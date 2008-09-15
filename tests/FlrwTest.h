@@ -75,6 +75,10 @@ public:
 
     void testLuminosityDistance();
     
+private:
+  static const double lum_model[][3];
+  static const double lum_table[][5][3];
+    
 };
 
 

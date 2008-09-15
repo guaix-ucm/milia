@@ -126,12 +126,12 @@ namespace milia
 
         double flrw::distance_comoving_transverse(double z) const
         {
-            return distance_luminosity(z)/(1. + z);
+            return distance_luminosity(z) / (1. + z);
         }
 
         double flrw::distance_angular(double z) const
         {
-            return distance_luminosity(z)/gsl_pow_2(1. + z);
+            return distance_luminosity(z) / gsl_pow_2(1. + z);
         }
 
         double flrw::lookback_time(double z) const

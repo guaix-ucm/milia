@@ -35,22 +35,22 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_ellint.h>
 
+namespace
+{
+    static const double M_4THRT3 = sqrt(M_SQRT3);
+}
+
 namespace milia
 {
 
     namespace metrics
     {
 
-        namespace
-        {
-            static const double M_4THRT3 = sqrt(M_SQRT3);
-        }
-
         double flrw::distance_luminosity(double z) const
         {
             switch (m_case) {
             case OM_OV_0:
-                return 0.5 * z * (z + 2.);
+                return m_r_h * 0.5 * z * (z + 2.);
                 break;
             case OV_1:
             case OV_2:
@@ -58,14 +58,23 @@ namespace milia
                 return m_r_h * 2. * ((2. - m_om * (1. - z) - (2. - m_om) * sqrt(1
                                       + m_om * z))) / gsl_pow_2(m_om);
                 break;
-            case OM: {
-                    // Not yet implemented
-                    return -1;
+            case OM:
+                // m_ov == 0 corresponds to  OM_OV_0
+                if(m_ov == 1) {
+                    return m_r_h * z;
+                } else {
+                    const double par = abs(m_ok / m_ov);
+
+                    if(m_ov > 1) {
+                        return m_r_h / m_ov * ((1. + z) * sqrt(1 - par) - sqrt(1 - par * gsl_pow_2(1. + z )));
+                    } else if (m_ov < 0) {
+                        return m_r_h / m_ov * (sqrt(par * gsl_pow_2(1. + z ) - 1.) - (1. + z) * sqrt(par - 1.));
+                    } else  // 0 < m_ov < 1
+                        return m_r_h / m_ov * ((1. + z) * sqrt(1 + par) - sqrt(1 + par * gsl_pow_2(1. + z )));
                 }
                 break;
-            case A1:
-                //om+ol!=1 b<0 || b>2
-                {
+            case A1: {
+                    //om+ol != 1 and (b<0 || b>2) {
                     const double v = cbrt(m_kap * (m_b - 1.) + sqrt(m_b * (m_b - 2.)));
                     const double y=(-1.+m_kap*(v+1./v))/3.;
                     const double A=sqrt(y*(3.*y+2.));
@@ -84,7 +93,7 @@ namespace milia
             case A2_1:
                 // b=2
             case A2_2:
-                // 0<b<2
+                // 0 < b < 2
                 {
                     const double arg0=acos(1.-m_b)/3.;
                     const double arg1=m_om/abs(m_ok);
@@ -99,8 +108,8 @@ namespace milia
                                                             PREC)-gsl_sf_ellint_F(phi, k, PREC)));
                 }
             case OM_OV_1: {
-                    // m_om+ol=1
-                    const double k=0.9659258263; // TODO: What is this factor?
+                    // om + ol == 1
+                    const double k=0.9659258263; // sqrt(1/2 + sqrt(3) / 4)
                     const double arg0 = cbrt(1. / m_om - 1.);
                     const double down = 1 + (1 + M_SQRT3) * arg0;
                     const double up = 1 + (1 - M_SQRT3) * arg0;
