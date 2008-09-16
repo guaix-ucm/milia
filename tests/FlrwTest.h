@@ -42,6 +42,9 @@ class FlrwTest : public CppUnit::TestFixture
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
     CPPUNIT_TEST(testLuminosityDistance);
+    CPPUNIT_TEST(testAngularDistance);
+    CPPUNIT_TEST(testComovingTransverseDistance);
+    CPPUNIT_TEST(testComovingDistance);
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
@@ -56,7 +59,7 @@ public:
 
     /** Tests matter density < 0 */
     void testMatterLessThanZeroThrows();
-    
+
     /** Tests vacuum energy density < 0 (Universe recollapses) */
     void testVacuumLessThanZeroThrows();
     /** Tests recollapse where ov > 0 and b = 2 */
@@ -64,7 +67,7 @@ public:
     /** Tests recollapse where ov > 0 and b < 2 */
     void testRecollapse12Throws();
 
-    /** Tests no Big Bang where om < 0.5 and b = 2 */ 
+    /** Tests no Big Bang where om < 0.5 and b = 2 */
     void testNoBigBangThrows21();
     /** Tests no Big Bang where om < 0.5 and b < 2 */
     void testNoBigBangThrows22();
@@ -74,11 +77,22 @@ public:
     void testNoBigBangThrows24();
 
     void testLuminosityDistance();
-    
+
+    void testComovingDistance();
+
+    void testComovingTransverseDistance();
+
+    void testAngularDistance();
+
 private:
-  static const double lum_model[][3];
-  static const double lum_table[][5][3];
-    
+    static const double lum_model[][3];
+    static const double lum_table[][5][3];
+    static const double ang_model[][3];
+    static const double ang_table[][5][3];
+    static const double cotran_model[][3];
+    static const double cotran_table[][5][3];
+    static const double com_model[][3];
+    static const double com_table[][5][3];
 };
 
 

@@ -107,3 +107,47 @@ void FlrwTest::testLuminosityDistance()
         }
     }
 }
+
+void FlrwTest::testAngularDistance()
+{
+    // Number of ang_models
+    const int val = 1;
+    for(int j = 0; j < val; ++j) {
+        const milia::metric test00(ang_model[j][0], ang_model[j][1], ang_model[j][2]);
+        for(int i = 0; i < 5; ++i) {
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(ang_table[j][i][0],
+                                         test00.distance_angular(ang_table[j][i][1]),
+                                         ang_table[j][i][2]);
+        }
+    }
+}
+
+void FlrwTest::testComovingTransverseDistance()
+{
+    // Number of cotran_models
+    const int val = 1;
+    for(int j = 0; j < val; ++j) {
+        const milia::metric test00(cotran_model[j][0], cotran_model[j][1], cotran_model[j][2]);
+        for(int i = 0; i < 5; ++i) {
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
+                                         test00.distance_comoving_transverse(cotran_table[j][i][1]),
+                                         cotran_table[j][i][2]);
+        }
+    }
+}
+void FlrwTest::testComovingDistance()
+{
+    // Number of com_models
+    const int val = 2; // There is a problem with the set of parameters {50., 0.5, 0.4}
+    for(int j = 0; j < val; ++j) {
+        //std::cout << com_model[j][0] << " " <<  com_model[j][1] << " " << com_model[j][2] << '\n';
+        const milia::metric test00(com_model[j][0], com_model[j][1], com_model[j][2]);
+        for(int i = 0; i < 5; ++i) {
+        /*  std::cout << com_table[j][i][0] << " " << 
+          test00.distance_comoving(com_table[j][i][1]) << " " << test00.distance_luminosity(com_table[j][i][1]) << '\n';*/
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(com_table[j][i][0],
+                                         test00.distance_comoving(com_table[j][i][1]),
+                                         com_table[j][i][2]);
+        }
+    }
+}

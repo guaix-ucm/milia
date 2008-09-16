@@ -22,7 +22,7 @@
 
 #include "flrw.h"
 #include "exception.h"
-#include <cstdlib>
+#include <cmath>
 #include <gsl/gsl_math.h>
 
 namespace milia
@@ -35,8 +35,8 @@ namespace milia
         const double flrw::ms_hubble_time = 9.78e2; // Hubble time in Gyr
 
 
-        flrw::flrw(double hubble, double matter, double lambda) :
-                m_hu(hubble), m_om(matter), m_ov(lambda), m_ok(1.0 - m_om - m_ov),
+        flrw::flrw(double hubble, double matter, double vacuum) :
+                m_hu(hubble), m_om(matter), m_ov(vacuum), m_ok(1.0 - matter - vacuum),
                 m_kap(GSL_SIGN(m_ok))
 
         {
@@ -116,7 +116,7 @@ namespace milia
             if (m_ok == 0)
                 return dm;
             else {
-                const double sqok = sqrt(abs(m_ok));
+                const double sqok = sqrt(std::abs(m_ok));                
                 if (m_ok > 0)
                     return m_r_h / sqok * asinh(dm * sqok / m_r_h);
                 else
