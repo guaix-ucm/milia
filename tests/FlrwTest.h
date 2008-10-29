@@ -23,7 +23,6 @@
 #ifndef MILIA_FLRW_TEST_H
 #define MILIA_FLRW_TEST_H
 
-#include "milia/metric.h"
 #include "milia/exception.h"
 
 #include <cppunit/extensions/HelperMacros.h>
@@ -31,7 +30,7 @@
 class FlrwTest : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(FlrwTest);
-    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
+ /*   CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
@@ -40,11 +39,13 @@ class FlrwTest : public CppUnit::TestFixture
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);*/
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);
-    CPPUNIT_TEST(testComovingDistance);
+    CPPUNIT_TEST(testComovingDistance);    
+    CPPUNIT_TEST(testAge);
+    CPPUNIT_TEST(testComovingVolume);
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
@@ -82,7 +83,11 @@ public:
 
     void testComovingTransverseDistance();
 
-    void testAngularDistance();
+    void testAngularDistance();    
+    
+    void testAge();
+    
+    void testComovingVolume();
 
 private:
     static const double lum_model[][3];
@@ -93,6 +98,10 @@ private:
     static const double cotran_table[][5][3];
     static const double com_model[][3];
     static const double com_table[][5][3];
+    static const double age_model[][3];
+    static const double age_table[][5][3];
+    static const double vol_model[][3];
+    static const double vol_table[][5][3];
 };
 
 

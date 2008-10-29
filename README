@@ -1,0 +1,11 @@
+This is milia, a library that provides distances and ages in cosmology
+
+The library is written in C++ and requires gsl in order to compile
+
+The example requires additionally the popt library
+
+This library is distributed under GPL , either version 3 of the License, or
+(at your option) any later version. See the file COPYING for details.
+
+Maintainer: spr@astrax.fis.ucm.es
+Webpage: https://halmax.fis.ucm.es/projects/milia/wiki

@@ -27,11 +27,10 @@
 
 namespace milia
 {
+  using metrics::flrw;
 
-    using metrics::flrw;
-
-    typedef flrw metric;
-
+  typedef flrw metric;
+  
 } // namespace milia
 
 
