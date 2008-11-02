@@ -11,7 +11,12 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 
 PKG_CHECK_MODULES([STUFF], [gsl])
-PKG_CHECK_MODULES([CPPUNIT], [cppunit])
+
+# For the tests
+PKG_CHECK_MODULES([CPPUNIT], [cppunit], [testen=1], [
+AC_MSG_WARN([Cppunit is needed by the tests. Checking is disabled])
+testen=0])
+AM_CONDITIONAL([TESTS_ENABLED], [test x$testen = x1])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([config.h.in])
