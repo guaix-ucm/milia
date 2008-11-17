@@ -86,7 +86,7 @@ void FlrwTest::testLuminosityDistance() {
 	 */
 
 	// Number of lum_models
-	const int val = 9;
+	const int val = 6;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(lum_model[j][0], lum_model[j][1],
 				lum_model[j][2]);
@@ -149,7 +149,7 @@ void FlrwTest::testAge() {
 	 */
 
 	// Number of lum_models
-	const int val = 9;
+	const int val = 6;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(age_model[j][0], age_model[j][1],
 				age_model[j][2]);
@@ -162,7 +162,7 @@ void FlrwTest::testAge() {
 
 void FlrwTest::testComovingVolume() {
 	// Number of vol_models
-	const int val = 3;
+	const int val = 2;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(vol_model[j][0], vol_model[j][1],
 				vol_model[j][2]);

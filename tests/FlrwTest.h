@@ -30,7 +30,7 @@
 class FlrwTest : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(FlrwTest);
- /*   CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
+    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
@@ -39,7 +39,7 @@ class FlrwTest : public CppUnit::TestFixture
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);*/
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);
