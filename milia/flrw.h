@@ -62,7 +62,22 @@ namespace milia
          * 
          */
         flrw(double hubble, double matter, double vacuum);
-        
+
+        /**
+         * Checks whether the Universe recollapses or not
+         * with the given parameters.
+         * 
+         * Recollapse ocurrs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1 
+         * \Omega_v < 4 \Omega_m [\cos(\frac{1}{3}\cos^{-1}(\Omega_m^{-1} - 1) + \frac{4\pi}{3})]^3 \f]
+         * 
+         * From Cosmological Physics, Peacock pags 82-83
+         * 
+         * @param matter Matter density
+         * @param vacuum Vacuum density
+         * @return True if the Universe recollapses, false otherwise
+         */
+        static bool does_recollapse(double matter, double vacuum);
+
         bool set_hubble(double hubble_parameter);
 
         inline double get_hubble() const
@@ -185,7 +200,8 @@ namespace milia
 
         double m_universe_age;
 
-        enum CASES {
+        enum CASES
+        {
           OM_OV_0 = 1, //om = ov=0
           OV_1, //ov=0 0<om<1
           OV_2, //ov=0 om>1

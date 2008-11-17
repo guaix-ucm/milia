@@ -75,6 +75,19 @@ namespace milia
       m_universe_age = age();
     }
 
+    bool flrw::does_recollapse(double matter, double vacuum)
+    {
+      if (vacuum < 0)
+        return true;
+      if (matter < 1)
+        return false;
+      const double critical = 4 * matter * gsl_pow_3(cos(1. / 3. * acos(1.
+          / matter - 1.) + 4 * M_PI / 3.));
+      if (vacuum> critical)
+        return false;
+      return true;
+    }
+
     bool flrw::use_cache(double z) const
     {
       if (cache.z==z)
@@ -183,14 +196,14 @@ namespace milia
 
       if (L >= 1 && B <= 2)
         throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
-      
+
       m_ov = L;
       m_ok = OK;
       m_b = B;
       m_kap = (m_ok > 0 ? -1 : 1);
       m_case = check();
       m_universe_age = age();
-      
+
       // Recompute cache next time
       cache.z=-1;
       return true;
