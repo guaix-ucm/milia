@@ -2,7 +2,7 @@
 
 # $Id$
 
-AC_INIT(milia,0.1.0)
+AC_INIT(milia,0.2.0)
 AM_INIT_AUTOMAKE([foreign])
 
 AC_REVISION($Revision$)
@@ -11,6 +11,8 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 
 PKG_CHECK_MODULES([STUFF], [gsl])
+AC_LANG([C++])
+AC_CHECK_HEADER([boost/function.hpp],[],[AC_MSG_ERROR([no boost])])
 
 # For the tests
 PKG_CHECK_MODULES([CPPUNIT], [cppunit], [testen=1], [

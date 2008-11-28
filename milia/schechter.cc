@@ -1,0 +1,118 @@
+/*
+ * Copyright 2008 Sergio Pascual
+ *
+ * This file is part of Milia
+ *
+ * Milia is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Milia is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+// $Id$
+
+#include "schechter.h"
+
+#include <cmath>
+#include <boost/lambda/lambda.hpp>
+//#include <gsl/gsl_sf_gamma.h>
+
+using namespace boost::lambda;
+
+namespace milia
+{
+  namespace luminosity_functions
+  {
+
+    typedef boost::function<double(double)> OOFun;
+
+    schechter::schechter(double phi_star, double lum_star, double alpha,
+        double z) :
+      m_phi_star((_1 = phi_star, _1)), m_lum_star((_1 = lum_star, _1)),
+          m_alpha((_1 = alpha, _1)), m_current_z(z)
+    {
+    }
+
+    schechter::schechter(const OOFun& phi_star, const OOFun& lum_star,
+        const OOFun& alpha, double z) :
+      m_phi_star(phi_star), m_lum_star(lum_star), m_alpha(alpha),
+          m_current_z(z)
+    {
+    }
+
+    boost::tuple<double,double,double> schechter::parameters() const
+    {
+      return boost::make_tuple(m_phi_star(m_current_z),
+          m_lum_star(m_current_z), m_alpha(m_current_z));
+    }
+
+    void schechter::evolve(double z)
+    {
+      m_current_z = z;
+    }
+
+    double schechter::function(double lum) const
+    {
+      const double x = lum / m_lum_star(m_current_z);
+      const double alpha = m_alpha(m_current_z);
+      const double phi = m_phi_star(m_current_z);
+      return phi * pow(x, alpha) * std::exp(-x);
+    }
+
+    double schechter::function_normalized(double x) const
+    {
+      const double alpha = m_alpha(m_current_z);
+      return std::pow<double,double>(x, alpha) * std::exp(-x);
+    }
+
+    double schechter::object_density(double lum1, double lum2) const
+    {
+      const double lum = m_lum_star(m_current_z);
+      const double x1 = lum1 / lum;
+      const double x2 = lum2 / lum;
+      const double alpha = m_alpha(m_current_z);
+      const double phi = m_phi_star(m_current_z);
+
+      static const int NSIMPSON = 1001;
+      const double h = (x2 - x1) / (NSIMPSON - 1);
+      double s = 0;
+
+      for (int i = 2; i < NSIMPSON; i++)
+      {
+        const int f = ((i % 2) == 0 ? 4 : 2);
+        s += f * function_normalized((x1 + (i - 1) * h));
+      }
+      return phi * h * (function_normalized(x1) + function_normalized(x2) + s)
+          / 3;
+
+      /*return phi * (gsl_sf_gamma_inc(alpha + 1, x1) - gsl_sf_gamma_inc(alpha
+       + 1, x2));*/
+    }
+
+    double schechter::luminosity_density(double lum1, double lum2) const
+    {
+      /*      const double lum = m_lum_star(m_current_z);
+       const double alpha = m_alpha(m_current_z);
+       const double phi = m_phi_star(m_current_z);
+
+       const double x1 = lum1 / lum;
+       const double x2 = lum2 / lum;
+       return phi * lum * (gsl_sf_gamma_inc(alpha + 2, x1) - gsl_sf_gamma_inc(
+       alpha + 2, x2));*/
+      return 0;
+    }
+
+  } // namespace luminosity_functions
+
+}
+// namespace milia
+
