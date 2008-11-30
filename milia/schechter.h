@@ -38,7 +38,7 @@ namespace milia
       public:
 
         /**
-         * Constructor with evolution
+         * Template constructor with evolution
          */
         template<typename EvolP, typename EvolL, typename EvolA> schechter(
             const EvolP& phi_star, const EvolL& lum_star, const EvolA& alpha,
@@ -51,16 +51,22 @@ namespace milia
         /**
          * Constructor without evolution
          */
-        schechter(double phi_star, double lum_star, double alpha, double z);
+        schechter(double phi_star, double lum_star, double alpha);
 
         /**
-         * Constructor with evolution
+         * Generic constructor with evolution
          */
         schechter(const boost::function<double(double)>& phi_star, const boost::function<double(double)>& lum_star, const boost::function<double(double)>& alpha, double z);
 
+        /**
+         * Constructor with evolution parametrized following Heyl et al 1997
+         */
+        schechter(double phi_star, double e_phi_star, double lum_star,
+            double e_lum_star, double alpha, double e_alpha, double redshift);
+
         double function(double lum) const;
         double object_density(double lum1, double lum2) const;
-        double luminosity_density(double lum1, double lum2) const;
+        /*double luminosity_density(double lum1, double lum2) const;*/
         void evolve(double z);
         boost::tuple<double, double, double> parameters() const;
       private:

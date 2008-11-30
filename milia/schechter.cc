@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <boost/lambda/lambda.hpp>
-//#include <gsl/gsl_sf_gamma.h>
+#include <boost/lambda/bind.hpp>
 
 using namespace boost::lambda;
 
@@ -35,10 +35,9 @@ namespace milia
 
     typedef boost::function<double(double)> OOFun;
 
-    schechter::schechter(double phi_star, double lum_star, double alpha,
-        double z) :
+    schechter::schechter(double phi_star, double lum_star, double alpha) :
       m_phi_star((_1 = phi_star, _1)), m_lum_star((_1 = lum_star, _1)),
-          m_alpha((_1 = alpha, _1)), m_current_z(z)
+          m_alpha((_1 = alpha, _1)), m_current_z(0.)
     {
     }
 
@@ -47,6 +46,18 @@ namespace milia
       m_phi_star(phi_star), m_lum_star(lum_star), m_alpha(alpha),
           m_current_z(z)
     {
+    }
+
+    schechter::schechter(double phi_star, double e_phi_star, double lum_star,
+        double e_lum_star, double alpha, double e_alpha, double z) :
+      m_current_z(z)
+    {
+      const double p0 = phi_star / pow((1 + z), e_phi_star);
+      const double l0 = lum_star / pow((1 + z), e_lum_star);
+
+      m_phi_star = p0 * bind(pow, 1. + _1, e_phi_star);
+      m_phi_star = l0 * bind(pow, 1. + _1, e_lum_star);
+      m_alpha = alpha + e_alpha * (_1 - z);
     }
 
     boost::tuple<double,double,double> schechter::parameters() const
@@ -97,19 +108,20 @@ namespace milia
       /*return phi * (gsl_sf_gamma_inc(alpha + 1, x1) - gsl_sf_gamma_inc(alpha
        + 1, x2));*/
     }
-
+/*
     double schechter::luminosity_density(double lum1, double lum2) const
     {
-      /*      const double lum = m_lum_star(m_current_z);
+      /     const double lum = m_lum_star(m_current_z);
        const double alpha = m_alpha(m_current_z);
        const double phi = m_phi_star(m_current_z);
 
        const double x1 = lum1 / lum;
        const double x2 = lum2 / lum;
        return phi * lum * (gsl_sf_gamma_inc(alpha + 2, x1) - gsl_sf_gamma_inc(
-       alpha + 2, x2));*/
+       alpha + 2, x2));
       return 0;
     }
+    */
 
   } // namespace luminosity_functions
 
