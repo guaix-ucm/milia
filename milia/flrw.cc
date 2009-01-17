@@ -81,7 +81,7 @@ namespace milia
     std::string flrw::to_string() const
     {
     	std::stringstream out;
-    	out << "flrw metric(hubble=" << m_hu <<", matter=" << m_om << ",vacuum="
+    	out << "flrw(hubble=" << m_hu <<", matter=" << m_om << ", vacuum="
     	    << m_ov <<")";
     	return out.str();
     }

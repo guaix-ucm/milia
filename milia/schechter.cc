@@ -62,7 +62,7 @@ namespace milia
 
     std::string schechter::to_string() const
     {
-    	return "schechter ()";
+    	return "schechter(" << ")";
     }
 
     boost::tuple<double,double,double> schechter::parameters() const
