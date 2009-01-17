@@ -1,27 +1,30 @@
 /*
  * Copyright 2008 Sergio Pascual
- * 
+ *
  * This file is part of Milia
- * 
+ *
  * Milia is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Milia is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 // $Id$
 
 #ifndef MILIA_FLRW_H
 #define MILIA_FLRW_H
+
+#include <string>
+#include <iostream>
 
 namespace milia
 {
@@ -30,15 +33,15 @@ namespace milia
 
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
-     * 
+     *
      * This class computes the common cosmological distances and times.
      * It uses elliptical functions from gsl.
-     * It is based on the paper <a href="http://xxx.unizar.es/abs/astro-ph/9905116">%astro-ph/9905116</a> 
+     * It is based on the paper <a href="http://xxx.unizar.es/abs/astro-ph/9905116">%astro-ph/9905116</a>
      * for the relations between distances.
-     * The age is computed from 
+     * The age is computed from
      * <a href="http://xxx.unizar.es/abs/astro-ph/0003463">%astro-ph/0003463</a> with elliptical functions.
-     * Distances are computed from the luminosity distance using 
-     * <a href="http://xxx.unizar.es/abs/astro-ph/0002334">%astro-ph/0002334</a> 
+     * Distances are computed from the luminosity distance using
+     * <a href="http://xxx.unizar.es/abs/astro-ph/0002334">%astro-ph/0002334</a>
      * without inhomogeneities.
      */
     class flrw
@@ -48,30 +51,30 @@ namespace milia
         /**
          * No Big Bang: \f[\Omega_v > 4 \Omega_m [f(\frac{1}{3}f^{-1}(\Omega_m^{-1} - 1))]^3 \f]
          * where \f[ f = \cos \Omega_m > 0.5 \cosh \Omega_m < 0.5 \f]
-         * 
-         * Recollapse: \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1 
+         *
+         * Recollapse: \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1
          * \Omega_v < 4 \Omega_m [\cos(\frac{1}{3}\cos^{-1}(\Omega_m^{-1} - 1) + \frac{4\pi}{3})]^3 \f]
-         * 
-         * From Cosmological Physics, Peacock pags 82-83          
-         * 
+         *
+         * From Cosmological Physics, Peacock pags 82-83
+         *
          * @pre hubble_constant > 0 matter_density >= 0 lambda_density >= 0
          * @pre the parameters allow a Big-Bang to ocurr and the Universe doesn't recollapse
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          * @throws milia::exception
-         * 
+         *
          */
         flrw(double hubble, double matter, double vacuum);
 
         /**
          * Checks whether the Universe recollapses or not
          * with the given parameters.
-         * 
-         * Recollapse ocurrs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1 
+         *
+         * Recollapse ocurrs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1
          * \Omega_v < 4 \Omega_m [\cos(\frac{1}{3}\cos^{-1}(\Omega_m^{-1} - 1) + \frac{4\pi}{3})]^3 \f]
-         * 
+         *
          * From Cosmological Physics, Peacock pags 82-83
-         * 
+         *
          * @param matter Matter density
          * @param vacuum Vacuum density
          * @return True if the Universe recollapses, false otherwise
@@ -156,6 +159,8 @@ namespace milia
         double da(double z, double dl) const;
         double vol(double z, double dm) const;
 
+        std::string to_string() const;
+
       private:
 
         static const double ms_hubble_radius;
@@ -184,7 +189,7 @@ namespace milia
 
         /**
          * Curvature parameter
-         * 
+         *
          * m_om + m_ov + m_ok = 1
          */
         double m_ok;
@@ -247,5 +252,6 @@ namespace milia
 
 } // namespace milia
 
+std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw);
 
 #endif /* MILIA_FLRW_H */

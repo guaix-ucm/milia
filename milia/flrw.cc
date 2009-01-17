@@ -1,29 +1,32 @@
 /*
  * Copyright 2008 Sergio Pascual
- * 
+ *
  * This file is part of Milia
- * 
+ *
  * Milia is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Milia is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 // $Id$
 
 #include "flrw.h"
 #include "exception.h"
+
 #include <cmath>
-#include <gsl/gsl_math.h>
+#include <sstream>
+
+#include <gsl_math.h>
 
 #ifndef HAVE_ASINH
 #define asinh gsl_asinh
@@ -73,6 +76,14 @@ namespace milia
       m_r_h = ms_hubble_radius / m_hu;
       m_t_h = ms_hubble_time / m_hu;
       m_universe_age = age();
+    }
+
+    std::string flwrw::to_string() const
+    {
+    	std::stringstream out;
+    	out << "flrw metric(hubble=" << m_hu <<", matter=" << m_om << ",vacuum="
+    	    << m_ov <<")";
+    	return out.str();
     }
 
     bool flrw::does_recollapse(double matter, double vacuum)
@@ -186,7 +197,7 @@ namespace milia
     bool flrw::set_vacuum(double L)
     {
       if (L<-EPS)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse        
+        throw milia::recollapse("The Universe recollapses"); // Recollapse
 
       const double OK = 1 - m_om - L;
       double B = -13.5 * gsl_pow_2(m_om) * L / gsl_pow_3(OK);
@@ -358,3 +369,9 @@ namespace milia
     }
   } //namespace metrics
 } //namespace milia
+
+std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw) {
+	os << iflrw.to_string();
+	return os;
+}
+}
