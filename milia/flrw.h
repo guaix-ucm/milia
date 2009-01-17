@@ -24,7 +24,7 @@
 #define MILIA_FLRW_H
 
 #include <string>
-#include <iostream>
+#include <ostream>
 
 namespace milia
 {

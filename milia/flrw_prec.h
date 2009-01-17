@@ -26,7 +26,7 @@
 #include <limits>
 #define EPS std::numeric_limits<float>::epsilon()
 
-#include <gsl_mode.h>
+#include <gsl/gsl_mode.h>
 /* Precision of the elliptical funcions in gsl */
 /* Single is about 10^-7 */
 #define PREC GSL_PREC_SINGLE

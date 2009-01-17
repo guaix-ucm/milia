@@ -60,6 +60,11 @@ namespace milia
       m_alpha = alpha + e_alpha * (_1 - z);
     }
 
+    std::string schechter::to_string() const
+    {
+    	return "schechter ()";
+    }
+
     boost::tuple<double,double,double> schechter::parameters() const
     {
       return boost::make_tuple(m_phi_star(m_current_z),
@@ -128,3 +133,9 @@ namespace milia
 }
 // namespace milia
 
+std::ostream& operator<<(std::ostream& os,
+		milia::luminosity_functions::schechter& ischech)
+{
+	os << ischech.to_string();
+	return os;
+}

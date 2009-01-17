@@ -25,6 +25,8 @@
 
 #include <boost/function.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <string>
+#include <ostream>
 
 namespace milia
 {
@@ -69,6 +71,7 @@ namespace milia
         /*double luminosity_density(double lum1, double lum2) const;*/
         void evolve(double z);
         boost::tuple<double, double, double> parameters() const;
+        std::string to_string() const;
       private:
         boost::function<double(double)> m_phi_star;
         boost::function<double(double)> m_lum_star;
@@ -81,5 +84,7 @@ namespace milia
 
 } // namespace milia
 
+std::ostream& operator<<(std::ostream& os,
+		milia::luminosity_functions::schechter& ischech);
 
 #endif /* MILIA_SCHECHTER_H */

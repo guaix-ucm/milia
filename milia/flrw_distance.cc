@@ -32,8 +32,8 @@
 #include <cstdlib>
 
 // Provides M_SQRT3
-#include <gsl_math.h>
-#include <gsl_sf_ellint.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_sf_ellint.h>
 
 namespace
 {

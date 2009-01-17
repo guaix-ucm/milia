@@ -26,7 +26,7 @@
 #include <cmath>
 #include <sstream>
 
-#include <gsl_math.h>
+#include <gsl/gsl_math.h>
 
 #ifndef HAVE_ASINH
 #define asinh gsl_asinh
@@ -78,7 +78,7 @@ namespace milia
       m_universe_age = age();
     }
 
-    std::string flwrw::to_string() const
+    std::string flrw::to_string() const
     {
     	std::stringstream out;
     	out << "flrw metric(hubble=" << m_hu <<", matter=" << m_om << ",vacuum="
@@ -370,8 +370,8 @@ namespace milia
   } //namespace metrics
 } //namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw) {
+std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw)
+{
 	os << iflrw.to_string();
 	return os;
-}
 }

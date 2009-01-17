@@ -24,17 +24,15 @@
 #include <config.h>
 #endif
 
-
-
 #include "flrw.h"
 #include "flrw_prec.h"
 #include "exception.h"
 
 #include <cmath>
 
-#include <gsl_errno.h>
-#include <gsl_integration.h>
-#include <gsl_sf_ellint.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_sf_ellint.h>
 
 /*
  OJO. La funcion elliptica con tres argumento sigue distinto
