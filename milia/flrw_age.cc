@@ -276,6 +276,7 @@ namespace milia
 
     double flrw::integrate_time(double z) const
     {
+      gsl_set_error_handler_off();
       gsl_integration_workspace* w = gsl_integration_workspace_alloc(1000);
       double result, error;
       gsl_function F;
@@ -283,9 +284,10 @@ namespace milia
       F.params = static_cast<void*> (const_cast<flrw*> (this));
       const int status = gsl_integration_qagiu(&F, z, 0, 1e-7, 1000, w,
           &result, &error);
+      gsl_integration_workspace_free(w);
       if (status)
       {
-        throw milia::exception(std::string("error: ") + gsl_strerror(status));
+        throw milia::exception(std::string("gsl error: ") + gsl_strerror(status));
       }
       return m_t_h * result;
     }

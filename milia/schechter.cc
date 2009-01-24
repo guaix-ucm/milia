@@ -23,16 +23,17 @@
 #include "schechter.h"
 
 #include <cmath>
+#include <sstream>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
 
-using namespace boost::lambda;
+
 
 namespace milia
 {
   namespace luminosity_functions
   {
-
+    using namespace boost::lambda;
     typedef boost::function<double(double)> OOFun;
 
     schechter::schechter(double phi_star, double lum_star, double alpha) :
@@ -62,7 +63,12 @@ namespace milia
 
     std::string schechter::to_string() const
     {
-    	return "schechter(" << ")";
+    	std::stringstream out;
+    	out << "schechter(" << "phi*=" << m_phi_star(m_current_z)
+    	<< " ,lum*=" << m_lum_star(m_current_z)
+    	<< " ,alpha=" << m_alpha(m_current_z)
+    	<< " ,z=" << m_current_z << ")";
+    	return out.str();
     }
 
     boost::tuple<double,double,double> schechter::parameters() const
@@ -113,20 +119,6 @@ namespace milia
       /*return phi * (gsl_sf_gamma_inc(alpha + 1, x1) - gsl_sf_gamma_inc(alpha
        + 1, x2));*/
     }
-/*
-    double schechter::luminosity_density(double lum1, double lum2) const
-    {
-      /     const double lum = m_lum_star(m_current_z);
-       const double alpha = m_alpha(m_current_z);
-       const double phi = m_phi_star(m_current_z);
-
-       const double x1 = lum1 / lum;
-       const double x2 = lum2 / lum;
-       return phi * lum * (gsl_sf_gamma_inc(alpha + 2, x1) - gsl_sf_gamma_inc(
-       alpha + 2, x2));
-      return 0;
-    }
-    */
 
   } // namespace luminosity_functions
 
