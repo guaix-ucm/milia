@@ -158,7 +158,6 @@ namespace milia
       double phi = acos((arg0 - A) / (arg0 + A));
       const double sin_phi = sin(phi);
       double n = -0.25 * (A + m_kap * y1) * (A + m_kap * y1) / (A * m_kap * y1);
-      double phi_null = asin(1 / sqrt(-n));
       double arg2, arg3;
       double hm, hp;
       double pre;

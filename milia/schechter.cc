@@ -101,7 +101,6 @@ namespace milia
       const double lum = m_lum_star(m_current_z);
       const double x1 = lum1 / lum;
       const double x2 = lum2 / lum;
-      const double alpha = m_alpha(m_current_z);
       const double phi = m_phi_star(m_current_z);
 
       static const int NSIMPSON = 1001;
