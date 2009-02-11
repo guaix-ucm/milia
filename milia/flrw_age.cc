@@ -34,14 +34,6 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf_ellint.h>
 
-/*
- OJO. La funcion elliptica con tres argumento sigue distinto
- criterio en GSl y en NR
- ellpi(phi,n,k)=gsl_sf_ellint_P(phi,k,n)
- Ademas este pollo usa otro convenio con los signos, asi que:
- ellpi(phi,n,k)=gsl_sf_ellint_P(phi,k,-n)
- */
-
 namespace
 {
   double helper_fun_time(double z, void* pars)
@@ -154,7 +146,7 @@ namespace milia
     // CASE A1
     double flrw::ta1(double z) const
     {
-      gsl_set_error_handler_off();
+      gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       int status = 0;
       gsl_sf_result result;
       const double vk = pow(m_kap * (m_b - 1.0) + sqrt(m_b * (m_b - 2.0)), 1.0
@@ -182,6 +174,7 @@ namespace milia
               + M_SQRT1_2) * (1 + M_SQRT1_2));
           const double arg3 = (M_SQRT2 - 1.0) * (arg1 + M_SQRT2 + 1.0) * sqrt(
               (1.0 + M_SQRT1_2) * (M_SQRT1_2 - arg1));
+          gsl_set_error_handler(oldhandler);
           return 0.25 * m_t_h / sqrt(m_ov) * ((M_SQRT2 - 1.0)
               * gsl_sf_ellint_F(phi, 0.5 * sqrt(1 + 2 * M_SQRT2), PREC) + log(
               fabs((arg2 + arg3) / (arg2 - arg3))));
@@ -198,6 +191,7 @@ namespace milia
           hp = arg1 + arg2;
           arg1 = gsl_sf_ellint_F(phi, k, PREC) / (m_kap * y1 * sqrt(A));
           status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+          gsl_set_error_handler(oldhandler);
           if (status)
           {
             return integrate_time(z);
@@ -216,6 +210,7 @@ namespace milia
             + arg1)));
         arg1 = -gsl_sf_ellint_F(phi, k, PREC) / (A + m_kap * y1);
         status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+        gsl_set_error_handler(oldhandler);
         if (status)
         {
           return integrate_time(z);
@@ -276,7 +271,7 @@ namespace milia
 
     double flrw::integrate_time(double z) const
     {
-      gsl_set_error_handler_off();
+      gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       gsl_integration_workspace* w = gsl_integration_workspace_alloc(1000);
       double result, error;
       gsl_function F;
@@ -285,6 +280,7 @@ namespace milia
       const int status = gsl_integration_qagiu(&F, z, 0, 1e-7, 1000, w,
           &result, &error);
       gsl_integration_workspace_free(w);
+      gsl_set_error_handler(oldhandler);
       if (status)
       {
         throw milia::exception(std::string("gsl error: ") + gsl_strerror(status));

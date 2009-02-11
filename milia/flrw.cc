@@ -27,6 +27,7 @@
 #include <sstream>
 
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_errno.h>
 
 #ifndef HAVE_ASINH
 #define asinh gsl_asinh
@@ -51,6 +52,7 @@ namespace milia
     flrw::flrw(double h, double m, double v) :
       m_hu(h), m_om(m), m_ov(v), m_ok(1 - m_om - m_ov)
     {
+      gsl_set_error_handler_off();
 
       if (m_hu <= 0)
         throw milia::exception("Hubble constant <= 0 not allowed");
