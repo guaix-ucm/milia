@@ -57,7 +57,7 @@ namespace milia
       const double l0 = lum_star / pow((1 + z), e_lum_star);
 
       m_phi_star = p0 * bind(pow, 1. + _1, e_phi_star);
-      m_phi_star = l0 * bind(pow, 1. + _1, e_lum_star);
+      m_lum_star = l0 * bind(pow, 1. + _1, e_lum_star);
       m_alpha = alpha + e_alpha * (_1 - z);
     }
 
