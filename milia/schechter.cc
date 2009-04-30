@@ -65,9 +65,9 @@ namespace milia
     {
     	std::stringstream out;
     	out << "schechter(" << "phi*=" << m_phi_star(m_current_z)
-    	<< " ,lum*=" << m_lum_star(m_current_z)
-    	<< " ,alpha=" << m_alpha(m_current_z)
-    	<< " ,z=" << m_current_z << ")";
+    	<< ", lum*=" << m_lum_star(m_current_z)
+    	<< ", alpha=" << m_alpha(m_current_z)
+    	<< ", z=" << m_current_z << ")";
     	return out.str();
     }
 
