@@ -58,7 +58,7 @@ namespace milia
          * From Cosmological Physics, Peacock pags 82-83
          *
          * @pre hubble_constant > 0 matter_density >= 0 lambda_density >= 0
-         * @pre the parameters allow a Big-Bang to ocurr and the Universe doesn't recollapse
+         * @pre the parameters allow a Big-Bang to occur and the Universe doesn't recollapse
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          * @throws milia::exception
@@ -70,7 +70,7 @@ namespace milia
          * Checks whether the Universe recollapses or not
          * with the given parameters.
          *
-         * Recollapse ocurrs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1
+         * Recollapse occurs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0 \Omega_m > 1
          * \Omega_v < 4 \Omega_m [\cos(\frac{1}{3}\cos^{-1}(\Omega_m^{-1} - 1) + \frac{4\pi}{3})]^3 \f]
          *
          * From Cosmological Physics, Peacock pags 82-83
@@ -226,7 +226,7 @@ namespace milia
         double ta1(double z) const;
         double ta2(double z) const;
         double tb(double z) const;
-        double integrate_time(double) const;
+
 
         // Cache
         mutable struct

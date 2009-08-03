@@ -10,7 +10,6 @@ AC_REVISION($Revision$)
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 
-PKG_CHECK_MODULES([STUFF], [gsl])
 AC_LANG([C++])
 AC_CHECK_HEADER([boost/function.hpp],[],[AC_MSG_ERROR([no boost])])
 
@@ -23,8 +22,8 @@ AM_CONDITIONAL([TESTS_ENABLED], [test x$testen = x1])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_FILES([Makefile 
-		milia.pc
-		milia/Makefile
-		examples/Makefile
-		tests/Makefile])
+         	 milia.pc
+		 milia/Makefile
+		 examples/Makefile
+		 tests/Makefile])
 AC_OUTPUT
