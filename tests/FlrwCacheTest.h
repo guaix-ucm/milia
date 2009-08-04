@@ -20,17 +20,17 @@
 
 // $Id$
 
-#ifndef MILIA_FLRW_TEST_H
-#define MILIA_FLRW_TEST_H
+#ifndef MILIA_FLRW_CACHE_TEST_H
+#define MILIA_FLRW_CACHE_TEST_H
 
 #include "milia/exception.h"
 #include "FlrwTestData.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
+class FlrwCacheTest : public CppUnit::TestFixture, public FlrwTestData
 {
-    CPPUNIT_TEST_SUITE(FlrwTest);
+    CPPUNIT_TEST_SUITE(FlrwCacheTest);
     CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
@@ -92,4 +92,4 @@ public:
 };
 
 
-#endif // MILIA_FLRW_TEST_H
+#endif // MILIA_FLRW_CACHE_TEST_H

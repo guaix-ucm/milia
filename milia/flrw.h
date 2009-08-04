@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2009 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -104,8 +104,6 @@ namespace milia
 
         double hubble(double z) const;
 
-        double helper(double z) const;
-
         /**
          * Comoving distance (line of sight)
          * \f[
@@ -162,10 +160,8 @@ namespace milia
         std::string to_string() const;
 
       private:
-
-        static const double ms_hubble_radius;
-
-        static const double ms_hubble_time;
+        static const double ms_hubble_radius = 2.99792e5; // Hubble Radius in Mpc
+        static const double ms_hubble_time = 9.78e2; // Hubble time in Gyr
 
         /**
          * Hubble parameter
@@ -178,7 +174,7 @@ namespace milia
         double m_om;
 
         /**
-         * Vaccum energy density
+         * Vacuum energy density
          */
         double m_ov;
 
@@ -205,9 +201,10 @@ namespace milia
 
         double m_universe_age;
 
-        enum CASES
+        enum ComputationCases
         {
-          OM_OV_0 = 1, //om = ov=0
+          NO_CASE,
+          OM_OV_0, //om = ov=0
           OV_1, //ov=0 0<om<1
           OV_2, //ov=0 om>1
           OV_3, //ov=0 om=1
@@ -216,20 +213,41 @@ namespace milia
           A2_1, //om+ov!=1 b=2
           A2_2, //om+ov!=1 0<b<2
           OM_OV_1, //om+ol=1
-          NO_CASE = 0,
-        } m_case;
+        };
 
-        CASES check() const;
+        ComputationCases m_case;
+        ComputationCases check() const;
 
         double tolz(double z) const;
         double tomz(double z) const;
         double ta1(double z) const;
         double ta2(double z) const;
         double tb(double z) const;
+    };
 
 
-        // Cache
-        mutable struct
+  class flrw_cache : public flrw
+    {
+      public:
+        flrw_cache(double hubble, double matter, double vacuum);
+        bool set_hubble(double hubble_parameter);
+        bool set_matter(double matter_density);
+        bool set_vacuum(double vacuum_energy_density);
+        double hubble(double z) const;
+
+        double dc(double z) const;
+        double dm(double z) const;
+        double da(double z) const;
+        double dl(double z) const;
+        double DM(double z) const;
+        double vol(double z) const;
+        double age() const;
+        double age(double z) const;
+        double lt(double z) const;
+
+      private:
+
+        struct Cache
         {
             double z;
             double hubble;
@@ -241,11 +259,14 @@ namespace milia
             double vol;
             double lt;
             double age;
-        } cache;
+            double age_0;
+            void recompute();
+            bool can_use(double z) const;
+            void scale(double rh, double th);
+            void initialize(const metrics::flrw& metric, double z);
+        };
 
-        void init_cache(double z) const;
-        void scale_cache(double rh, double th) const;
-        bool use_cache(double z) const;
+        mutable Cache m_cache;
     };
 
   } // namespace metrics

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2009 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -20,7 +20,7 @@
 
 // $Id$
 
-#include "FlrwTest.h"
+#include "FlrwTestData.h"
 
    /* These tests are removed
      * {50.,0.,-1.} : recollapse
@@ -31,7 +31,7 @@
      * O_m + O_v != 1 and 0 < b < 2        case A2_2
      */
 
-const double FlrwTest::lum_model[][3] = {
+const double FlrwTestData::lum_model[][3] = {
     {50., 0.0, 0.0}, // OM_OV_0
     {70., 0.3, 0.7}, // OM_OV_1
     {50., 0.0, 0.5}, // OM
@@ -48,7 +48,7 @@ const double FlrwTest::lum_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::lum_table[][5][3] =
+const double FlrwTestData::lum_table[][5][3] =
 {
     {{0.0010005, 0.001, 1e-7}, // OM_OV_0
      {0.01005, 0.01, 1e-6},
@@ -97,35 +97,35 @@ const double FlrwTest::lum_table[][5][3] =
      {71850.7, 10, 1e-1}},*/
 };
 
-const double FlrwTest::ang_model[][3] = {
+const double FlrwTestData::ang_model[][3] = {
     {50., 1.0, 0.},
     };
 
-const double FlrwTest::ang_table[][5][3] =
+const double FlrwTestData::ang_table[][5][3] =
   {{{5.98536, 0.001, 1e-5},
     {58.9232, 0.01, 1e-4},
     {507.329, 0.1, 1e-3},
     {1756.14, 1, 1e-2},
     {761.459, 10, 1e-3}}};
 
-const double FlrwTest::cotran_model[][3] = {
+const double FlrwTestData::cotran_model[][3] = {
     {50., 1.0, 0.},
     };
 
-const double FlrwTest::cotran_table[][5][3] =
+const double FlrwTestData::cotran_table[][5][3] =
   {{{5.99135, 0.001, 1e-5},
     {59.5124, 0.01, 1e-4},
     {558.062, 0.1, 1e-3},
     {3512.28, 1, 1e-2},
     {8376.05, 10, 1e-1}}};
 
-const double FlrwTest::com_model[][3] = {
+const double FlrwTestData::com_model[][3] = {
     {50., 1.0, 0.},
     {50., 0.5, 0.6},
     {50., 0.5, 0.4},
     };
 
-const double FlrwTest::com_table[][5][3] =
+const double FlrwTestData::com_table[][5][3] =
   {
       {{5.99135, 0.001, 1e-5},
        {59.5124, 0.01, 1e-4},
@@ -144,7 +144,7 @@ const double FlrwTest::com_table[][5][3] =
        {10714.2, 10, 1e-1}}
   };
 
-const double FlrwTest::age_model[][3] = {
+const double FlrwTestData::age_model[][3] = {
     {50., 0.0, 0.0}, // OM_OV_0
     {70., 0.3, 0.7}, // OM_OV_1
     {50., 0.0, 0.5}, // OM
@@ -161,7 +161,7 @@ const double FlrwTest::age_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::age_table[][5][3] =
+const double FlrwTestData::age_table[][5][3] =
 {
  {{19.56, 0,1e-2}, // OM_OV_0
   {17.7818, 0.1, 1e-4},
@@ -210,7 +210,7 @@ const double FlrwTest::age_table[][5][3] =
   {-0.0445536, 100, 1e-7}}*/
 };
 
-const double FlrwTest::vol_model[][3] = {
+const double FlrwTestData::vol_model[][3] = {
     {50., 0.5, 0.},
     //{50., 1.5, 0.},
     {50., 1.0, 0.},
@@ -221,7 +221,7 @@ const double FlrwTest::vol_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::vol_table[][5][3] =
+const double FlrwTestData::vol_table[][5][3] =
 {
   {
 	  {89304527.4589468, 1e-3, 1e-1},
