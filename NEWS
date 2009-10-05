@@ -1,3 +1,11 @@
+
+
+Enhancements:
+ * Added documentation
+ * Add methods arcsec2pc and pc2arcsec which transform an angular 
+   size in the sky into physical length and viceversa
+
+
 Version 0.2.1
 (02 May 2009, from /milia/trunk)
 http://guaix.fis.ucm.es/svn/milia/tags/0.2.1/

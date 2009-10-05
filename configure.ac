@@ -23,6 +23,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_FILES([Makefile 
          	 milia.pc
+         	 Doxyfile
 		 milia/Makefile
 		 examples/Makefile
 		 tests/Makefile])
