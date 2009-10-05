@@ -189,8 +189,7 @@ flrw::ComputationCases flrw::check() const {
 }
 
 double flrw::hubble(double z) const {
-	return m_hu * sqrt(m_om * (1 + z) * (1 + z) * (1 + z) + m_ok * (1 + z) * (1
-			+ z) + m_ov);
+	return m_hu * sqrt(m_om * pow_3(1 + z) + m_ok * pow_2(1 + z) + m_ov);
 }
 
 double flrw::lt(double z) const {
