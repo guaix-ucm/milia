@@ -193,7 +193,7 @@ namespace milia
           gsl_set_error_handler(oldhandler);
           if (status)
           {
-            return integrate_time(z);
+            return ti(z);
           }
           arg2 = (A - m_kap) / (y1 * (1.0 + y1) * sqrt(A)) * result.val;
           arg3 = log(fabs(hm / hp)) / (m_kap * y1 * sqrt(m_kap * (y1 + 1)));
@@ -212,7 +212,7 @@ namespace milia
         gsl_set_error_handler(oldhandler);
         if (status)
         {
-          return integrate_time(z);
+          return ti(z);
         }
         arg2 = -0.5 * (A - m_kap * y1) / (m_kap * y1 * (A + m_kap * y1))
             * result.val;
@@ -253,7 +253,7 @@ namespace milia
         status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
         if (status)
         {
-          return integrate_time(z);
+          return ti(z);
         }
         return 2.0 * m_t_h * m_om / arg4 * (result.val - gsl_sf_ellint_F(phi,
             k, PREC));
@@ -268,7 +268,7 @@ namespace milia
           + z)))))) / (3.0 * sqrt(m_ov));
     }
 
-    double flrw::integrate_time(double z) const
+    double flrw::ti(double z) const
     {
       gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       gsl_integration_workspace* w = gsl_integration_workspace_alloc(1000);

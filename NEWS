@@ -1,7 +1,7 @@
 Version 0.2.1
-(02 May 2009, from /milia/trunk)
+(02 May 2009, from /milia/trunk revision 72)
 http://guaix.fis.ucm.es/svn/milia/tags/0.2.1/
 
 Bugfixes:
- * Wrong comma positio in schechter::to_str (ticket #17)
+ * Wrong comma position in schechter::to_str (ticket #17)
  * boost::bad_function_call in schechter constructor (ticket #20)
