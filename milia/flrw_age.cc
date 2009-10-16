@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2009 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -39,10 +39,9 @@ namespace
   double helper_fun_time(double z, void* pars)
   {
     milia::metrics::flrw* pmetric = static_cast<milia::metrics::flrw*> (pars);
-    return 1. / ((1 + z) * (pmetric->helper(z)));
-    //const double om=a->get_matter();
-    //const double ol=a->get_lambda();
-    //return 1./((1.+z)*(sqrt(gsl_pow_2(1.+z)*(1.+om*z)-z*ol*(2.+z))));
+    const double om = pmetric->get_matter();
+    const double ol = pmetric->get_vacuum();
+    return 1/ ((1 + z) * (sqrt(gsl_pow_2(1 + z) * (1 + om * z) - z * ol * (2 + z))));
   }
 }
 
