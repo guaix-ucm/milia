@@ -2,7 +2,7 @@
 
 
 SUBDIRS = milia tests examples
-EXTRA_DIST = autogen.sh NEWS
+EXTRA_DIST = NEWS
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = milia.pc
