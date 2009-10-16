@@ -2,7 +2,7 @@
 
 
 SUBDIRS = milia tests examples
-EXTRA_DIST = NEWS
+EXTRA_DIST =
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = milia.pc
