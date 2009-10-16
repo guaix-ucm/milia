@@ -1,26 +1,26 @@
 /*
- * Copyright 2008 Sergio Pascual
- * 
+ * Copyright 2008-2009 Sergio Pascual
+ *
  * This file is part of Milia
- * 
+ *
  * Milia is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Milia is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 // $Id$
 
-#include "FlrwTest.h"
+#include "FlrwTestData.h"
 
    /* These tests are removed
      * {50.,0.,-1.} : recollapse
@@ -31,7 +31,7 @@
      * O_m + O_v != 1 and 0 < b < 2        case A2_2
      */
 
-const double FlrwTest::lum_model[][3] = {             
+const double FlrwTestData::lum_model[][3] = {
     {50., 0.0, 0.0}, // OM_OV_0
     {70., 0.3, 0.7}, // OM_OV_1
     {50., 0.0, 0.5}, // OM
@@ -48,103 +48,103 @@ const double FlrwTest::lum_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::lum_table[][5][3] = 
-{ 
+const double FlrwTestData::lum_table[][5][3] =
+{
     {{0.0010005, 0.001, 1e-7}, // OM_OV_0
      {0.01005, 0.01, 1e-6},
      {0.105, 0.1, 1e-3},
      {1.5, 1, 1e-1},
      {60, 10, 1e-3}},
-    {{4.28606, 0.001, 1e-5}, // OM_OV_1                                         
+    {{4.28606, 0.001, 1e-5}, // OM_OV_1
      {43.1582, 0.01, 1e-4},
      {460.299, 0.1, 1e-3},
      {6607.65, 1, 1e-2},
      {103843, 10, 1}},
-    {{0, 0.001, 1e-5}, // OM                            
+    {{0, 0.001, 1e-5}, // OM
      {0, 0.01, 1e-4},
      {0, 0.1, 1e-3},
      {0, 1, 1e-2},
      {0, 10, 1e-1}},
-    {{5.99809, 0.001, 1e-5}, // OV_1                                           
+    {{5.99809, 0.001, 1e-5}, // OV_1
      {60.1827, 0.01, 1e-4},
      {621.523, 0.1, 1e-3},
      {7812.95, 1, 1e-2},
      {135543., 10, 1}},
-/*    {{5.99659, 0.001, 1e-5}, // OV_2                                        
+/*    {{5.99659, 0.001, 1e-5}, // OV_2
      {60.0328, 0.01, 1e-4},
      {606.564, 0.1, 1e-3},
      {6445.82, 1, 1e-2},
      {71950.1, 10, 1e-1}},*/
-    {{5.99734, 0.001, 1e-5}, // OV_3                                     
+    {{5.99734, 0.001, 1e-5}, // OV_3
      {60.1076, 0.01, 1e-4},
      {613.868, 0.1, 1e-3},
      {7024.56, 1, 1e-2},
-     {92136.6, 10, 1e-1}},       
-    {{5.99899, 0.001, 1e-5}, // A1                                  
+     {92136.6, 10, 1e-1}},
+    {{5.99899, 0.001, 1e-5}, // A1
      {60.2721, 0.01, 1e-4},
      {630.080, 0.1, 1e-3},
      {8470.21, 1, 1e-2},
      {168260., 10, 1}},
- /*   {{5.99661, 0.001, 1e-5}, // A2_1                                  
+ /*   {{5.99661, 0.001, 1e-5}, // A2_1
      {60.0353, 0.01, 1e-4},
      {606.769, 0.1, 1e-3},
      {6449.59, 1, 1e-2},
      {71827.0, 10, 1}},*/
-/*    {{5.99661, 0.001, 1e-5}, // A2_2                                 
+/*    {{5.99661, 0.001, 1e-5}, // A2_2
      {60.0348, 0.01, 1e-4},
      {606.730, 0.1, 1e-3},
      {6448.86, 1, 1e-2},
      {71850.7, 10, 1e-1}},*/
 };
 
-const double FlrwTest::ang_model[][3] = {             
-    {50., 1.0, 0.},  
+const double FlrwTestData::ang_model[][3] = {
+    {50., 1.0, 0.},
     };
 
-const double FlrwTest::ang_table[][5][3] = 
-  {{{5.98536, 0.001, 1e-5},                                            
+const double FlrwTestData::ang_table[][5][3] =
+  {{{5.98536, 0.001, 1e-5},
     {58.9232, 0.01, 1e-4},
     {507.329, 0.1, 1e-3},
     {1756.14, 1, 1e-2},
     {761.459, 10, 1e-3}}};
 
-const double FlrwTest::cotran_model[][3] = {             
-    {50., 1.0, 0.},  
+const double FlrwTestData::cotran_model[][3] = {
+    {50., 1.0, 0.},
     };
 
-const double FlrwTest::cotran_table[][5][3] = 
-  {{{5.99135, 0.001, 1e-5},                                            
+const double FlrwTestData::cotran_table[][5][3] =
+  {{{5.99135, 0.001, 1e-5},
     {59.5124, 0.01, 1e-4},
     {558.062, 0.1, 1e-3},
     {3512.28, 1, 1e-2},
     {8376.05, 10, 1e-1}}};
 
-const double FlrwTest::com_model[][3] = {             
-    {50., 1.0, 0.}, 
-    {50., 0.5, 0.6}, 
+const double FlrwTestData::com_model[][3] = {
+    {50., 1.0, 0.},
+    {50., 0.5, 0.6},
     {50., 0.5, 0.4},
     };
 
-const double FlrwTest::com_table[][5][3] = 
+const double FlrwTestData::com_table[][5][3] =
   {
-      {{5.99135, 0.001, 1e-5},                                            
+      {{5.99135, 0.001, 1e-5},
        {59.5124, 0.01, 1e-4},
        {558.062, 0.1, 1e-3},
        {3512.28, 1, 1e-2},
        {8376.05, 10, 1e-1}},
-      {{5.99389, 0.001, 1e-5},                                            
+      {{5.99389, 0.001, 1e-5},
        {59.7634, 0.01, 1e-4},
        {580.027, 0.1, 1e-3},
-       {4275.74, 1, 1e-2},  
+       {4275.74, 1, 1e-2},
        {11212.1, 10, 1e-1}},
-     {{5.99329, 0.001, 1e-5},                                            
+     {{5.99329, 0.001, 1e-5},
        {59.7041, 0.01, 1e-4},
        {574.702, 0.1, 1e-3},
        {4085.51, 1, 1e-2},
        {10714.2, 10, 1e-1}}
   };
 
-const double FlrwTest::age_model[][3] = {             
+const double FlrwTestData::age_model[][3] = {
     {50., 0.0, 0.0}, // OM_OV_0
     {70., 0.3, 0.7}, // OM_OV_1
     {50., 0.0, 0.5}, // OM
@@ -161,7 +161,7 @@ const double FlrwTest::age_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::age_table[][5][3] =
+const double FlrwTestData::age_table[][5][3] =
 {
  {{19.56, 0,1e-2}, // OM_OV_0
   {17.7818, 0.1, 1e-4},
@@ -193,11 +193,11 @@ const double FlrwTest::age_table[][5][3] =
   {4.61034, 1, 1e-5},
   {0.357428, 10, 1e-6},
   {0.0128468, 100, 1e-7}},
- {{21.4017, 0, 1e-4}, // A1
-  {18.8026, 0.1, 1e-4},
+ {{21.4016, 0, 1e-4}, // A1
+  {18.8025, 0.1, 1e-4},
   {8.28406, 1, 1e-5},
-  {0.734901, 10, 1e-6},
-  {0.0279695, 100, 1e-7}},
+  {0.734900, 10, 1e-6},
+  {0.0279694, 100, 1e-7}},
 /* {{313.408, 0, 1e-3}, // A2_1
   {295.759, 0.1, 1e-3},
   {209.899, 1, 1e-3},
@@ -210,7 +210,7 @@ const double FlrwTest::age_table[][5][3] =
   {-0.0445536, 100, 1e-7}}*/
 };
 
-const double FlrwTest::vol_model[][3] = {             
+const double FlrwTestData::vol_model[][3] = {
     {50., 0.5, 0.},
     //{50., 1.5, 0.},
     {50., 1.0, 0.},
@@ -221,14 +221,14 @@ const double FlrwTest::vol_model[][3] = {
 // {50., 0.7, 3} exception
 // {50., 0.3, 2.} exception
 
-const double FlrwTest::vol_table[][5][3] =
+const double FlrwTestData::vol_table[][5][3] =
 {
   {
 	  {89304527.4589468, 1e-3, 1e-1},
 	  {8.94843e+08, 1e-2, 1e3},
 	  {9.09771e+09, 1e-1, 1e4},
 	  {9.27905e+10, 1 , 1e5},
-	  {5.35838e+11, 10, 1e6},		  
+	  {5.35838e+11, 10, 1e6},
   },
  /* {
 	  {89434230.119928,1e-3,1e-1},
@@ -242,7 +242,7 @@ const double FlrwTest::vol_table[][5][3] =
 		  {70259,1e-2,1},
 		  {5.79329e+07,1e-1,1e2},
 		  {1.44426e+10,1,1e5},
-		  {1.95883e+11,10,1e6},			 
+		  {1.95883e+11,10,1e6},
   },
-		 
+
 };
