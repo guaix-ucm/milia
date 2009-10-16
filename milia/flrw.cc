@@ -278,6 +278,18 @@ double flrw::vol(double z, double dm) const
     }
 }
 
+double flrw::arcsec2pc(double z, double arcsec) const
+{
+    // 206264.8062 converts arcscondss to radians
+    return dl(z) * 1e6 / ((1 + z) * (1 + z)) / 206264.8062 * arcsec;
+}
+
+double flrw::pc2arcsec(double z, double pc) const
+{
+    // 206264.8062 converts arcscondss to radians
+    return ((1 + z) * (1 + z)) / (dl(z) * 1e6) * 206264.8062 * pc;
+}
+
 flrw_cache::flrw_cache(double hubble, double matter, double vacuum) :
     metrics::flrw(hubble, matter, vacuum)
 {

@@ -292,6 +292,25 @@ public:
      */
     std::string to_string() const;
 
+    /**
+     * Transform angular sizes in arc seconds into parsecs
+     *
+     * @param z redshift
+     * @param arcsec apparent size on the sky (in arcsec)
+     * @return distance in parsec.
+     *
+     */
+    double arcsec2pc(double z, double arcsec) const;
+
+    /**
+     * Transform physical lengths in parcsecs into angular sizes in arcseconds
+     *
+     * @param z redshift
+     * @param pc distance in parsecs.
+     * @return apparent size on the sky (in arcsec)
+     */
+    double pc2arcsec(double z, double pc) const;
+
 private:
     static const double ms_hubble_radius = 2.99792e5; // Hubble Radius in Mpc
     static const double ms_hubble_time = 9.78e2; // Hubble time in Gyr
