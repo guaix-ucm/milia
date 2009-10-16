@@ -312,8 +312,8 @@ public:
     double pc2arcsec(double z, double pc) const;
 
 private:
-    static const double ms_hubble_radius = 2.99792e5; // Hubble Radius in Mpc
-    static const double ms_hubble_time = 9.78e2; // Hubble time in Gyr
+    static const double ms_hubble_radius = 299792.458; // Hubble Radius in Mpc
+    static const double ms_hubble_time = 977.792222; // Hubble time in Gyr
 
     /**
      * Hubble parameter
