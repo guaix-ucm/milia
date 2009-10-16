@@ -269,12 +269,13 @@ double flrw::vol(double z, double dm) const
     {
         const double r = m_hu / ms_hubble_radius * dm;
         const double sqrtok = sqrt(abs(m_ok));
+        const double scale = gsl_pow_3(m_r_h) / (2 * m_ok);
         if (m_ok > EPS)
-            return 0.5 * gsl_pow_3(m_r_h) * (r * sqrt(1 + m_om * r) - asinh(
-                    sqrtok * r)) / sqrtok / m_ok;
+            return scale * (r * sqrt(1 + m_ok * gsl_pow_2(r)) - asinh(
+                    sqrtok * r) / sqrtok);
         else
-            return 0.5 * gsl_pow_3(m_r_h) * (asin(sqrtok * r) - r * sqrt(1
-                    + m_om * r)) / sqrtok / m_ok;
+            return scale * (r * sqrt(1 + m_ok * gsl_pow_2(r)) - asin(
+                                sqrtok * r) / sqrtok);
     }
 }
 
