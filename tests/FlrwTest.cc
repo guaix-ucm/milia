@@ -1,21 +1,21 @@
 /*
  * Copyright 2008 Sergio Pascual
- * 
+ *
  * This file is part of Milia
- * 
+ *
  * Milia is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Milia is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 // $Id$
@@ -149,7 +149,7 @@ void FlrwTest::testAge() {
 	 */
 
 	// Number of lum_models
-	const int val = 6;
+	const int val = 7;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(age_model[j][0], age_model[j][1],
 				age_model[j][2]);
@@ -166,7 +166,7 @@ void FlrwTest::testComovingVolume() {
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(vol_model[j][0], vol_model[j][1],
 				vol_model[j][2]);
-		for (int i = 0; i < 5; ++i) {			
+		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(vol_table[j][i][0],
 					test00.vol(vol_table[j][i][1]), vol_table[j][i][2]);
 		}
