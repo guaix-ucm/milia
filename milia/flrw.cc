@@ -25,6 +25,7 @@
 
 #include <boost/math/special_functions/asinh.hpp>
 #include <boost/math/special_functions/atanh.hpp>
+#include <boost/math/special_functions/pow.hpp>
 
 #include "flrw.h"
 #include "exception.h"
@@ -32,17 +33,7 @@
 using std::abs;
 using boost::math::asinh;
 using boost::math::atanh;
-
-namespace {
-
-double pow_2(double x) {
-	return x * x;
-}
-double pow_3(double x) {
-	return x * x * x;
-}
-
-}
+using boost::math::pow;
 
 namespace milia {
 namespace metrics {
@@ -61,7 +52,7 @@ flrw::flrw(double h, double m, double v) :
 	if (m_ov < 0)
 		throw milia::recollapse("The Universe recollapses"); // Recollapse
 
-	m_b = -13.5 * pow_2(m_om) * m_ov / (pow_3(m_ok));
+	m_b = -13.5 * pow<2>(m_om) * m_ov / (pow<3>(m_ok));
 
 	if (m_om >= 1 && m_b <= 2)
 		throw milia::recollapse("The Universe recollapses"); // Recollapse
@@ -88,7 +79,7 @@ bool flrw::does_recollapse(double matter, double vacuum) {
 		return true;
 	if (matter < 1)
 		return false;
-	const double critical = 4 * matter * pow_3(cos(1. / 3. * acos(1. / matter
+	const double critical = 4 * matter * pow<3>(cos(1. / 3. * acos(1. / matter
 			- 1.) + 4 * M_PI / 3.));
 	if (vacuum > critical)
 		return false;
@@ -112,7 +103,7 @@ bool flrw::set_matter(double M) {
 	}
 
 	const double OK = 1 - m_ov - M;
-	double B = -13.5 * pow_2(M) * m_ov / pow_3(OK);
+	double B = -13.5 * pow<2>(M) * m_ov / pow<3>(OK);
 
 	if (M >= 1 && B <= 2)
 		throw milia::recollapse("The Universe recollapses"); // Recollapse
@@ -135,7 +126,7 @@ bool flrw::set_vacuum(double L) {
 		throw milia::recollapse("The Universe recollapses"); // Recollapse
 
 	const double OK = 1 - m_om - L;
-	double B = -13.5 * pow_2(m_om) * L / pow_3(OK);
+	double B = -13.5 * pow<2>(m_om) * L / pow<3>(OK);
 
 	if (m_om >= 1 && B <= 2)
 		throw milia::recollapse("The Universe recollapses"); // Recollapse
@@ -189,7 +180,7 @@ flrw::ComputationCases flrw::check() const {
 }
 
 double flrw::hubble(double z) const {
-	return m_hu * sqrt(m_om * pow_3(1 + z) + m_ok * pow_2(1 + z) + m_ov);
+	return m_hu * sqrt(m_om * pow<3>(1 + z) + m_ok * pow<2>(1 + z) + m_ov);
 }
 
 double flrw::lt(double z) const {
@@ -225,7 +216,7 @@ double flrw::da(double z) const {
 }
 
 double flrw::da(double z, double dl) const {
-	return dl / pow_2(1 + z);
+	return dl / pow<2>(1 + z);
 }
 
 double flrw::DM(double z) const {
@@ -238,17 +229,17 @@ double flrw::vol(double z) const {
 
 double flrw::vol(double z, double dm) const {
 	if (m_ok == 0) {
-		return pow_3(dm) / 3.0;
+		return pow<3>(dm) / 3.0;
 	} else {
 		const double r = m_hu / ms_hubble_radius * dm;
 		const double sqrtok = sqrt(abs(m_ok));
-                const double scale = pow_3(m_r_h) / (2 * m_ok);
+                const double scale = pow<3>(m_r_h) / (2 * m_ok);
 
 		if (m_ok > 0)
-                    return scale * (r * sqrt(1 + m_ok * pow_2(r)) - asinh(
+                    return scale * (r * sqrt(1 + m_ok * pow<2>(r)) - asinh(
                             sqrtok * r) / sqrtok);
 		else
-                    return scale * (r * sqrt(1 + m_ok * pow_2(r)) - asin(
+                    return scale * (r * sqrt(1 + m_ok * pow<2>(r)) - asin(
                                         sqrtok * r) / sqrtok);
 	}
 }
@@ -387,7 +378,7 @@ void flrw_cache::Cache::scale(double rh, double th) {
 		DM = 5. * log10(dl) + 25.;
 	else
 		DM = -1.;
-	vol /= pow_3(rh);
+	vol /= pow<3>(rh);
 	age /= th;
 	lt /= th;
 }

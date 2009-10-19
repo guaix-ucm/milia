@@ -29,6 +29,7 @@
 
 #include <boost/math/special_functions/ellint_1.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/pow.hpp>
 
 #include "flrw.h"
 
@@ -37,16 +38,14 @@ using std::abs;
 using std::sin;
 using std::sinh;
 using std::acos;
-
 using std::atan;
 using std::log;
 
-
 using boost::math::ellint_1;
 using boost::math::cbrt;
-
 using boost::math::asinh;
 using boost::math::atanh;
+using boost::math::pow;
 
 
 namespace {
@@ -66,7 +65,7 @@ double flrw::dl(double z) const {
 	case OV_2:
 	case OV_3:
 		return m_r_h * 2 * ((2 - m_om * (1 - z) - (2 - m_om) * sqrt(1 + m_om
-				* z))) / (m_om * m_om);
+				* z))) / pow<2>(m_om);
 		break;
 	case OM: {
 		//

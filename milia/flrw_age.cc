@@ -31,6 +31,7 @@
 #include <boost/math/special_functions/asinh.hpp>
 #include <boost/math/special_functions/atanh.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/pow.hpp>
 
 #include "flrw.h"
 
@@ -44,6 +45,7 @@ using boost::math::ellint_3;
 using boost::math::asinh;
 using boost::math::atanh;
 using boost::math::cbrt;
+using boost::math::pow;
 
 namespace {
 const double M_SQRT3 = sqrt(3);
@@ -166,9 +168,9 @@ double flrw::ta1(double z) const {
 		//        EQUATION 8.
 		else {
 			arg2 = arg1 * arg1 * (1 + arg1);
-			arg2 = sqrt((1 + y1) * ((1 + y1) * y1 * y1 - arg2));
+			arg2 = sqrt((1 + y1) * ((1 + y1) * pow<2>(y1) - arg2));
 			arg2 *= 2 * m_kap * y1;
-			arg1 *= arg1 * (A - m_kap * y1) - 2 * m_kap * (1 + y1) * y1 * y1;
+			arg1 *= arg1 * (A - m_kap * y1) - 2 * m_kap * (1 + y1) * pow<2>(y1);
 			hm = arg1 - arg2;
 			hp = arg1 + arg2;
 			arg1 = ellint_1(k, phi) / (m_kap * y1 * sqrt(A));
@@ -181,7 +183,7 @@ double flrw::ta1(double z) const {
 	}
 	//       EQUATION 10.
 	else {
-		hm = sqrt(((1 + y1) * (y1 - arg1)) / (y1 * y1 + (1 + arg1)
+		hm = sqrt(((1 + y1) * (y1 - arg1)) / (pow<2>(y1) + (1 + arg1)
 				* (y1 + arg1)));
 		arg1 = -ellint_1(k, phi) / (A + m_kap * y1);
 		arg2 = -0.5 * (A - m_kap * y1) / (m_kap * y1 * (A + m_kap * y1))
