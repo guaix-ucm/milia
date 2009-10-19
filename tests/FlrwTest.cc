@@ -162,7 +162,7 @@ void FlrwTest::testAge() {
 
 void FlrwTest::testComovingVolume() {
 	// Number of vol_models
-	const int val = 2;
+	const int val = 4;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(vol_model[j][0], vol_model[j][1],
 				vol_model[j][2]);
