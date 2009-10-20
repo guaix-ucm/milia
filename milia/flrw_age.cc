@@ -34,6 +34,8 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf_ellint.h>
 
+using std::abs;
+
 namespace
 {
   double helper_fun_time(double z, void* pars)
@@ -41,7 +43,8 @@ namespace
     milia::metrics::flrw* pmetric = static_cast<milia::metrics::flrw*> (pars);
     const double om = pmetric->get_matter();
     const double ol = pmetric->get_vacuum();
-    return 1/ ((1 + z) * (sqrt(gsl_pow_2(1 + z) * (1 + om * z) - z * ol * (2 + z))));
+    return 1 / ((1 + z) * (sqrt(gsl_pow_2(1 + z) * (1 + om * z) - z * ol * (2
+        + z))));
   }
 }
 
@@ -148,76 +151,94 @@ namespace milia
       gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       int status = 0;
       gsl_sf_result result;
-      const double vk = pow(m_kap * (m_b - 1.0) + sqrt(m_b * (m_b - 2.0)), 1.0
-          / 3.0);
-      const double y1 = (m_kap * (vk + 1.0 / vk) - 1.0) / 3.0;
-      const double A = sqrt(y1 * (3.0 * y1 + 2.0));
-      const double k = sqrt((2.0 * A + m_kap * (1 + 3.0 * y1)) / (4.0 * A));
-      double arg0 = m_kap * y1 + m_om * (1.0 + z) / fabs(m_ok);
+      //
+      const double vk = cbrt(m_kap * (m_b - 1) + sqrt(m_b * (m_b - 2)));
+      const double y1 = (m_kap * (vk + 1 / vk) - 1) / 3.;
+      const double A = sqrt(y1 * (3 * y1 + 2));
+      // Parameters of the elliptical functions
+      const double k = sqrt((2 * A + m_kap * (1 + 3 * y1)) / (4 * A));
+      double arg0 = m_kap * y1 + m_om * (1 + z) / abs(m_ok);
       double phi = acos((arg0 - A) / (arg0 + A));
+      // Selecting between cases
+      // these conditions must hold
+      // abs(k) <= 1 and n * gsl_pow_2(sin(phi_z)) < 1
       const double sin_phi = sin(phi);
-      double n = -0.25 * (A + m_kap * y1) * (A + m_kap * y1) / (A * m_kap * y1);
-      double arg2, arg3;
-      double hm, hp;
-      double pre;
-      double arg1 = (1.0 + z) * m_om / m_ok;
-      if (fabs(1.0 + n * sin_phi * sin_phi) < EPS)
+      // Parameters of the elliptical function of third kind
+      const double n_10 = gsl_pow_2(A + m_kap * y1) / (4 * A * m_kap * y1);
+      const double n_8 = y1 * (1 + y1) / gsl_pow_2(A - m_kap * y1);
+
+      double arg1 = (1 + z) * m_om / m_ok;
+
+      const double crit8 = 1 - n_8 * gsl_pow_2(sin_phi);
+      const double crit10 = 1 - n_10 * gsl_pow_2(sin_phi);
+
+      if (crit10 == 0)
       {
-        n = -y1 * (1.0 + y1) / (A - m_kap * y1) / (A - m_kap * y1);
-        //  EQUATION 22, a very special case of b = 27*(2+sqrt(2))/8.
-        if (fabs(1.0 + n * sin_phi * sin_phi) < EPS)
+        // check if there's a node in eq 8 also, try eq 22 if so
+        if (crit8 == 0)
         {
-          phi = acos(-1.0 - arg1 / M_SQRT2 + 1.0 - arg1);
-          const double arg2 = (1.0 - arg1) * sqrt(arg1 * arg1 + (arg1
-              + M_SQRT1_2) * (1 + M_SQRT1_2));
-          const double arg3 = (M_SQRT2 - 1.0) * (arg1 + M_SQRT2 + 1.0) * sqrt(
-              (1.0 + M_SQRT1_2) * (M_SQRT1_2 - arg1));
+          //  Equation 22, a very special case of b = 27*(2+sqrt(2))/8.
+          const double phi = acos(-1 - arg1 / M_SQRT2 + 1 - arg1);
+          const double arg2 = (1 - arg1) * sqrt(gsl_pow_2(arg1) + (1
+              + M_SQRT1_2) * (arg1 + M_SQRT1_2));
+          const double arg3 = (M_SQRT2 - 1) * (arg1 + M_SQRT2 + 1) * sqrt((1
+              + M_SQRT1_2) * (M_SQRT1_2 - arg1));
           gsl_set_error_handler(oldhandler);
-          return 0.25 * m_t_h / sqrt(m_ov) * ((M_SQRT2 - 1.0)
-              * gsl_sf_ellint_F(phi, 0.5 * sqrt(1 + 2 * M_SQRT2), PREC) + log(
-              fabs((arg2 + arg3) / (arg2 - arg3))));
+          return m_t_h / (4 * sqrt(m_ov)) * ((M_SQRT2 - 1) * gsl_sf_ellint_F(
+              phi, 0.5 * sqrt(1 + 2 * M_SQRT2), PREC) + log(abs((arg2 + arg3)
+              / (arg2 - arg3))));
         }
-        //        EQUATION 8.
+        // if the critical parameter is negative, we have imaginary terms
+        // for the moment we must integrate
+        else if (crit8 < 0)
+        {
+          return ti(z);
+        }
+        // if not, go ahead with equation 8
         else
         {
-          // En mi paper, 7
-          arg2 = arg1 * arg1 * (1.0 + arg1);
-          arg2 = sqrt((1.0 + y1) * ((1.0 + y1) * y1 * y1 - arg2));
-          arg2 *= 2 * m_kap * y1;
-          arg1 *= arg1 * (A - m_kap * y1) - 2 * m_kap * (1.0 + y1) * y1 * y1;
-          hm = arg1 - arg2;
-          hp = arg1 + arg2;
-          arg1 = gsl_sf_ellint_F(phi, k, PREC) / (m_kap * y1 * sqrt(A));
-          status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+          double arg2 = 2 * m_kap * y1 * sqrt((1 + y1) * ((1 + y1) * gsl_pow_2(
+              y1) - gsl_pow_2(arg1) * (1 + arg1)));
+          arg1 *= arg1 * (A - m_kap * y1) - 2 * m_kap * (1 + y1)
+              * gsl_pow_2(y1);
+          const double hm = arg1 - arg2;
+          const double hp = arg1 + arg2;
+          status = gsl_sf_ellint_P_e(phi, k, -n_8, PREC, &result);
           gsl_set_error_handler(oldhandler);
           if (status)
           {
             return ti(z);
           }
-          arg2 = (A - m_kap) / (y1 * (1.0 + y1) * sqrt(A)) * result.val;
-          arg3 = log(fabs(hm / hp)) / (m_kap * y1 * sqrt(m_kap * (y1 + 1)));
-          pre = 0.5 * m_om / fabs(m_ok) / sqrt(fabs(m_ok));
+          arg2 = (A - m_kap) / (y1 * (1.0 + y1) * sqrt(A))
+              * result.val;
+          const double arg3 = log(abs(hm / hp)) / (m_kap * y1 * sqrt(m_kap
+              * (y1 + 1)));
+          const double pre = 0.5 * m_om / sqrt(gsl_pow_3(abs(m_ok)));
           return m_t_h * pre * (arg1 + arg2 + arg3);
         }
+      } else if (crit10 < 0)
+      {
+        return ti(z);
       }
-      //       EQUATION 10.
+      // if not, go ahead with equation 10
       else
       {
-        // En mi paper, 9
-        hm = sqrt(((1.0 + y1) * (y1 - arg1)) / (y1 * y1 + (1.0 + arg1) * (y1
-            + arg1)));
+        // Equation 10
+        const double hm = sqrt(((1 + y1) * (y1 - arg1)) / (gsl_pow_2(y1) + (1
+            + arg1) * (y1 + arg1)));
         arg1 = -gsl_sf_ellint_F(phi, k, PREC) / (A + m_kap * y1);
-        status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+        status = gsl_sf_ellint_P_e(phi, k, -n_10, PREC, &result);
         gsl_set_error_handler(oldhandler);
         if (status)
         {
           return ti(z);
         }
-        arg2 = -0.5 * (A - m_kap * y1) / (m_kap * y1 * (A + m_kap * y1))
-            * result.val;
-        arg3 = -0.5 * (sqrt(A / (m_kap * (y1 + 1.0))) / (m_kap * y1)) * log(
-            fabs((1.0 - hm) / (1.0 + hm)));
-        return m_t_h * m_om / (m_ok * sqrt(A * fabs(m_ok))) * (arg1 + arg2
+        const double arg2 = -0.5 * (A - m_kap * y1) / (m_kap * y1 * (A + m_kap
+            * y1)) * result.val;
+        const double arg3 = -0.5
+            * (sqrt(A / (m_kap * (y1 + 1))) / (m_kap * y1)) * log(abs(
+            (1.0 - hm) / (1.0 + hm)));
+        return m_t_h * m_om / (m_ok * sqrt(A * abs(m_ok))) * (arg1 + arg2
             + arg3);
       }
       return -1.0;
@@ -249,7 +270,7 @@ namespace milia
         const double k = sqrt((y1 - y3) / arg3);
         const double n = -y1 / arg3;
         const double arg4 = y1 * fabs(m_ok) * sqrt(-arg3 * m_ok);
-        status = gsl_sf_ellint_P_e(phi, n, k, PREC, &result);
+        status = gsl_sf_ellint_P_e(phi, k, n, PREC, &result);
         if (status)
         {
           return ti(z);
@@ -281,7 +302,8 @@ namespace milia
       gsl_set_error_handler(oldhandler);
       if (status)
       {
-        throw milia::exception(std::string("gsl error: ") + gsl_strerror(status));
+        throw milia::exception(std::string("gsl error: ")
+            + gsl_strerror(status));
       }
       return m_t_h * result;
     }
