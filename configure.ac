@@ -9,9 +9,10 @@ LT_INIT([disable-shared])
 AC_REVISION($Revision$)
 
 AC_PROG_CXX
+
 AC_LANG([C++])
 AC_CHECK_HEADER([boost/function.hpp],[],[AC_MSG_ERROR([no boost])])
-
+PKG_CHECK_MODULES([GSL], [gsl])
 # For the tests
 PKG_CHECK_MODULES([CPPUNIT], [cppunit], [testen=1], [
 AC_MSG_WARN([Cppunit is needed by the tests. Checking is disabled])

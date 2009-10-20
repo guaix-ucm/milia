@@ -150,7 +150,7 @@ void FlrwCacheTest::testAge() {
 	 */
 
 	// Number of lum_models
-	const int val = 6;
+	const int val = 7;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw_cache test00(age_model[j][0], age_model[j][1],
 				age_model[j][2]);

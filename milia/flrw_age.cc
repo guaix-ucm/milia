@@ -32,8 +32,12 @@
 #include <boost/math/special_functions/atanh.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
 #include <boost/math/special_functions/pow.hpp>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_sf_ellint.h>
 
 #include "flrw.h"
+#include "exception.h"
 
 using std::sqrt;
 using std::atan;
@@ -48,8 +52,15 @@ using boost::math::cbrt;
 using boost::math::pow;
 
 namespace {
-const double M_SQRT3 = sqrt(3);
+//const double M_SQRT3 = sqrt(3);
 const double M_4THRT3 = sqrt(M_SQRT3);
+double helper_fun_time(double z, void* pars)
+{
+    milia::metrics::flrw* pmetric = static_cast<milia::metrics::flrw*> (pars);
+    const double om = pmetric->get_matter();
+    const double ol = pmetric->get_vacuum();
+    return 1. / ((1 + z) * (sqrt(pow<2>(1 + z) * (1 + om * z) - z * ol * (2 + z))));
+}
 }
 
 namespace milia {
@@ -143,19 +154,31 @@ double flrw::ta1(double z) const {
 	const double vk = cbrt(m_kap * (m_b - 1) + sqrt(m_b * (m_b - 2)));
 	const double y1 = (m_kap * (vk + 1 / vk) - 1) / 3.;
 	const double A = sqrt(y1 * (3 * y1 + 2));
+        // Parameters of the elliptical functions
 	const double k = sqrt((2 * A + m_kap * (1 + 3 * y1)) / (4 * A));
 	double arg0 = m_kap * y1 + m_om * (1 + z) / abs(m_ok);
 	double phi = acos((arg0 - A) / (arg0 + A));
+
+	// Selecting between cases
+	// these conditions must hold
+	// abs(k) <= 1 and n * pow<2>(sin(phi_z)) < 1
+
 	const double sin_phi = sin(phi);
-	double n = -0.25 * (A + m_kap * y1) * (A + m_kap * y1) / (A * m_kap * y1);
+	const double n_10 = pow<2> (A + m_kap * y1) / (4 * A * m_kap * y1);
+	const double n_8 = y1 * (1 + y1) / pow<2> (A - m_kap * y1);
+
 	double arg2, arg3;
 	double hm, hp;
 	double pre;
 	double arg1 = (1 + z) * m_om / m_ok;
-	if (1 + n * sin_phi * sin_phi == 0) {
-		n = -y1 * (1 + y1) / (A - m_kap * y1) / (A - m_kap * y1);
-		//  EQUATION 22, a very special case of b = 27*(2+sqrt(2))/8.
-		if (1 + n * sin_phi * sin_phi == 0) {
+
+	const double crit8 = 1 - n_8 * pow<2> (sin_phi);
+	const double crit10 = 1 - n_10 * pow<2> (sin_phi);
+	// If there's a node in eq 10, try eq 8
+	if (crit10 == 0) {
+	// check if there's a node in eq 8 also, try eq 22 if so	
+		if (crit8 == 0) {
+		//  Equation 22, a very special case of b = 27*(2+sqrt(2))/8.
 			phi = acos(-1 - arg1 / M_SQRT2 + 1 - arg1);
 			const double arg2 = (1 - arg1) * sqrt(arg1 * arg1 + (arg1
 					+ M_SQRT1_2) * (1 + M_SQRT1_2));
@@ -166,6 +189,14 @@ double flrw::ta1(double z) const {
 					/ (arg2 - arg3))));
 		}
 		//        EQUATION 8.
+       // if the critical parameter is negative, we have imaginary terms
+                       // for the moment we must integrate
+                                else if (crit8 < 0)
+                {
+                return ti(z);
+
+                }
+                // if not, go ahead with equation 8
 		else {
 			arg2 = arg1 * arg1 * (1 + arg1);
 			arg2 = sqrt((1 + y1) * ((1 + y1) * pow<2>(y1) - arg2));
@@ -175,19 +206,24 @@ double flrw::ta1(double z) const {
 			hp = arg1 + arg2;
 			arg1 = ellint_1(k, phi) / (m_kap * y1 * sqrt(A));
 			arg2 = (A - m_kap) / (y1 * (1 + y1) * sqrt(A))
-					* ellint_3(k, n, phi);
+					* ellint_3(k, n_8, phi);
 			arg3 = log(abs(hm / hp)) / (m_kap * y1 * sqrt(m_kap * (y1 + 1)));
 			pre = 0.5 * m_om / abs(m_ok) / sqrt(abs(m_ok));
 			return m_t_h * pre * (arg1 + arg2 + arg3);
 		}
 	}
-	//       EQUATION 10.
+        else if (crit10 < 0)
+        {
+                return ti(z);
+        }
+
 	else {
+	// Equation 10
 		hm = sqrt(((1 + y1) * (y1 - arg1)) / (pow<2>(y1) + (1 + arg1)
 				* (y1 + arg1)));
 		arg1 = -ellint_1(k, phi) / (A + m_kap * y1);
 		arg2 = -0.5 * (A - m_kap * y1) / (m_kap * y1 * (A + m_kap * y1))
-				* ellint_3(k, n, phi);
+				* ellint_3(k, n_10, phi);
 		arg3 = -0.5 * (sqrt(A / (m_kap * (y1 + 1))) / (m_kap * y1)) * log(abs(
 				(1.0 - hm) / (1.0 + hm)));
 		return m_t_h * m_om / (m_ok * sqrt(A * abs(m_ok))) * (arg1 + arg2
@@ -227,5 +263,25 @@ double flrw::tb(double z) const {
 	return 2 * m_t_h * asinh(sqrt(m_ov / (m_om * (1 + z * (3 + z * (3 + z))))))
 			/ (3 * sqrt(m_ov));
 }
+
+double flrw::ti(double z) const
+{
+      gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
+      gsl_integration_workspace* w = gsl_integration_workspace_alloc(1000);
+      double result, error;
+      gsl_function F;
+      F.function = &helper_fun_time;
+      F.params = static_cast<void*> (const_cast<flrw*> (this));
+      const int status = gsl_integration_qagiu(&F, z, 0, 1e-7, 1000, w,
+          &result, &error);
+      gsl_integration_workspace_free(w);
+      gsl_set_error_handler(oldhandler);
+      if (status)
+      {
+        throw milia::exception(std::string("gsl error: ")
+            + gsl_strerror(status));
+      }
+      return m_t_h * result;
+    }
 } // namespace metrics
 } // namespace milia

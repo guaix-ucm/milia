@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: Milia
 Description: Cosmology for the masses
-Requires:
+Requires.private: gsl
 Version: @VERSION@
 Libs: -L${libdir} -lmilia
 Cflags: -I${includedir}

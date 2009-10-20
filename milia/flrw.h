@@ -34,7 +34,7 @@ namespace milia
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
      *
-     * This class represents a FLRW metric. Its methods compute the 
+     * This class represents a FLRW metric. Its methods compute the
      * common cosmological distances and times.
      * It uses elliptical functions from boost.
      * It is based on the paper <a href="http://xxx.unizar.es/abs/astro-ph/9905116">%astro-ph/9905116</a>
@@ -88,7 +88,7 @@ namespace milia
         /**
          * Set the Hubble parameter \f[ H_0\f]
          *
-         * @pre Hubble parameter > 0 
+         * @pre Hubble parameter > 0
          * @param hubble Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
          * @return True if value is acceptable
          * @throw milia::exception
@@ -144,7 +144,7 @@ namespace milia
 
         /**
          * Computes the Hubble parameter at redshift z
-         * 
+         *
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
@@ -294,7 +294,7 @@ namespace milia
         std::string to_string() const;
 
         /**
-         * Transform angular sizes in arc seconds into parsecs 
+         * Transform angular sizes in arc seconds into parsecs
          *
          * @param z redshift
          * @param arcsec apparent size on the sky (in arcsec)
@@ -304,7 +304,7 @@ namespace milia
         double arcsec2pc(double z, double arcsec) const;
 
         /**
-         * Transform physical lengths in parcsecs into angular sizes in arcseconds  
+         * Transform physical lengths in parcsecs into angular sizes in arcseconds
          *
          * @param z redshift
          * @param pc distance in parsecs.
@@ -378,6 +378,8 @@ namespace milia
         double ta1(double z) const;
         double ta2(double z) const;
         double tb(double z) const;
+public:
+        double ti(double z) const;
     };
 
 
