@@ -114,13 +114,13 @@ namespace milia
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
          *
-         * @param M matter density
+         * @param matter matter density
          * @return True if value acceptable
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          * @throws milia::exception
          */
-        bool set_matter(double M);
+        bool set_matter(double matter);
 
         /**
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
@@ -132,15 +132,15 @@ namespace milia
         }
 
         /**
-          * Set the value of the vacuum energy density \f[ \Omega_v \f]
-          *
-          * @param L vacuum energy density
-          * @return True if value acceptable
-          * @throws milia::recollapse
-          * @throws milia::no_big_bang
-          *
-          */
-        bool set_vacuum(double L);
+         * Set the value of the vacuum energy density \f[ \Omega_v \f]
+         *
+         * @param vacuum vacuum energy density
+         * @return True if value acceptable
+         * @throws milia::recollapse
+         * @throws milia::no_big_bang
+         *
+         */
+        bool set_vacuum(double vacuum);
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -161,7 +161,6 @@ namespace milia
          *
          */
         double dc(double z) const;
-
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -345,10 +344,12 @@ namespace milia
          */
         double m_ok;
 
+        double m_sqok;
+
         /**
          * Sign of the curvature parameter
          */
-        int m_kap;
+        short m_kap;
 
         double m_r_h;
 
@@ -358,32 +359,34 @@ namespace milia
 
         enum ComputationCases
         {
-          NO_CASE,
-          OM_OV_0, //om = ov=0
-          OV_1, //ov=0 0<om<1
-          OV_2, //ov=0 om>1
-          OV_3, //ov=0 om=1
-          OM, //om=0
-          A1, //om+ov!=1 b<0 || b>2
-          A2_1, //om+ov!=1 b=2
-          A2_2, //om+ov!=1 0<b<2
-          OM_OV_1, //om+ol=1
+          NO_CASE, // error condition 
+          OM_OV_0, //om = ov = 0
+          OV_1, //ov = 0 0 < om < 1
+          OV_2, //ov = 0 om > 1
+          OV_EDS, //ov = 0 om = 1, Einstein-de Sitter Universe
+          OM, //om = 0 0 < ov < 1
+          OM_DS, //om = 0 ov = 1, de Sitter Universe
+          OM_OV_1, //om + ol = 1
+          A1, //om+ov != 1 b < 0 || b > 2
+          A2_1, //om+ov != 1 b = 2
+          A2_2, //om+ov != 1 0 < b < 2
         };
 
         ComputationCases m_case;
         ComputationCases check() const;
+
+        static double sinc(double k, double a, double x);
+        static double asinc(double k, double a, double x);
 
         double tolz(double z) const;
         double tomz(double z) const;
         double ta1(double z) const;
         double ta2(double z) const;
         double tb(double z) const;
-public:
         double ti(double z) const;
     };
 
-
-  class flrw_cache : public flrw
+    class flrw_cache: public flrw
     {
       public:
         flrw_cache(double hubble, double matter, double vacuum);
