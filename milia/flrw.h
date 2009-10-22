@@ -359,7 +359,7 @@ namespace milia
 
         enum ComputationCases
         {
-          NO_CASE, // error condition
+          NO_CASE, // error condition 
           OM_OV_0, //om = ov = 0
           OV_1, //ov = 0 0 < om < 1
           OV_2, //ov = 0 om > 1
@@ -384,6 +384,49 @@ namespace milia
         double ta2(double z) const;
         double tb(double z) const;
         double ti(double z) const;
+    };
+
+    class flrw_cache: public flrw
+    {
+      public:
+        flrw_cache(double hubble, double matter, double vacuum);
+        bool set_hubble(double hubble_parameter);
+        bool set_matter(double matter_density);
+        bool set_vacuum(double vacuum_energy_density);
+        double hubble(double z) const;
+
+        double dc(double z) const;
+        double dm(double z) const;
+        double da(double z) const;
+        double dl(double z) const;
+        double DM(double z) const;
+        double vol(double z) const;
+        double age() const;
+        double age(double z) const;
+        double lt(double z) const;
+
+      private:
+
+        struct Cache
+        {
+            double z;
+            double hubble;
+            double dc;
+            double dm;
+            double da;
+            double dl;
+            double DM;
+            double vol;
+            double lt;
+            double age;
+            double age_0;
+            void recompute();
+            bool can_use(double z) const;
+            void scale(double rh, double th);
+            void initialize(const metrics::flrw& metric, double z);
+        };
+
+        mutable Cache m_cache;
     };
 
   } // namespace metrics

@@ -67,7 +67,7 @@ namespace milia
         case OV_1:
         case OV_2:
         case OV_EDS:
-          return 2 * ((2 - m_om * (1 - z) - (2 - m_om) * sqrt(1 + m_om
+          return m_r_h * 2 * ((2 - m_om * (1 - z) - (2 - m_om) * sqrt(1 + m_om
               * z))) / pow<2> (m_om);
         case OM:
         case OM_DS:
@@ -88,7 +88,7 @@ namespace milia
               * sup + m_kap * y + A));
           const double phi0 = acos((sup + m_kap * y - A)
               / (sup + m_kap * y + A));
-          return (1 + z) / m_sqok * sinc(m_kap, 1.0, g * (ellint_1(k,
+          return m_r_h * (1 + z) / m_sqok * sinc(m_kap, 1.0, g * (ellint_1(k,
               phi0) - ellint_1(k, phi)));
         }
         case A2_1: // b=2
@@ -103,7 +103,7 @@ namespace milia
           const double k = sqrt((y1 - y3) / (y1 - y2));
           const double phi = asin(sqrt((y1 - y2) / ((1 + z) * arg1 + y1)));
           const double phi0 = asin(sqrt((y1 - y2) / (arg1 + y1)));
-          return (1. + z) / m_sqok * sin(g * (ellint_1(k, phi0)
+          return m_r_h * (1. + z) / m_sqok * sin(g * (ellint_1(k, phi0)
               - ellint_1(k, phi)));
         }
         case OM_OV_1:
@@ -116,7 +116,7 @@ namespace milia
           const double up = 1 + (1 - M_SQRT3) * arg0;
           const double phi = acos((z + up) / (z + down));
           const double phi0 = acos(up / down);
-          return (1 + z) / (c1 * sqrt(m_om) * sqrt(arg0)) * (ellint_1(
+          return m_r_h * (1 + z) / (c1 * sqrt(m_om) * sqrt(arg0)) * (ellint_1(
               k, phi0) - ellint_1(k, phi));
         }
       }
