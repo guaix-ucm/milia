@@ -21,34 +21,17 @@
 // $Id$
 
 #include "FlrwAge.h"
-#include "milia/flrw.h"
+#include "milia/flrw_nat.h"
 #include "milia/exception.h"
 
 #include <cmath>
-#include <limits>
 
-#include <boost/math/special_functions/ellint_1.hpp>
-#include <boost/math/special_functions/ellint_3.hpp>
-#include <boost/math/special_functions/asinh.hpp>
-#include <boost/math/special_functions/atanh.hpp>
-#include <boost/math/special_functions/cbrt.hpp>
 #include <boost/math/special_functions/pow.hpp>
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf_ellint.h>
 
-using boost::math::pow;
-using std::sqrt;
-using std::atan;
-using std::log;
-using std::abs;
-
-using boost::math::ellint_1;
-using boost::math::ellint_3;
-using boost::math::asinh;
-using boost::math::atanh;
-using boost::math::cbrt;
 using boost::math::pow;
 
 namespace
@@ -57,7 +40,6 @@ namespace
 
   struct Params
   {
-      double h;
       double m;
       double v;
   };
@@ -71,7 +53,7 @@ namespace
         * (2. + z))));
   }
 
-  double integrate_time(double z, double h, double m, double v)
+  double integrate_time(double z, double m, double v)
   {
     const size_t NPOINTS = 1000;
     const double ITOL = 1e-7;
@@ -81,7 +63,7 @@ namespace
     gsl_function F;
     F.function = &helper_fun_time;
     Params p =
-    { h, m, v };
+    { m, v };
     F.params = static_cast<void*> (&p);
     const int status = gsl_integration_qagiu(&F, z, 0, ITOL, NPOINTS, w,
         &result, &error);
@@ -107,7 +89,6 @@ void FlrwAge::tearDown()
 
 void FlrwAge::testAge()
 {
-  const double h = 1;
   const double z = 1;
   for (double om = 0.00; om < 1.01; om += 0.01)
     for (double ol = 0.00; ol < 1.01; ol += 0.01)
@@ -117,15 +98,15 @@ void FlrwAge::testAge()
       double cv = -1;
       try
       {
-        iv = integrate_time(z, h, om, ol);
+        iv = integrate_time(z, om, ol);
       } catch (milia::exception& e)
       {
         infll = true;
       }
       try
       {
-        const milia::metrics::flrw m(h, om, ol);
-        cv = m.age(z) / (977.792222 / h);
+        const milia::metrics::flrw_nat m(om, ol);
+        cv = m.age(z);
       } catch (milia::recollapse& e)
       {
         infll = true;
