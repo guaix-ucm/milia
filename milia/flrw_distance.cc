@@ -109,7 +109,7 @@ namespace milia
         case OM_OV_1:
         {
           // om + ol = 1
-          const double k = 0.9659258263; // Magic number
+          const double k = sqrt(0.5 + 0.25 * M_SQRT3);
           const double c1 = M_4THRT3;
           const double arg0 = cbrt((1 / m_om - 1));
           const double down = 1 + (1 + M_SQRT3) * arg0;
