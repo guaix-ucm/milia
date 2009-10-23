@@ -63,7 +63,7 @@ namespace milia
       switch (m_case)
       {
         case OM_OV_0:
-          return 0.5 * z * (z + 2);
+          return m_r_h * 0.5 * z * (z + 2);
         case OV_1:
         case OV_2:
         case OV_EDS:
