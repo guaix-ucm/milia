@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2009 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -19,6 +19,10 @@
  */
 
 // $Id$
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "exception.h"
 
