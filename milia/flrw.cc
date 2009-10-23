@@ -28,17 +28,13 @@
 #include <boost/math/special_functions/pow.hpp>
 
 #include "flrw.h"
+#include "flrw_prec.h"
 #include "exception.h"
 
 using std::abs;
 using boost::math::asinh;
 using boost::math::atanh;
 using boost::math::pow;
-
-namespace
-{
-  const double TOL = 1.0e-14;
-}
 
 namespace milia
 {
@@ -57,7 +53,7 @@ namespace milia
         throw milia::exception("Matter density < 0 not allowed");
 
       //ov < 0 makes the universe recollapse
-      if (m_ov < -TOL)
+      if (m_ov < -FLRW_EQ_TOL)
         throw milia::recollapse("The Universe recollapses"); // Recollapse
 
       m_b = -13.5 * pow<2> (m_om) * m_ov / (pow<3> (m_ok));
@@ -189,13 +185,13 @@ namespace milia
 
     flrw::ComputationCases flrw::check() const
     {
-      const bool l3 = (abs(m_om) < TOL);
-      const bool l4 = (abs(m_ov) < TOL);
+      const bool l3 = (abs(m_om) < FLRW_EQ_TOL);
+      const bool l4 = (abs(m_ov) < FLRW_EQ_TOL);
       // om = ov = 0
       if (l3 && l4)
         return OM_OV_0;
       // ov = 0 om == 1. Einstein-de Sitter Universe
-      if (l4 && abs(m_om - 1) < TOL)
+      if (l4 && abs(m_om - 1) < FLRW_EQ_TOL)
         return OV_EDS;
       // ov=0 0<om<1
       if (l4 && m_om < 1)
@@ -205,16 +201,16 @@ namespace milia
         return OV_2;
 
       // om = 0 ov = 1 de Sitter Universe
-      if (l3 and (abs(m_ov - 1) < TOL))
+      if (l3 and (abs(m_ov - 1) < FLRW_EQ_TOL))
         return OM_DS;
       // om=0 0 < ov < 1
       if (l3 and (m_ov > 0) and (m_ov < 1))
         return OM;
       // om+ov==1
-      if (abs(m_ok) < TOL)
+      if (abs(m_ok) < FLRW_EQ_TOL)
         return OM_OV_1;
       // a2 b=2
-      if (abs(m_b - 2) < TOL)
+      if (abs(m_b - 2) < FLRW_EQ_TOL)
         return A2_1;
       // om+ov!=1
       // a1 b<0 || b>2

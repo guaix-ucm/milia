@@ -1,8 +1,8 @@
 ## $Id$
 
 lib_LTLIBRARIES = libmilia.la
-libmilia_la_SOURCES = flrw.cc flrw_distance.cc flrw_age.cc exception.cc \
-    schechter.cc
+libmilia_la_SOURCES = flrw.cc flrw_distance.cc flrw_age.cc flrw_prec.h \
+    exception.cc schechter.cc
 
 ## Version info is in current : revision : age form
 ## A library supports interfaces from current downto current - age

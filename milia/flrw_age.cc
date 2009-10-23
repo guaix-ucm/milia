@@ -37,6 +37,7 @@
 #include <gsl/gsl_sf_ellint.h>
 
 #include "flrw.h"
+#include "flrw_prec.h"
 #include "exception.h"
 
 using std::sqrt;
@@ -53,7 +54,6 @@ using boost::math::pow;
 
 namespace
 {
-  const double TOL = 1.0e-14;
   //const double M_SQRT3 = sqrt(3);
   const double M_4THRT3 = sqrt(M_SQRT3);
   double helper_fun_time(double z, void* pars)
@@ -188,10 +188,10 @@ namespace milia
       const double crit8 = 1 - n_8 * pow<2> (sin_phi);
       const double crit10 = 1 - n_10 * pow<2> (sin_phi);
       // If there's a node in eq 10, try eq 8
-      if (abs(crit10) < TOL)
+      if (abs(crit10) < FLRW_EQ_TOL)
       {
         // check if there's a node in eq 8 also, try eq 22 if so
-        if (abs(crit8) < TOL)
+        if (abs(crit8) < FLRW_EQ_TOL)
         {
           //  Equation 22, a very special case of b = 27*(2+sqrt(2))/8.
           phi = acos(-1 - arg1 / M_SQRT2 + 1 - arg1);
