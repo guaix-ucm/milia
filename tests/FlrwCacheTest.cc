@@ -22,7 +22,7 @@
 
 #include "FlrwCacheTest.h"
 #include "FlrwTestData.h"
-#include "milia/flrw.h"
+#include "milia/flrw_cached.h"
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION(FlrwCacheTest);
@@ -34,43 +34,43 @@ void FlrwCacheTest::tearDown() {
 }
 
 void FlrwCacheTest::testHubbleZeroThrows() {
-	const milia::metrics::flrw_cache test00(0, 1, 1);
+	const milia::metrics::flrw_cached test00(0, 1, 1);
 }
 
 void FlrwCacheTest::testHubbleLessThanZeroThrows() {
-	const milia::metrics::flrw_cache test00(-50, 1, 1);
+	const milia::metrics::flrw_cached test00(-50, 1, 1);
 }
 
 void FlrwCacheTest::testMatterLessThanZeroThrows() {
-	const milia::metrics::flrw_cache test00(50, -1, 1);
+	const milia::metrics::flrw_cached test00(50, -1, 1);
 }
 
 void FlrwCacheTest::testVacuumLessThanZeroThrows() {
-	const milia::metrics::flrw_cache test00(50, 1, -1); // Recollapse
+	const milia::metrics::flrw_cached test00(50, 1, -1); // Recollapse
 }
 
 void FlrwCacheTest::testRecollapse11Throws() {
-	const milia::metrics::flrw_cache test00(50, 1.5, 0.008665856); // Recollapse b = 2
+	const milia::metrics::flrw_cached test00(50, 1.5, 0.008665856); // Recollapse b = 2
 }
 
 void FlrwCacheTest::testRecollapse12Throws() {
-	const milia::metrics::flrw_cache test00(50, 1.5, 0.007); // Recollapse b < 2
+	const milia::metrics::flrw_cached test00(50, 1.5, 0.007); // Recollapse b < 2
 }
 
 void FlrwCacheTest::testNoBigBangThrows21() {
-	const milia::metrics::flrw_cache test00(50, 0.3, 1.713460403); // No Big Bang, b = 2 and om < 0.5
+	const milia::metrics::flrw_cached test00(50, 0.3, 1.713460403); // No Big Bang, b = 2 and om < 0.5
 }
 
 void FlrwCacheTest::testNoBigBangThrows22() {
-	const milia::metrics::flrw_cache test00(50, 0.3, 2); // No Big Bang, b < 2 and om < 0.5
+	const milia::metrics::flrw_cached test00(50, 0.3, 2); // No Big Bang, b < 2 and om < 0.5
 }
 
 void FlrwCacheTest::testNoBigBangThrows23() {
-	const milia::metrics::flrw_cache test00(50, 0.7, 2.254425343); // No Big Bang, b = 2 and om > 0.5
+	const milia::metrics::flrw_cached test00(50, 0.7, 2.254425343); // No Big Bang, b = 2 and om > 0.5
 }
 
 void FlrwCacheTest::testNoBigBangThrows24() {
-	const milia::metrics::flrw_cache test00(50, 0.7, 3); // No Big Bang, b < 2 and om > 0.5
+	const milia::metrics::flrw_cached test00(50, 0.7, 3); // No Big Bang, b < 2 and om > 0.5
 }
 
 void FlrwCacheTest::testLuminosityDistance() {
@@ -90,7 +90,7 @@ void FlrwCacheTest::testLuminosityDistance() {
 	// Number of lum_models
 	const int val = 7;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(lum_model[j][0], lum_model[j][1],
+		const milia::metrics::flrw_cached test00(lum_model[j][0], lum_model[j][1],
 				lum_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(lum_table[j][i][0],
@@ -103,7 +103,7 @@ void FlrwCacheTest::testAngularDistance() {
 	// Number of ang_models
 	const int val = 1;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(ang_model[j][0], ang_model[j][1],
+		const milia::metrics::flrw_cached test00(ang_model[j][0], ang_model[j][1],
 				ang_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(ang_table[j][i][0],
@@ -116,7 +116,7 @@ void FlrwCacheTest::testComovingTransverseDistance() {
 	// Number of cotran_models
 	const int val = 1;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(cotran_model[j][0], cotran_model[j][1],
+		const milia::metrics::flrw_cached test00(cotran_model[j][0], cotran_model[j][1],
 				cotran_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
@@ -128,7 +128,7 @@ void FlrwCacheTest::testComovingDistance() {
 	// Number of com_models
 	const int val = 3;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(com_model[j][0], com_model[j][1],
+		const milia::metrics::flrw_cached test00(com_model[j][0], com_model[j][1],
 				com_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(com_table[j][i][0],
@@ -154,7 +154,7 @@ void FlrwCacheTest::testAge() {
 	// Number of age_models
 	const int val = 7;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(age_model[j][0], age_model[j][1],
+		const milia::metrics::flrw_cached test00(age_model[j][0], age_model[j][1],
 				age_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(age_table[j][i][0],
@@ -167,7 +167,7 @@ void FlrwCacheTest::testComovingVolume() {
 	// Number of vol_models
 	const int val = 4;
 	for (int j = 0; j < val; ++j) {
-		const milia::metrics::flrw_cache test00(vol_model[j][0], vol_model[j][1],
+		const milia::metrics::flrw_cached test00(vol_model[j][0], vol_model[j][1],
 				vol_model[j][2]);
 		for (int i = 0; i < 5; ++i) {
 			CPPUNIT_ASSERT_DOUBLES_EQUAL(vol_table[j][i][0],
