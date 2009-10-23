@@ -70,11 +70,9 @@ namespace milia
           return m_r_h * 2 * ((2 - m_om * (1 - z) - (2 - m_om) * sqrt(1 + m_om
               * z))) / pow<2> (m_om);
         case OM:
+          return m_r_h * ((1 + z) / m_ov) * (1 + z - sqrt(m_ov + (1 - m_ov) * pow<2>(1 + z)));
         case OM_DS:
-        {
-          // TODO: Implement this
-          return 0;
-        }
+          return m_r_h * z * (1 + z);
         case A1:
           //om+ol != 1 b < 0 || b > 2
         {

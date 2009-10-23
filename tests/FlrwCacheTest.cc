@@ -76,10 +76,11 @@ void FlrwCacheTest::testNoBigBangThrows24() {
 void FlrwCacheTest::testLuminosityDistance() {
 	/* test cases
 	 * O_m == 0 and O_v == 0               case OM_OV_0
-	 * O_m == 0 and O_v != 0               case OM
+	 * O_m == 0 and O_v < 1                case OM
+	 * O_m == 0 and O_v == 1               case OM_EDS
 	 * 0 < O_m < 1 and O_v == 0            case OV_1
 	 * O_m > 1 and O_v == 0                case OV_2
-	 * O_m == 1 and O_v == 0               case OV_3
+	 * O_m == 1 and O_v == 0               case OV_DS
 	 * O_v != 0 and O_m + O_v == 1         case OM_OV_1
 	 * O_m + O_v != 1 and b == 2           case A2_1
 	 * O_m + O_v != 1 and (b > 2 or b < 0) case A1
@@ -87,7 +88,7 @@ void FlrwCacheTest::testLuminosityDistance() {
 	 */
 
 	// Number of lum_models
-	const int val = 6;
+	const int val = 7;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw_cache test00(lum_model[j][0], lum_model[j][1],
 				lum_model[j][2]);
@@ -139,17 +140,18 @@ void FlrwCacheTest::testComovingDistance() {
 void FlrwCacheTest::testAge() {
 	/* test cases
 	 * O_m == 0 and O_v == 0               case OM_OV_0
-	 * O_m == 0 and O_v != 0               case OM
+	 * O_m == 0 and O_v < 1                case OM
+	 * O_m == 0 and O_v == 1               case OM_EDS
 	 * 0 < O_m < 1 and O_v == 0            case OV_1
 	 * O_m > 1 and O_v == 0                case OV_2
-	 * O_m == 1 and O_v == 0               case OV_3
+	 * O_m == 1 and O_v == 0               case OV_DS
 	 * O_v != 0 and O_m + O_v == 1         case OM_OV_1
 	 * O_m + O_v != 1 and b == 2           case A2_1
 	 * O_m + O_v != 1 and (b > 2 or b < 0) case A1
 	 * O_m + O_v != 1 and 0 < b < 2        case A2_2
 	 */
 
-	// Number of lum_models
+	// Number of age_models
 	const int val = 7;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw_cache test00(age_model[j][0], age_model[j][1],
