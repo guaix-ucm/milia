@@ -88,7 +88,7 @@ namespace milia
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        inline double get_matter() const
+        inline double get_matter(double z = 0) const
         {
           return m_om;
         }
@@ -108,7 +108,7 @@ namespace milia
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        inline double get_vacuum() const
+        inline double get_vacuum(double z = 0) const
         {
           return m_ov;
         }
@@ -130,7 +130,7 @@ namespace milia
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
-        double hubble(double z) const;
+        double hubble(double z = 0) const;
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -145,24 +145,6 @@ namespace milia
         double dc(double z) const;
 
         /**
-         * Comoving distance (line of sight) in Mpc
-         * \f[
-         * D_c(z)=\left\{
-         * \begin{array}{rl}
-         * D_m(z) & \textrm{if } \Omega_k = 0 \\
-         * \frac{1}{\sqrt{|\Omega_k|}} \frac{c}{H_0} \sinh^{-1}(\sqrt{|\Omega_k|} \frac{H_0}{c} D_m(z) )   & \textrm{if } \Omega_k > 0 \\
-         * \frac{1}{\sqrt{|\Omega_k|}} \frac{c}{H_0} \sin^{-1}(\sqrt{|\Omega_k|} \frac{H_0}{c} D_m(z))   & \textrm{if } \Omega_k < 0 \\
-         * \end{array} \right.
-         * \f]
-         *
-         * @param z redshift
-         * @param dm comoving transverse distance in Mpc
-         * @return line of sight comoving distance in Mpc
-         *
-         */
-        double dc(double z, double dm) const;
-
-        /**
          * Comoving distance (transverse) in Mpc
          *
          * @param z redshift
@@ -170,21 +152,6 @@ namespace milia
          *
          */
         double dm(double z) const;
-
-        /**
-         * Comoving distance (transverse) in Mpc
-         *
-         * \f[
-         * D_m(z) = \frac{1}{1 + z} D_l(z)
-         * \f]
-         *
-         * @param z redshift
-         * @param z redshift
-         * @param dl luminosity distance in Mpc
-         * @return transverse comoving distance in Mpc
-         *
-         */
-        double dm(double z, double dl) const;
 
         /**
          * Angular distance in Mpc
@@ -196,18 +163,6 @@ namespace milia
          * @return the angular distance in Mpc
          */
         double da(double z) const;
-
-        /**
-         * Angular distance in Mpc
-         * \f[
-         * D_a(z) = \frac{1}{(1 + z)^2} D_l(z)
-         * \f]
-         *
-         * @param z redshift
-         * @param dl luminosity distance in Mpc
-         * @return the angular distance in Mpc
-         */
-        double da(double z, double dl) const;
 
         /**
          * Luminosity distance in Mpc
@@ -225,15 +180,6 @@ namespace milia
          * @return comoving volume in \f$ Mpc^3\f$ per solid angle
          */
         double vol(double z) const;
-
-        /**
-         * Comoving volume per solid angle
-         *
-         * @param z redshift
-         * @param dm comoving transverse distance in Mpc
-         * @return comoving volume in \f$ Mpc^3\f$ per solid angle
-         */
-        double vol(double z, double dm) const;
 
         /**
          * Current age of the Universe
@@ -258,7 +204,7 @@ namespace milia
         double lt(double z) const;
 
         /**
-         * String with caracteristics of the FLRW universe (Hubble parameter,
+         * String with characteristics of the FLRW universe (Hubble parameter,
          * Matter density, vacuum energy density.
          *
          * @return a string
@@ -266,36 +212,25 @@ namespace milia
         std::string to_string() const;
 
       private:
-        /**
-         * Matter density
-         */
+
+        // Matter density
         double m_om;
 
-        /**
-         * Vacuum energy density
-         */
+        // Vacuum energy density
         double m_ov;
 
-        /**
-         * Separation parameter
-         */
-        double m_b;
+        // Critical parameter
+        double m_crit;
 
-        /**
-         * Curvature parameter
-         *
-         * m_om + m_ov + m_ok = 1
-         */
+        // Curvature parameter
+        // m_om + m_ov + m_ok = 1
         double m_ok;
-
+        // Square root of abs(m_ok)
         double m_sqok;
-
-        /**
-         * Sign of the curvature parameter
-         */
+        // Negative of the sign of the curvature parameter
         short m_kap;
-
-        double m_universe_age;
+        // Current Universe age (may be infinity in certain models)
+        double m_uage;
 
         enum ComputationCases
         {
@@ -313,11 +248,19 @@ namespace milia
         };
 
         ComputationCases m_case;
-        ComputationCases check() const;
+        ComputationCases select_case() const;
 
+        // Convenience functions, sin or sinh depending on m_kap
         static double sinc(double k, double a, double x);
         static double asinc(double k, double a, double x);
 
+        // Distances and volumes from other distance
+        double da(double z, double dl) const;
+        double dc(double z, double dm) const;
+        double dm(double z, double dl) const;
+        double vol(double z, double dm) const;
+
+        // Methods to compute the age in different cases
         double tolz(double z) const;
         double tomz(double z) const;
         double ta1(double z) const;
@@ -325,6 +268,36 @@ namespace milia
         double tb(double z) const;
         double ti(double z) const;
     };
+
+    inline double flrw_nat::dc(double z) const
+    {
+      return dc(z, dm(z));
+    }
+
+    inline double flrw_nat::dm(double z) const
+    {
+      return dm(z, dl(z));
+    }
+
+    inline double flrw_nat::dm(double z, double dl) const
+    {
+      return dl / (1. + z);
+    }
+
+    inline double flrw_nat::da(double z) const
+    {
+      return da(z, dl(z));
+    }
+
+    inline double flrw_nat::da(double z, double dl) const
+    {
+      return dm(z, dl) / (1 + z);
+    }
+
+    inline double flrw_nat::vol(double z) const
+    {
+      return vol(z, dm(z, dl(z)));
+    }
 
   } // namespace metrics
 

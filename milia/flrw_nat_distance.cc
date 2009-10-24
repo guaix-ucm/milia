@@ -77,7 +77,7 @@ namespace milia
         case A1:
           //om+ol != 1 b < 0 || b > 2
         {
-          const double v = cbrt(m_kap * (m_b - 1) + sqrt(m_b * (m_b - 2)));
+          const double v = cbrt(m_kap * (m_crit - 1) + sqrt(m_crit * (m_crit - 2)));
           const double y = (-1 + m_kap * (v + 1. / v)) / 3.;
           const double A = sqrt(y * (3 * y + 2));
           const double g = 1. / sqrt(A);
@@ -93,7 +93,7 @@ namespace milia
         case A2_1: // b=2
         case A2_2: // 0 < b < 2
         {
-          const double arg0 = acos(1 - m_b) / 3.;
+          const double arg0 = acos(1 - m_crit) / 3.;
           const double arg1 = m_om / abs(m_ok);
           const double y1 = (-1. + cos(arg0) + M_SQRT3 * sin(arg0)) / 3.;
           const double y2 = (-1. - 2. * cos(arg0)) / 3.;

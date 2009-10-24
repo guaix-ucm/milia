@@ -58,7 +58,8 @@ namespace
   const double M_4THRT3 = sqrt(M_SQRT3);
   double helper_fun_time(double z, void* pars)
   {
-    milia::metrics::flrw_nat* pmetric = static_cast<milia::metrics::flrw_nat*> (pars);
+    milia::metrics::flrw_nat* pmetric =
+        static_cast<milia::metrics::flrw_nat*> (pars);
     const double om = pmetric->get_matter();
     const double ol = pmetric->get_vacuum();
     return 1. / ((1 + z) * (sqrt(pow<2> (1 + z) * (1 + om * z) - z * ol * (2
@@ -70,38 +71,9 @@ namespace milia
 {
   namespace metrics
   {
-
     double flrw_nat::age() const
     {
-      switch (m_case)
-      {
-        case OM_OV_0:
-          return 1;
-          break;
-        case OV_1:
-          return (1 - m_om / sqrt(1 - m_om) * atanh(sqrt(1 - m_om))) / (1
-              - m_om);
-        case OV_2:
-          return (1 - m_om / sqrt(m_om - 1) * atan(sqrt(m_om - 1)))
-              / (1 - m_om);
-        case OV_EDS:
-          return 2.0 / 3;
-          break;
-        case OM:
-          return asinh(1 / (sqrt(1 / m_ov - 1))) / sqrt(m_ov);
-          break;
-        case A1:
-          return ta1(0);
-          break;
-        case A2_1:
-        case A2_2:
-          return ta2(0);
-          break;
-        case OM_OV_1:
-          return 2 * asinh(sqrt(m_ov / m_om)) / (3 * sqrt(m_ov));
-          break;
-      }
-      return -1;
+      return m_uage;
     }
 
     double flrw_nat::age(double z) const
@@ -164,7 +136,7 @@ namespace milia
     // CASE A1
     double flrw_nat::ta1(double z) const
     {
-      const double vk = cbrt(m_kap * (m_b - 1) + sqrt(m_b * (m_b - 2)));
+      const double vk = cbrt(m_kap * (m_crit - 1) + sqrt(m_crit * (m_crit - 2)));
       const double y1 = (m_kap * (vk + 1 / vk) - 1) / 3.;
       const double A = sqrt(y1 * (3 * y1 + 2));
       // Parameters of the elliptical functions
@@ -262,7 +234,7 @@ namespace milia
       //       EQUATION 15.
       if (m_case == A2_2)
       {
-        const double arg = acos(1 - m_b) / 3;
+        const double arg = acos(1 - m_crit) / 3;
         const double arg1 = cos(arg) / 3;
         const double arg2 = sin(arg) / M_SQRT3;
         const double y1 = -1. / 3. + arg1 + arg2;

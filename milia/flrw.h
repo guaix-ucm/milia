@@ -23,8 +23,12 @@
 #ifndef MILIA_FLRW_H
 #define MILIA_FLRW_H
 
+#include <milia/flrw_nat.h>
+
 #include <string>
 #include <ostream>
+
+#include <boost/math/special_functions/pow.hpp>
 
 namespace milia
 {
@@ -98,49 +102,10 @@ namespace milia
         /**
          * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
          */
-        inline double get_hubble() const
+        inline double get_hubble(double z = 0) const
         {
-          return m_hu;
+          return m_hu * m_flrw.hubble(z);
         }
-
-        /**
-         * Get the value of the matter density \f[\Omega_m \f]
-         */
-        inline double get_matter() const
-        {
-          return m_om;
-        }
-
-        /**
-         * Set the value of the matter density  \f[\Omega_m \f]
-         *
-         * @param matter matter density
-         * @return True if value acceptable
-         * @throws milia::recollapse
-         * @throws milia::no_big_bang
-         * @throws milia::exception
-         */
-        bool set_matter(double matter);
-
-        /**
-         * Get the value of the vacuum energy density \f[ \Omega_v \f]
-         *
-         */
-        inline double get_vacuum() const
-        {
-          return m_ov;
-        }
-
-        /**
-         * Set the value of the vacuum energy density \f[ \Omega_v \f]
-         *
-         * @param vacuum vacuum energy density
-         * @return True if value acceptable
-         * @throws milia::recollapse
-         * @throws milia::no_big_bang
-         *
-         */
-        bool set_vacuum(double vacuum);
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -148,7 +113,7 @@ namespace milia
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
-        double hubble(double z) const;
+        double hubble(double z = 0) const;
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -163,24 +128,6 @@ namespace milia
         double dc(double z) const;
 
         /**
-         * Comoving distance (line of sight) in Mpc
-         * \f[
-         * D_c(z)=\left\{
-         * \begin{array}{rl}
-         * D_m(z) & \textrm{if } \Omega_k = 0 \\
-         * \frac{1}{\sqrt{|\Omega_k|}} \frac{c}{H_0} \sinh^{-1}(\sqrt{|\Omega_k|} \frac{H_0}{c} D_m(z) )   & \textrm{if } \Omega_k > 0 \\
-         * \frac{1}{\sqrt{|\Omega_k|}} \frac{c}{H_0} \sin^{-1}(\sqrt{|\Omega_k|} \frac{H_0}{c} D_m(z))   & \textrm{if } \Omega_k < 0 \\
-         * \end{array} \right.
-         * \f]
-         *
-         * @param z redshift
-         * @param dm comoving transverse distance in Mpc
-         * @return line of sight comoving distance in Mpc
-         *
-         */
-        double dc(double z, double dm) const;
-
-        /**
          * Comoving distance (transverse) in Mpc
          *
          * @param z redshift
@@ -188,21 +135,6 @@ namespace milia
          *
          */
         double dm(double z) const;
-
-        /**
-         * Comoving distance (transverse) in Mpc
-         *
-         * \f[
-         * D_m(z) = \frac{1}{1 + z} D_l(z)
-         * \f]
-         *
-         * @param z redshift
-         * @param z redshift
-         * @param dl luminosity distance in Mpc
-         * @return transverse comoving distance in Mpc
-         *
-         */
-        double dm(double z, double dl) const;
 
         /**
          * Angular distance in Mpc
@@ -214,18 +146,6 @@ namespace milia
          * @return the angular distance in Mpc
          */
         double da(double z) const;
-
-        /**
-         * Angular distance in Mpc
-         * \f[
-         * D_a(z) = \frac{1}{(1 + z)^2} D_l(z)
-         * \f]
-         *
-         * @param z redshift
-         * @param dl luminosity distance in Mpc
-         * @return the angular distance in Mpc
-         */
-        double da(double z, double dl) const;
 
         /**
          * Luminosity distance in Mpc
@@ -252,15 +172,6 @@ namespace milia
          * @return comoving volume in \f$ Mpc^3\f$ per solid angle
          */
         double vol(double z) const;
-
-        /**
-         * Comoving volume per solid angle
-         *
-         * @param z redshift
-         * @param dm comoving transverse distance in Mpc
-         * @return comoving volume in \f$ Mpc^3\f$ per solid angle
-         */
-        double vol(double z, double dm) const;
 
         /**
          * Current age of the Universe
@@ -312,79 +223,71 @@ namespace milia
         double pc2arcsec(double z, double pc) const;
 
       private:
-        // Hubble Radius in Mpc for H = 1
+        // Hubble Radius in Mpc for H = 1 km s^-1
         static const double ms_hubble_radius = 299792.458;
-        // Hubble time in Gyr for H = 1
+        // Hubble time in Gyr for H = 1 km s^-1
         static const double ms_hubble_time = 977.792222;
 
-        /**
-         * Hubble parameter
-         */
+        // Hubble parameter
         double m_hu;
-
-        /**
-         * Matter density
-         */
-        double m_om;
-
-        /**
-         * Vacuum energy density
-         */
-        double m_ov;
-
-        /**
-         * Separation parameter
-         */
-        double m_b;
-
-        /**
-         * Curvature parameter
-         *
-         * m_om + m_ov + m_ok = 1
-         */
-        double m_ok;
-
-        double m_sqok;
-
-        /**
-         * Sign of the curvature parameter
-         */
-        short m_kap;
-
+        // Current Hubble radius
         double m_r_h;
-
+        // Current Hubble time
         double m_t_h;
 
-        double m_universe_age;
-
-        enum ComputationCases
-        {
-          NO_CASE, // error condition 
-          OM_OV_0, //om = ov = 0
-          OV_1, //ov = 0 0 < om < 1
-          OV_2, //ov = 0 om > 1
-          OV_EDS, //ov = 0 om = 1, Einstein-de Sitter Universe
-          OM, //om = 0 0 < ov < 1
-          OM_DS, //om = 0 ov = 1, de Sitter Universe
-          OM_OV_1, //om + ol = 1
-          A1, //om+ov != 1 b < 0 || b > 2
-          A2_1, //om+ov != 1 b = 2
-          A2_2, //om+ov != 1 0 < b < 2
-        };
-
-        ComputationCases m_case;
-        ComputationCases check() const;
-
-        static double sinc(double k, double a, double x);
-        static double asinc(double k, double a, double x);
-
-        double tolz(double z) const;
-        double tomz(double z) const;
-        double ta1(double z) const;
-        double ta2(double z) const;
-        double tb(double z) const;
-        double ti(double z) const;
+        // Adimensional flrw
+        flrw_nat m_flrw;
     };
+
+    inline double flrw::hubble(double z) const
+    {
+      return m_hu * m_flrw.hubble(z);
+    }
+
+    inline double flrw::lt(double z) const
+    {
+      return m_t_h * m_flrw.lt(z);
+    }
+
+    inline double flrw::dc(double z) const
+    {
+      return m_r_h * m_flrw.dc(z);
+    }
+
+    inline double flrw::dm(double z) const
+    {
+      return m_r_h * m_flrw.dm(z);
+    }
+
+    inline double flrw::da(double z) const
+    {
+      return m_r_h * m_flrw.da(z);
+    }
+
+    inline double flrw::DM(double z) const
+    {
+      return 5 * log10(dl(z)) + 25;
+    }
+
+    inline double flrw::vol(double z) const
+    {
+      return boost::math::pow<3> (m_r_h) * m_flrw.vol(z);
+    }
+
+    inline double flrw::dl(double z) const
+    {
+      return m_r_h * m_flrw.dl(z);
+    }
+
+    inline double flrw::age() const
+    {
+      return m_t_h * m_flrw.age();
+    }
+
+    inline double flrw::age(double z) const
+    {
+      return m_t_h * m_flrw.age(z);
+    }
 
   } // namespace metrics
 
