@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2009 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -48,14 +48,6 @@ void FlrwTest::testVacuumLessThanZeroThrows() {
 	const milia::metrics::flrw test00(50, 1, -1); // Recollapse
 }
 
-void FlrwTest::testRecollapse11Throws() {
-	const milia::metrics::flrw test00(50, 1.5, 0.008665856); // Recollapse b = 2
-}
-
-void FlrwTest::testRecollapse12Throws() {
-	const milia::metrics::flrw test00(50, 1.5, 0.007); // Recollapse b < 2
-}
-
 void FlrwTest::testNoBigBangThrows21() {
 	const milia::metrics::flrw test00(50, 0.3, 1.713460403); // No Big Bang, b = 2 and om < 0.5
 }
@@ -75,10 +67,11 @@ void FlrwTest::testNoBigBangThrows24() {
 void FlrwTest::testLuminosityDistance() {
 	/* test cases
 	 * O_m == 0 and O_v == 0               case OM_OV_0
-	 * O_m == 0 and O_v != 0               case OM
+	 * O_m == 0 and O_v < 1                case OM
+	 * O_m == 0 and O_v == 0               case OM_EDS
 	 * 0 < O_m < 1 and O_v == 0            case OV_1
 	 * O_m > 1 and O_v == 0                case OV_2
-	 * O_m == 1 and O_v == 0               case OV_3
+	 * O_m == 1 and O_v == 0               case OV_DS
 	 * O_v != 0 and O_m + O_v == 1         case OM_OV_1
 	 * O_m + O_v != 1 and b == 2           case A2_1
 	 * O_m + O_v != 1 and (b > 2 or b < 0) case A1
@@ -86,7 +79,7 @@ void FlrwTest::testLuminosityDistance() {
 	 */
 
 	// Number of lum_models
-	const int val = 6;
+	const int val = 10;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(lum_model[j][0], lum_model[j][1],
 				lum_model[j][2]);
@@ -138,18 +131,19 @@ void FlrwTest::testComovingDistance() {
 void FlrwTest::testAge() {
 	/* test cases
 	 * O_m == 0 and O_v == 0               case OM_OV_0
-	 * O_m == 0 and O_v != 0               case OM
+	 * O_m == 0 and O_v < 1                case OM
+	 * O_m == 0 and O_v == 1               case OM_EDS
 	 * 0 < O_m < 1 and O_v == 0            case OV_1
 	 * O_m > 1 and O_v == 0                case OV_2
-	 * O_m == 1 and O_v == 0               case OV_3
+	 * O_m == 1 and O_v == 0               case OV_DS
 	 * O_v != 0 and O_m + O_v == 1         case OM_OV_1
 	 * O_m + O_v != 1 and b == 2           case A2_1
 	 * O_m + O_v != 1 and (b > 2 or b < 0) case A1
 	 * O_m + O_v != 1 and 0 < b < 2        case A2_2
 	 */
 
-	// Number of lum_models
-	const int val = 7;
+	// Number of age_models
+	const int val = 10;
 	for (int j = 0; j < val; ++j) {
 		const milia::metrics::flrw test00(age_model[j][0], age_model[j][1],
 				age_model[j][2]);

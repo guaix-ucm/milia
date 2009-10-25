@@ -1,8 +1,13 @@
+Version 0.2.2
+(25 October 2009, from /milia/branches/0.2.x revision 124)
+http://guaix.fis.ucm.es/svn/milia/tags/0.2.2
 
 Enhancements: 
  * Added documentation (thanks to N. Gruel) 
- * Add methods arcsec2pc and pc2arcsec which transform an angular  
-   size in the sky into physical length and viceversa (thanks to N. Gruel) 
+ * Add methods angular_scale  which helps transforming an angular  
+   size in the sky into physical length and viceversa (thanks to N. Gruel)
+ * Distances for Om = 0 (ticket #12)
+    
 
 Bugfixes:
  * Comoving volume for curvature != 0 doesn't work (ticket #27)

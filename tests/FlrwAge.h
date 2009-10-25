@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2009 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -20,14 +20,26 @@
 
 // $Id$
 
-#ifndef MILIA_FLRW_PREC_H
-#define MILIA_FLRW_PREC_H
+#ifndef MILIA_FLRW_AGE_H
+#define MILIA_FLRW_AGE_H
 
-#define FLRW_EQ_TOL 1.e-14
+#include "milia/exception.h"
 
-#include <gsl/gsl_mode.h>
-/* Precision of the elliptical funcions in gsl */
-/* Single is about 10^-7 */
-#define ELLIP_PREC GSL_PREC_SINGLE
+#include <cppunit/extensions/HelperMacros.h>
 
-#endif /* MILIA_FLRW_PREC_H */
+class FlrwAge : public CppUnit::TestFixture
+{
+    CPPUNIT_TEST_SUITE(FlrwAge);
+    CPPUNIT_TEST(testAge);
+    CPPUNIT_TEST_SUITE_END();
+public:
+    void setUp();
+
+    void tearDown();
+
+    /** Checks the age is OK */
+    void testAge();
+};
+
+
+#endif // MILIA_FLRW_AGE_H

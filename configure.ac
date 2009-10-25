@@ -2,7 +2,7 @@
 
 # $Id$
 
-AC_INIT(milia,0.2.1)
+AC_INIT(milia,0.2.2)
 AM_INIT_AUTOMAKE([foreign])
 
 AC_REVISION($Revision$)

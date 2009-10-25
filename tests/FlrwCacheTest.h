@@ -35,8 +35,6 @@ class FlrwCacheTest : public CppUnit::TestFixture, public FlrwTestData
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse11Throws, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse12Throws, milia::recollapse);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
@@ -64,10 +62,6 @@ public:
 
     /** Tests vacuum energy density < 0 (Universe recollapses) */
     void testVacuumLessThanZeroThrows();
-    /** Tests recollapse where ov > 0 and b = 2 */
-    void testRecollapse11Throws();
-    /** Tests recollapse where ov > 0 and b < 2 */
-    void testRecollapse12Throws();
 
     /** Tests no Big Bang where om < 0.5 and b = 2 */
     void testNoBigBangThrows21();
