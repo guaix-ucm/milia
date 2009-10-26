@@ -64,24 +64,21 @@ namespace milia
       {
         case OM_OV_0:
           return m_t_h / (1 + z);
-          break;
         case OV_1:
         case OV_2:
         case OV_EDS:
           return tolz(z);
-          break;
         case OM:
           return tomz(z);
-          break;
         case A1:
           return ta1(z);
-          break;
         case A2_1:
         case A2_2:
           return ta2(z);
-          break;
         case OM_OV_1:
           return tb(z);
+        case OM_DS:
+        case NO_CASE:
           break;
       }
       return -1;
@@ -104,6 +101,8 @@ namespace milia
         case OV_EDS:
           // ov = 0 om = 1
           return m_t_h * 2.0 / (3.0 * (1 + z) * sqrt(1 + z));
+        default:
+          break;
       }
       return -1.;
     }

@@ -114,6 +114,8 @@ namespace milia
               * (gsl_sf_ellint_F(phi0, FLAT_K, ELLIP_PREC) - gsl_sf_ellint_F(
                   phi, FLAT_K, ELLIP_PREC));
         }
+        default:
+          break;
       }
       return -1;
     }
