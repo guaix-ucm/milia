@@ -84,16 +84,17 @@ namespace milia
 
     double schechter::function(double lum) const
     {
-      const double x = lum / m_lum_star(m_current_z);
+      const double lum_star = m_lum_star(m_current_z);
+      const double x = lum / lum_star;
       const double alpha = m_alpha(m_current_z);
       const double phi = m_phi_star(m_current_z);
-      return phi * pow(x, alpha) * std::exp(-x);
+      return phi * function_normalized(x) / lum_star;
     }
 
     double schechter::function_normalized(double x) const
     {
       const double alpha = m_alpha(m_current_z);
-      return std::pow<double,double>(x, alpha) * std::exp(-x);
+      return std::pow(x, alpha) * std::exp(-x);
     }
 
     double schechter::object_density(double lum1, double lum2) const
@@ -114,9 +115,6 @@ namespace milia
       }
       return phi * h * (function_normalized(x1) + function_normalized(x2) + s)
           / 3;
-
-      /*return phi * (gsl_sf_gamma_inc(alpha + 1, x1) - gsl_sf_gamma_inc(alpha
-       + 1, x2));*/
     }
 
   } // namespace luminosity_functions
