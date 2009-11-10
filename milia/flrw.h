@@ -96,27 +96,18 @@ namespace milia
         /**
          * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
          */
-        inline double get_hubble(double z = 0) const
-        {
-          return hubble(z);
-        }
+        double get_hubble(double z = 0) const;
 
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        double get_matter(double z = 0) const
-        {
-          return m_om;
-        }
+        double get_matter(double z = 0) const;
 
         /**
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        double get_vacuum(double z = 0) const
-        {
-          return m_ov;
-        }
+        double get_vacuum(double z = 0) const;
 
         /**
          * Set the Hubble parameter \f[ H_0\f]
@@ -318,6 +309,22 @@ namespace milia
         double tb(double z) const;
         double ti(double z) const;
     };
+
+
+    inline double flrw::get_hubble(double z) const
+    {
+      return hubble(z);
+    }
+
+    inline double flrw::get_matter() const
+    {
+      return m_om;
+    }
+
+    inline double flrw::get_matter() const
+    {
+      return m_ov;
+    }
 
     inline double flrw::dc(double z) const
     {
