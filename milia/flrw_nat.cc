@@ -89,7 +89,7 @@ namespace milia
         return sin(a * x) / a;
       if (k < 0)
         return sinh(a * x) / a;
-      return -1;
+      return x;
     }
 
     double flrw_nat::asinc(double k, double a, double x)
@@ -98,7 +98,7 @@ namespace milia
         return asin(a * x) / a;
       if (k < 0)
         return asinh(a * x) / a;
-      return -1;
+      return x;
     }
 
     bool flrw_nat::does_recollapse(double matter, double vacuum)
@@ -114,7 +114,7 @@ namespace milia
       return true;
     }
 
-    bool flrw_nat::set_matter(double matter)
+    void flrw_nat::set_matter(double matter)
     {
       if (matter < 0)
       {
@@ -138,10 +138,9 @@ namespace milia
       m_kap = (m_ok > 0 ? -1 : 1);
       m_case = select_case();
       m_uage = m_case != OM_DS ? age() : 0;
-      return true;
     }
 
-    bool flrw_nat::set_vacuum(double vacuum)
+    void flrw_nat::set_vacuum(double vacuum)
     {
       if (vacuum < 0)
         throw milia::recollapse("The Universe recollapses"); // Recollapse
@@ -162,7 +161,6 @@ namespace milia
       m_kap = (m_ok > 0 ? -1 : 1);
       m_case = select_case();
       m_uage = m_case != OM_DS ? age(0) : 0;
-      return true;
     }
 
     flrw_nat::ComputationCases flrw_nat::select_case() const

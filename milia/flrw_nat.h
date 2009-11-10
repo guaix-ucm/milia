@@ -88,41 +88,33 @@ namespace milia
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        inline double get_matter(double z = 0) const
-        {
-          return m_om;
-        }
+        double get_matter(double z = 0) const;
 
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
          *
          * @param matter matter density
-         * @return True if value acceptable
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          * @throws milia::exception
          */
-        bool set_matter(double matter);
+        void set_matter(double matter);
 
         /**
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        inline double get_vacuum(double z = 0) const
-        {
-          return m_ov;
-        }
+        double get_vacuum(double z = 0) const;
 
         /**
          * Set the value of the vacuum energy density \f[ \Omega_v \f]
          *
          * @param vacuum vacuum energy density
-         * @return True if value acceptable
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          *
          */
-        bool set_vacuum(double vacuum);
+        void set_vacuum(double vacuum);
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -268,6 +260,16 @@ namespace milia
         double tb(double z) const;
         double ti(double z) const;
     };
+
+    inline double flrw_nat::get_matter(double z) const
+    {
+      return m_om;
+    }
+
+    inline double flrw_nat::get_vacuum(double z) const
+    {
+      return m_ov;
+    }
 
     inline double flrw_nat::dc(double z) const
     {

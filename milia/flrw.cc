@@ -53,19 +53,24 @@ namespace milia
       return out.str();
     }
 
-    bool flrw::set_hubble(double hubble)
+    void flrw::set_hubble(double hubble)
     {
       if (hubble > 0)
       {
         m_hu = hubble;
         m_r_h = ms_hubble_radius / m_hu;
         m_t_h = ms_hubble_time / m_hu;
-        return true;
       }
       else
         throw milia::exception("Hubble constant <= 0 not allowed");
     }
 
+    double flrw::angular_scale(double z) const
+    {
+      // 206264.8062 converts arcsconds to radians
+      const double arcsec_to_rad = 206264.8062;
+      return da(z) * 1e6 / arcsec_to_rad;
+    }
 
   } //namespace metrics
 

@@ -27,8 +27,7 @@
 
 #include <string>
 #include <ostream>
-
-#include <boost/math/special_functions/pow.hpp>
+#include <cmath>
 
 namespace milia
 {
@@ -94,18 +93,14 @@ namespace milia
          *
          * @pre Hubble parameter > 0
          * @param hubble Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
-         * @return True if value is acceptable
          * @throw milia::exception
          */
-        bool set_hubble(double hubble);
+        void set_hubble(double hubble);
 
         /**
          * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
          */
-        inline double get_hubble(double z = 0) const
-        {
-          return m_hu * m_flrw.hubble(z);
-        }
+        double get_hubble(double z = 0) const;
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -114,6 +109,37 @@ namespace milia
          * @return the Hubble parameter at the given redshift
          */
         double hubble(double z = 0) const;
+
+        /**
+         * Get the value of the matter density \f[\Omega_m \f]
+         */
+        double get_matter(double z = 0) const;
+
+        /**
+         * Set the value of the matter density  \f[\Omega_m \f]
+         *
+         * @param matter matter density
+         * @throws milia::recollapse
+         * @throws milia::no_big_bang
+         * @throws milia::exception
+         */
+        void set_matter(double matter);
+
+        /**
+         * Get the value of the vacuum energy density \f[ \Omega_v \f]
+         *
+         */
+        double get_vacuum(double z = 0) const;
+
+        /**
+         * Set the value of the vacuum energy density \f[ \Omega_v \f]
+         *
+         * @param vacuum vacuum energy density
+         * @throws milia::recollapse
+         * @throws milia::no_big_bang
+         *
+         */
+        void set_vacuum(double vacuum);
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -204,23 +230,13 @@ namespace milia
         std::string to_string() const;
 
         /**
-         * Transform angular sizes in arc seconds into parsecs
+         * Factor to transform angular sizes in arc seconds into parsecs
          *
          * @param z redshift
-         * @param arcsec apparent size on the sky (in arcsec)
-         * @return distance in parsec.
+         * @return scale factor.
          *
          */
-        double arcsec2pc(double z, double arcsec) const;
-
-        /**
-         * Transform physical lengths in parcsecs into angular sizes in arcseconds
-         *
-         * @param z redshift
-         * @param pc distance in parsecs.
-         * @return apparent size on the sky (in arcsec)
-         */
-        double pc2arcsec(double z, double pc) const;
+        double angular_scale(double z) const;
 
       private:
         // Hubble Radius in Mpc for H = 1 km s^-1
@@ -239,9 +255,39 @@ namespace milia
         flrw_nat m_flrw;
     };
 
+    inline bool flrw::does_recollapse(double matter, double vacuum)
+    {
+      return flrw_nat::does_recollapse(matter, vacuum);
+    }
+
+    inline double flrw::get_hubble(double z) const
+    {
+      return m_hu * m_flrw.hubble(z);
+    }
+
     inline double flrw::hubble(double z) const
     {
       return m_hu * m_flrw.hubble(z);
+    }
+
+    inline double flrw::get_matter(double z) const
+    {
+      return m_flrw.get_matter(z);
+    }
+
+    inline double flrw::get_vacuum(double z) const
+    {
+      return m_flrw.get_matter(z);
+    }
+
+    inline void flrw::set_matter(double m)
+    {
+      m_flrw.set_matter(m);
+    }
+
+    inline void flrw::set_vacuum(double v)
+    {
+      m_flrw.set_vacuum(v);
     }
 
     inline double flrw::lt(double z) const
@@ -271,7 +317,7 @@ namespace milia
 
     inline double flrw::vol(double z) const
     {
-      return boost::math::pow<3> (m_r_h) * m_flrw.vol(z);
+      return m_r_h * m_r_h * m_r_h * m_flrw.vol(z);
     }
 
     inline double flrw::dl(double z) const
