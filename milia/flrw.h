@@ -277,7 +277,7 @@ namespace milia
 
     inline double flrw::get_vacuum(double z) const
     {
-      return m_flrw.get_matter(z);
+      return m_flrw.get_vacuum(z);
     }
 
     inline void flrw::set_matter(double m)
