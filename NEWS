@@ -1,5 +1,6 @@
-
-
+Version 0.2.3
+(11 November 2009, from /milia/branches/0.2.x revision 137)
+http://guaix.fis.ucm.es/svn/milia/tags/0.2.3
 
 Bugfixes:
  * Bad signature of getters and setters
