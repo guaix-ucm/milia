@@ -1,13 +1,15 @@
+
+
 Version 0.2.3
 (11 November 2009, from /milia/branches/0.2.x revision 137)
-http://guaix.fis.ucm.es/svn/milia/tags/0.2.3
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.3
 
 Bugfixes:
  * Bad signature of getters and setters
 
 Version 0.2.2
 (25 October 2009, from /milia/branches/0.2.x revision 124)
-http://guaix.fis.ucm.es/svn/milia/tags/0.2.2
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.2
 
 Enhancements: 
  * Added documentation (thanks to N. Gruel) 
@@ -20,7 +22,7 @@ Bugfixes:
 
 Version 0.2.1
 (02 May 2009, from /milia/trunk revision 72)
-http://guaix.fis.ucm.es/svn/milia/tags/0.2.1/
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.1/
 
 Bugfixes:
  * Wrong comma position in schechter::to_str (ticket #17)
