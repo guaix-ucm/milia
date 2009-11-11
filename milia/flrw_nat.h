@@ -88,7 +88,7 @@ namespace milia
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        double get_matter(double z = 0) const;
+        double get_matter() const;
 
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
@@ -104,7 +104,7 @@ namespace milia
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        double get_vacuum(double z = 0) const;
+        double get_vacuum() const;
 
         /**
          * Set the value of the vacuum energy density \f[ \Omega_v \f]
@@ -122,7 +122,7 @@ namespace milia
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
-        double hubble(double z = 0) const;
+        double get_hubble(double z) const;
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -261,12 +261,12 @@ namespace milia
         double ti(double z) const;
     };
 
-    inline double flrw_nat::get_matter(double z) const
+    inline double flrw_nat::get_matter() const
     {
       return m_om;
     }
 
-    inline double flrw_nat::get_vacuum(double z) const
+    inline double flrw_nat::get_vacuum() const
     {
       return m_ov;
     }

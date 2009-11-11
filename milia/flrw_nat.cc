@@ -203,7 +203,7 @@ namespace milia
       return NO_CASE;
     }
 
-    double flrw_nat::hubble(double z) const
+    double flrw_nat::get_hubble(double z) const
     {
       return sqrt(m_om * pow<3> (1 + z) + m_ok * pow<2> (1 + z) + m_ov);
     }

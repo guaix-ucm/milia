@@ -100,7 +100,7 @@ namespace milia
         /**
          * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
          */
-        double get_hubble(double z = 0) const;
+        double get_hubble() const;
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -108,12 +108,12 @@ namespace milia
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
-        double hubble(double z = 0) const;
+        double get_hubble(double z) const;
 
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        double get_matter(double z = 0) const;
+        double get_matter() const;
 
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
@@ -129,7 +129,7 @@ namespace milia
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        double get_vacuum(double z = 0) const;
+        double get_vacuum() const;
 
         /**
          * Set the value of the vacuum energy density \f[ \Omega_v \f]
@@ -260,24 +260,24 @@ namespace milia
       return flrw_nat::does_recollapse(matter, vacuum);
     }
 
+    inline double flrw::get_hubble() const
+    {
+      return m_hu;
+    }
+
     inline double flrw::get_hubble(double z) const
     {
-      return m_hu * m_flrw.hubble(z);
+      return m_hu * m_flrw.get_hubble(z);
     }
 
-    inline double flrw::hubble(double z) const
+    inline double flrw::get_matter() const
     {
-      return m_hu * m_flrw.hubble(z);
+      return m_flrw.get_matter();
     }
 
-    inline double flrw::get_matter(double z) const
+    inline double flrw::get_vacuum() const
     {
-      return m_flrw.get_matter(z);
-    }
-
-    inline double flrw::get_vacuum(double z) const
-    {
-      return m_flrw.get_vacuum(z);
+      return m_flrw.get_vacuum();
     }
 
     inline void flrw::set_matter(double m)
