@@ -90,7 +90,7 @@ namespace milia
       return true;
     }
 
-    bool flrw::set_hubble(double H)
+    void flrw::set_hubble(double H)
     {
       if (H > 0)
       {
@@ -98,7 +98,7 @@ namespace milia
         m_hu = H;
         m_r_h = ms_hubble_radius / m_hu;
         m_t_h = ms_hubble_time / m_hu;
-        return true;
+        return;
       }
       else
       {
@@ -106,7 +106,7 @@ namespace milia
       }
     }
 
-    bool flrw::set_matter(double M)
+    void flrw::set_matter(double M)
     {
       if (M < -FLRW_EQ_TOL)
       {
@@ -129,11 +129,9 @@ namespace milia
       m_sqok = sqrt(abs(m_ok));
       m_case = select_case(m_om, m_ov, m_ok, m_crit);
       m_uage = age(0);
-
-      return true;
     }
 
-    bool flrw::set_vacuum(double L)
+    void flrw::set_vacuum(double L)
     {
       if (L < -FLRW_EQ_TOL)
         throw milia::recollapse("The Universe recollapses"); // Recollapse
@@ -155,8 +153,6 @@ namespace milia
       m_sqok = sqrt(abs(m_ok));
       m_case = select_case(m_om, m_ov, m_ok, m_crit);
       m_uage = age(0);
-
-      return true;
     }
 
     flrw::ComputationCases flrw::select_case(double om, double ov, double ok,

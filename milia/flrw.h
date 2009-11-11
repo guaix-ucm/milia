@@ -91,55 +91,60 @@ namespace milia
          * @param z redshift
          * @return the Hubble parameter at the given redshift
          */
-        double hubble(double z = 0) const;
+        double hubble(double z) const;
 
+        /**
+         * Computes the Hubble parameter at redshift z
+         *
+         * @param z redshift
+         * @return the Hubble parameter at the given redshift
+         */
+        double get_hubble(double z) const;
+        
         /**
          * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
          */
-        double get_hubble(double z = 0) const;
+        double get_hubble() const;
 
         /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
-        double get_matter(double z = 0) const;
+        double get_matter() const;
 
         /**
          * Get the value of the vacuum energy density \f[ \Omega_v \f]
          *
          */
-        double get_vacuum(double z = 0) const;
+        double get_vacuum() const;
 
         /**
          * Set the Hubble parameter \f[ H_0\f]
          *
          * @pre Hubble parameter > 0
          * @param hubble Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
-         * @return True if value is acceptable
          * @throw milia::exception
          */
-        bool set_hubble(double hubble);
+        void set_hubble(double hubble);
 
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
          *
          * @param matter matter density
-         * @return True if value acceptable
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          * @throws milia::exception
          */
-        bool set_matter(double matter);
+        void set_matter(double matter);
 
         /**
          * Set the value of the vacuum energy density \f[ \Omega_v \f]
          *
          * @param vacuum vacuum energy density
-         * @return True if value acceptable
          * @throws milia::recollapse
          * @throws milia::no_big_bang
          *
          */
-        bool set_vacuum(double vacuum);
+        void set_vacuum(double vacuum);
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -316,12 +321,17 @@ namespace milia
       return hubble(z);
     }
 
+    inline double flrw::get_hubble() const
+    {
+      return m_hu;
+    }
+
     inline double flrw::get_matter() const
     {
       return m_om;
     }
 
-    inline double flrw::get_matter() const
+    inline double flrw::get_vacuum() const
     {
       return m_ov;
     }
