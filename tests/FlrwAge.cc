@@ -26,13 +26,10 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions/pow.hpp>
-
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf_ellint.h>
-
-using boost::math::pow;
+#include <gsl/gsl_math.h>
 
 namespace
 {
@@ -49,7 +46,7 @@ namespace
     Params* pmetric = static_cast<Params*> (pars);
     const double om = pmetric->m;
     const double ol = pmetric->v;
-    return 1. / ((1. + z) * (sqrt(pow<2> (1. + z) * (1. + om * z) - z * ol
+    return 1. / ((1. + z) * (sqrt(gsl_pow_2 (1. + z) * (1. + om * z) - z * ol
         * (2. + z))));
   }
 
