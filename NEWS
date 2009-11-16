@@ -1,4 +1,6 @@
-
+Bugfixes:
+ * Tests don't work in Fedora 10, changed boost::math::pow 
+   by gsl_pow_*   
 
 Version 0.2.3
 (11 November 2009, from /milia/branches/0.2.x revision 137)
