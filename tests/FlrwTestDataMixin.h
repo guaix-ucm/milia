@@ -20,10 +20,10 @@
 
 // $Id$
 
-#ifndef MILIA_FLRW_NAT_TEST_DATA_H
-#define MILIA_FLRW_NAT_TEST_DATA_H
+#ifndef MILIA_FLRW_TEST_DATA_MIXIN_H
+#define MILIA_FLRW_TEST_DATA_MIXIN_H
 
-struct FlrwNatTestData
+struct FlrwTestDataMixin
 {
     static const double lum_model[][2];
     static const double lum_table[][5][3];
@@ -40,4 +40,4 @@ struct FlrwNatTestData
 };
 
 
-#endif // MILIA_FLRW_NAT_TEST_DATA_H
+#endif // MILIA_FLRW_TEST_DATA_MIXIN_H

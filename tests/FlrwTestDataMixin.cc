@@ -20,7 +20,7 @@
 
 // $Id$
 
-#include "FlrwNatTestData.h"
+#include "FlrwTestDataMixin.h"
 
    /* These tests are removed
      * {50.,0.,-1.} : recollapse
@@ -31,7 +31,7 @@
      * O_m + O_v != 1 and 0 < b < 2        case A2_2
      */
 
-const double FlrwNatTestData::lum_model[][2] = {
+const double FlrwTestDataMixin::lum_model[][2] = {
     {0.0, 0.0}, // OM_OV_0
     {0.3, 0.7}, // OM_OV_1
     {0.0, 0.5}, // OM
@@ -49,7 +49,7 @@ const double FlrwNatTestData::lum_model[][2] = {
 // {0.7, 3} exception
 // {0.3, 2.} exception
 
-const double FlrwNatTestData::lum_table[][5][3] =
+const double FlrwTestDataMixin::lum_table[][5][3] =
 {
     {{0.0010005, 0.001, 1e-8}, // OM_OV_0
      {0.01005, 0.01, 1e-7},
@@ -103,35 +103,35 @@ const double FlrwNatTestData::lum_table[][5][3] =
      {82510.3087399524, 10, 1e-1}},*/
 };
 
-const double FlrwNatTestData::ang_model[][2] = {
+const double FlrwTestDataMixin::ang_model[][2] = {
     {1.0, 0.},
     };
 
-const double FlrwNatTestData::ang_table[][5][3] =
+const double FlrwTestDataMixin::ang_table[][5][3] =
   {{{0.000998252372081318, 0.001, 1e-5},
     {0.00982734611883356, 0.01, 1e-4},
     {0.0846134740989231, 0.1, 1e-3},
     {0.292893218813452, 1, 1e-2},
     {0.126997937349498, 10, 1e-3}}};
 
-const double FlrwNatTestData::cotran_model[][2] = {
+const double FlrwTestDataMixin::cotran_model[][2] = {
     {1.0, 0.},
     };
 
-const double FlrwNatTestData::cotran_table[][5][3] =
+const double FlrwTestDataMixin::cotran_table[][5][3] =
   {{{0.000999250624453399, 0.001, 1e-5},
     {0.0099256195800219, 0.01, 1e-4},
     {0.0930748215088154, 0.1, 1e-3},
     {0.585786437626905, 1, 1e-2},
     {1.39697731084447, 10, 1e-1}}};
 
-const double FlrwNatTestData::com_model[][2] = {
+const double FlrwTestDataMixin::com_model[][2] = {
     {1.0, 0.},
     {0.5, 0.6},
     {0.5, 0.4},
     };
 
-const double FlrwNatTestData::com_table[][5][3] =
+const double FlrwTestDataMixin::com_table[][5][3] =
   {
       {{0.000999250624453399, 0.001, 1e-8},
        {0.0099256195800219, 0.01, 1e-7},
@@ -150,7 +150,7 @@ const double FlrwNatTestData::com_table[][5][3] =
        {1.78694247364436, 10, 1e-4}}
   };
 
-const double FlrwNatTestData::age_model[][2] = {
+const double FlrwTestDataMixin::age_model[][2] = {
     {0.0, 0.0}, // OM_OV_0
     {0.3, 0.7}, // OM_OV_1
     {0.0, 0.5}, // OM
@@ -163,7 +163,7 @@ const double FlrwNatTestData::age_model[][2] = {
     {1.5, 0.007},    // A2_2*/
 };
 
-const double FlrwNatTestData::age_table[][5][3] =
+const double FlrwTestDataMixin::age_table[][5][3] =
 {
  {{1.00, 0,1e-5}, // OM_OV_0
   {0.909090909090909, 0.1, 1e-6},
@@ -217,7 +217,7 @@ const double FlrwNatTestData::age_table[][5][3] =
   {0.0104977010927877, 100, 1e-7}},*/
 };
 
-const double FlrwNatTestData::vol_model[][2] = {
+const double FlrwTestDataMixin::vol_model[][2] = {
     {0.5, 0.},
     {0.31, 0.70},
     {1.0, 0.},
@@ -229,7 +229,7 @@ const double FlrwNatTestData::vol_model[][2] = {
 // {0.7, 3} exception
 // {0.3, 2.} exception
 
-const double FlrwNatTestData::vol_table[][5][3] =
+const double FlrwTestDataMixin::vol_table[][5][3] =
 {
   {
     {3.32709204371034e-10, 1e-3, 1e-14},

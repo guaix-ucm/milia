@@ -24,11 +24,11 @@
 #define MILIA_FLRW_NAT_TEST_H
 
 #include "milia/exception.h"
-#include "FlrwNatTestData.h"
+#include "FlrwTestDataMixin.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class FlrwNatTest : public CppUnit::TestFixture, public FlrwNatTestData
+class FlrwNatTest : public CppUnit::TestFixture, public FlrwTestDataMixin
 {
     CPPUNIT_TEST_SUITE(FlrwNatTest);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);

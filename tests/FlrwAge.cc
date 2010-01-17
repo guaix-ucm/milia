@@ -34,7 +34,7 @@
 namespace
 {
   const double ITOL = 1.0e-7;
-
+  const size_t NPOINTS = 1000;
   struct Params
   {
       double m;
@@ -52,15 +52,12 @@ namespace
 
   double integrate_time(double z, double m, double v)
   {
-    const size_t NPOINTS = 1000;
-    const double ITOL = 1e-7;
     gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
     gsl_integration_workspace* w = gsl_integration_workspace_alloc(NPOINTS);
     double result, error;
     gsl_function F;
     F.function = &helper_fun_time;
-    Params p =
-    { m, v };
+    Params p = { m, v };
     F.params = static_cast<void*> (&p);
     const int status = gsl_integration_qagiu(&F, z, 0, ITOL, NPOINTS, w,
         &result, &error);

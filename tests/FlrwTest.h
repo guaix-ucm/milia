@@ -24,21 +24,15 @@
 #define MILIA_FLRW_TEST_H
 
 #include "milia/exception.h"
-#include "FlrwTestData.h"
+#include "FlrwTestDataMixin.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
+class FlrwTest : public CppUnit::TestFixture, public FlrwTestDataMixin
 {
     CPPUNIT_TEST_SUITE(FlrwTest);
     CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);
@@ -57,21 +51,6 @@ public:
     /** Tests hubble < 0 */
     void testHubbleLessThanZeroThrows();
 
-    /** Tests matter density < 0 */
-    void testMatterLessThanZeroThrows();
-
-    /** Tests vacuum energy density < 0 (Universe recollapses) */
-    void testVacuumLessThanZeroThrows();
-
-    /** Tests no Big Bang where om < 0.5 and b = 2 */
-    void testNoBigBangThrows21();
-    /** Tests no Big Bang where om < 0.5 and b < 2 */
-    void testNoBigBangThrows22();
-    /** Tests no Big Bang where om > 0.5 and b = 2 */
-    void testNoBigBangThrows23();
-    /** Tests no Big Bang where om > 0.5 and b = 2 */
-    void testNoBigBangThrows24();
-
     void testLuminosityDistance();
 
     void testComovingDistance();
@@ -83,6 +62,11 @@ public:
     void testAge();
 
     void testComovingVolume();
+
+private:
+    static const double ms_rel_tol = 1e-4;
+    static const double ms_z = 0.1;
+    static const double ms_hubble = 65;
 };
 
 
