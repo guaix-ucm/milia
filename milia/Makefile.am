@@ -15,5 +15,5 @@ libmilia_la_LIBADD = $(STUFF_LIBS)
 
 pkginclude_HEADERS = metric.h flrw.h flrw_nat.h exception.h schechter.h
 
-AM_CPPFLAGS = $(STUFF_CFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir) $(STUFF_CFLAGS) 
 
