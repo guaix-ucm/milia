@@ -21,7 +21,7 @@
 // $Id$
 
 #include "FlrwAge.h"
-#include "milia/flrw.h"
+#include "milia/flrw_nat.h"
 #include "milia/exception.h"
 
 #include <cmath>
@@ -102,8 +102,8 @@ void FlrwAge::testAge()
       }
       try
       {
-        const milia::metrics::flrw m(1, om, ol);
-        cv = m.age(z) / 977.792222;
+        const milia::metrics::flrw_nat m(om, ol);
+        cv = m.age(z);
       } catch (milia::recollapse& e)
       {
         infll = true;

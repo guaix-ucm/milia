@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2009 Sergio Pascual
+ * Copyright 2008-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -24,7 +24,7 @@
 #include <config.h>
 #endif
 
-#include "flrw.h"
+#include "flrw_nat.h"
 #include "flrw_prec.h"
 #include "exception.h"
 
@@ -40,7 +40,7 @@ namespace
 {
   double helper_fun_time(double z, void* pars)
   {
-    milia::metrics::flrw* pmetric = static_cast<milia::metrics::flrw*> (pars);
+    milia::metrics::flrw_nat* pmetric = static_cast<milia::metrics::flrw_nat*> (pars);
     const double om = pmetric->get_matter();
     const double ol = pmetric->get_vacuum();
     return 1 / ((1 + z) * (sqrt(gsl_pow_2(1 + z) * (1 + om * z) - z * ol * (2
@@ -53,17 +53,17 @@ namespace milia
   namespace metrics
   {
 
-    double flrw::age() const
+    double flrw_nat::age() const
     {
-      return m_uage;
+      return m_flags.time_begin_scale;
     }
 
-    double flrw::age(double z) const
+    double flrw_nat::age(double z) const
     {
       switch (m_case)
       {
         case OM_OV_0:
-          return m_t_h / (1 + z);
+          return 1 / (1 + z);
         case OV_1:
         case OV_2:
         case OV_EDS:
@@ -85,22 +85,22 @@ namespace milia
     }
 
     // ov == 0 CASE: OV_1, OV_2, OV_EDS
-    double flrw::tolz(double z) const
+    double flrw_nat::tolz(double z) const
     {
       const double prez = sqrt(1.0 + m_om * z);
       switch (m_case)
       {
         case OV_1:
           //ov=0 0 < om < 1
-          return m_t_h * (prez / (1.0 + z) - m_om / m_sqok * atanh(m_sqok
+          return (prez / (1.0 + z) - m_om / m_sqok * atanh(m_sqok
               / prez)) / m_ok;
         case OV_2:
           //ov=0 om > 1
-          return m_t_h * (prez / (1.0 + z) - m_om / m_sqok
+          return (prez / (1.0 + z) - m_om / m_sqok
               * atan(m_sqok / prez)) / m_ok;
         case OV_EDS:
           // ov = 0 om = 1
-          return m_t_h * 2.0 / (3.0 * (1 + z) * sqrt(1 + z));
+          return 2.0 / (3.0 * (1 + z) * sqrt(1 + z));
         default:
           break;
       }
@@ -108,14 +108,14 @@ namespace milia
     }
 
     // om=0 CASE: OM
-    double flrw::tomz(double z) const
+    double flrw_nat::tomz(double z) const
     {
-      return m_t_h * asinh(1.0 / ((1 + z) * sqrt(1.0 / m_ov - 1.0))) / sqrt(
+      return asinh(1.0 / ((1 + z) * sqrt(1.0 / m_ov - 1.0))) / sqrt(
           m_ov);
     }
 
     // CASE A1
-    double flrw::ta1(double z) const
+    double flrw_nat::ta1(double z) const
     {
       gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       int status = 0;
@@ -154,7 +154,7 @@ namespace milia
           const double arg3 = (M_SQRT2 - 1) * (arg1 + M_SQRT2 + 1) * sqrt((1
               + M_SQRT1_2) * (M_SQRT1_2 - arg1));
           gsl_set_error_handler(oldhandler);
-          return m_t_h / (4 * sqrt(m_ov)) * ((M_SQRT2 - 1) * gsl_sf_ellint_F(
+          return 1.0 / (4 * sqrt(m_ov)) * ((M_SQRT2 - 1) * gsl_sf_ellint_F(
               phi, 0.5 * sqrt(1 + 2 * M_SQRT2), ELLIP_PREC) + log(abs((arg2
               + arg3) / (arg2 - arg3))));
         }
@@ -183,7 +183,7 @@ namespace milia
           const double arg3 = log(abs(hm / hp)) / (m_kap * y1 * sqrt(m_kap
               * (y1 + 1)));
           const double pre = 0.5 * m_om / sqrt(gsl_pow_3(abs(m_ok)));
-          return m_t_h * pre * (arg1 + arg2 + arg3);
+          return pre * (arg1 + arg2 + arg3);
         }
       }
       else if (crit10 < 0)
@@ -208,19 +208,19 @@ namespace milia
         const double arg3 = -0.5
             * (sqrt(A / (m_kap * (y1 + 1))) / (m_kap * y1)) * log(abs(
             (1.0 - hm) / (1.0 + hm)));
-        return m_t_h * m_om / (abs(m_ok) * sqrt(A * abs(m_ok))) * (arg1 + arg2
+        return m_om / (abs(m_ok) * sqrt(A * abs(m_ok))) * (arg1 + arg2
             + arg3);
       }
       return -1.0;
     }
 
-    double flrw::ta2(double z) const
+    double flrw_nat::ta2(double z) const
     {
       // Equation 19, a very special case of b = 2.
       if (m_case == A2_1)
       {
         const double arg = (1 + z) * m_om / m_ok;
-        return -m_t_h * (M_SQRT3 * log(1 - 2 / (sqrt(1. / 3 - arg) + 1)) + log(
+        return -(M_SQRT3 * log(1 - 2 / (sqrt(1. / 3 - arg) + 1)) + log(
             1 + 2. / (sqrt(1 - 3 * arg) - 1))) / sqrt(m_ov);
       }
       // Equation 15.
@@ -244,27 +244,27 @@ namespace milia
         {
           return ti(z);
         }
-        return m_t_h * 2.0 * m_om / arg4 * (result.val - gsl_sf_ellint_F(phi,
+        return 2.0 * m_om / arg4 * (result.val - gsl_sf_ellint_F(phi,
             k, ELLIP_PREC));
       }
       return -1.0;
     }
 
-    double flrw::tb(double z) const
+    double flrw_nat::tb(double z) const
     {
       // om + ol == 1
-      return m_t_h * 2 * asinh(sqrt(m_ov / (m_om * (1 + z * (3 + z * (3
+      return 2 * asinh(sqrt(m_ov / (m_om * (1 + z * (3 + z * (3
           + z)))))) / (3 * sqrt(m_ov));
     }
 
-    double flrw::ti(double z) const
+    double flrw_nat::ti(double z) const
     {
       gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
       gsl_integration_workspace* w = gsl_integration_workspace_alloc(1000);
       double result, error;
       gsl_function F;
       F.function = &helper_fun_time;
-      F.params = static_cast<void*> (const_cast<flrw*> (this));
+      F.params = static_cast<void*> (const_cast<flrw_nat*> (this));
       const int status = gsl_integration_qagiu(&F, z, 0, 1e-7, 1000, w,
           &result, &error);
       gsl_integration_workspace_free(w);
@@ -274,7 +274,7 @@ namespace milia
         throw milia::exception(std::string("gsl error: ")
             + gsl_strerror(status));
       }
-      return m_t_h * result;
+      return result;
     }
 
   } // namespace metrics

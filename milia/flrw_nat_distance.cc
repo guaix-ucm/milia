@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -24,7 +24,7 @@
 #include <config.h>
 #endif
 
-#include "flrw.h"
+#include "flrw_nat.h"
 #include "flrw_prec.h"
 #include "exception.h"
 
@@ -48,24 +48,24 @@ namespace milia
     using std::abs;
 
     // Luminosity distance
-    double flrw::dl(double z) const
+    double flrw_nat::dl(double z) const
     {
       switch (m_case)
       {
         case OM_OV_0:
-          return m_r_h * 0.5 * z * (z + 2);
+          return 0.5 * z * (z + 2);
           break;
         case OV_1:
         case OV_2:
         case OV_EDS:
-          return m_r_h * 2. * ((2. - m_om * (1. - z) - (2. - m_om) * sqrt(1
+          return 2. * ((2. - m_om * (1. - z) - (2. - m_om) * sqrt(1
               + m_om * z))) / (m_om * m_om);
           break;
         case OM:
-          return m_r_h * ((1 + z) / m_ov) * (1 + z - sqrt(m_ov + (1 - m_ov)
+          return ((1 + z) / m_ov) * (1 + z - sqrt(m_ov + (1 - m_ov)
               * gsl_pow_2(1 + z)));
         case OM_DS:
-          return m_r_h * z * (1 + z);
+          return z * (1 + z);
           break;
         case A1:
           //om+ol != 1, crit < 0 || crit > 2
@@ -81,7 +81,7 @@ namespace milia
               * sup + m_kap * y + A));
           const double phi0 = acos((sup + m_kap * y - A)
               / (sup + m_kap * y + A));
-          return m_r_h * (1 + z) / m_sqok * sinc(m_kap, 1.0, g
+          return (1 + z) / m_sqok * sinc(m_kap, 1.0, g
               * (gsl_sf_ellint_F(phi0, k, ELLIP_PREC) - gsl_sf_ellint_F(phi, k,
                   ELLIP_PREC)));
         }
@@ -99,7 +99,7 @@ namespace milia
           const double k = sqrt((y1 - y3) / (y1 - y2));
           const double phi = asin(sqrt((y1 - y2) / ((1 + z) * arg1 + y1)));
           const double phi0 = asin(sqrt((y1 - y2) / (arg1 + y1)));
-          return m_r_h * (1. + z) / m_sqok * sin(g * (gsl_sf_ellint_F(phi0, k,
+          return (1. + z) / m_sqok * sin(g * (gsl_sf_ellint_F(phi0, k,
               ELLIP_PREC) - gsl_sf_ellint_F(phi, k, ELLIP_PREC)));
         }
         case OM_OV_1:
@@ -110,7 +110,7 @@ namespace milia
           const double up = 1 + (1 - M_SQRT3) * arg0;
           const double phi = acos((z + up) / (z + down));
           const double phi0 = acos(up / down);
-          return m_r_h * (1 + z) / (M_4THRT3 * sqrt(m_om) * sqrt(arg0))
+          return (1 + z) / (M_4THRT3 * sqrt(m_om) * sqrt(arg0))
               * (gsl_sf_ellint_F(phi0, FLAT_K, ELLIP_PREC) - gsl_sf_ellint_F(
                   phi, FLAT_K, ELLIP_PREC));
         }

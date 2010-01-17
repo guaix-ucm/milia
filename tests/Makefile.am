@@ -6,7 +6,8 @@ TESTS = flrw_test
 check_PROGRAMS = flrw_test
 
 flrw_test_SOURCES = flrw_test.cc FlrwTest.h FlrwTest.cc FlrwTestData.cc \
-  FlrwTestData.h FlrwAge.cc FlrwAge.h
+  FlrwTestData.h FlrwAge.cc FlrwAge.h FlrwNatTest.h FlrwNatTest.cc \
+  FlrwNatTestData.cc FlrwNatTestData.h
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(CPPUNIT_CFLAGS)
 LDADD = $(top_builddir)/milia/libmilia.la $(STUFF_LIBS) $(CPPUNIT_LIBS)
