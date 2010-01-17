@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2009 Sergio Pascual
+ * Copyright 2008-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -48,7 +48,7 @@ namespace milia
      * <a href="http://xxx.unizar.es/abs/astro-ph/0002334">%astro-ph/0002334</a>
      * without inhomogeneities.
      */
-    class flrw
+    class flrw : public flrw_nat
     {
       public:
 
@@ -74,21 +74,6 @@ namespace milia
         flrw(double hubble, double matter, double vacuum);
 
         /**
-         * Checks whether the Universe recollapses or not
-         * with the given parameters.
-         *
-         * Recollapse occurs if : \f[\Omega_v < 0\f] or \f[\Omega_v > 0,\ \Omega_m > 1\ \textrm{and}\
-         * \Omega_v < 4 \Omega_m [\cos(\frac{1}{3}\cos^{-1}(\Omega_m^{-1} - 1) + \frac{4\pi}{3})]^3 \f]
-         *
-         * From Cosmological Physics, Peacock pags 82-83
-         *
-         * @param matter Matter density
-         * @param vacuum Vacuum density
-         * @return True if the Universe recollapses, false otherwise
-         */
-        static bool does_recollapse(double matter, double vacuum);
-
-        /**
          * Set the Hubble parameter \f[ H_0\f]
          *
          * @pre Hubble parameter > 0
@@ -109,37 +94,6 @@ namespace milia
          * @return the Hubble parameter at the given redshift
          */
         double get_hubble(double z) const;
-
-        /**
-         * Get the value of the matter density \f[\Omega_m \f]
-         */
-        double get_matter() const;
-
-        /**
-         * Set the value of the matter density  \f[\Omega_m \f]
-         *
-         * @param matter matter density
-         * @throws milia::recollapse
-         * @throws milia::no_big_bang
-         * @throws milia::exception
-         */
-        void set_matter(double matter);
-
-        /**
-         * Get the value of the vacuum energy density \f[ \Omega_v \f]
-         *
-         */
-        double get_vacuum() const;
-
-        /**
-         * Set the value of the vacuum energy density \f[ \Omega_v \f]
-         *
-         * @param vacuum vacuum energy density
-         * @throws milia::recollapse
-         * @throws milia::no_big_bang
-         *
-         */
-        void set_vacuum(double vacuum);
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -250,15 +204,7 @@ namespace milia
         double m_r_h;
         // Current Hubble time
         double m_t_h;
-
-        // Adimensional flrw
-        flrw_nat m_flrw;
     };
-
-    inline bool flrw::does_recollapse(double matter, double vacuum)
-    {
-      return flrw_nat::does_recollapse(matter, vacuum);
-    }
 
     inline double flrw::get_hubble() const
     {
@@ -267,47 +213,27 @@ namespace milia
 
     inline double flrw::get_hubble(double z) const
     {
-      return m_hu * m_flrw.get_hubble(z);
-    }
-
-    inline double flrw::get_matter() const
-    {
-      return m_flrw.get_matter();
-    }
-
-    inline double flrw::get_vacuum() const
-    {
-      return m_flrw.get_vacuum();
-    }
-
-    inline void flrw::set_matter(double m)
-    {
-      m_flrw.set_matter(m);
-    }
-
-    inline void flrw::set_vacuum(double v)
-    {
-      m_flrw.set_vacuum(v);
+      return m_hu * flrw_nat::get_hubble(z);
     }
 
     inline double flrw::lt(double z) const
     {
-      return m_t_h * m_flrw.lt(z);
+      return m_t_h * flrw_nat::lt(z);
     }
 
     inline double flrw::dc(double z) const
     {
-      return m_r_h * m_flrw.dc(z);
+      return m_r_h * flrw_nat::dc(z);
     }
 
     inline double flrw::dm(double z) const
     {
-      return m_r_h * m_flrw.dm(z);
+      return m_r_h * flrw_nat::dm(z);
     }
 
     inline double flrw::da(double z) const
     {
-      return m_r_h * m_flrw.da(z);
+      return m_r_h * flrw_nat::da(z);
     }
 
     inline double flrw::DM(double z) const
@@ -317,22 +243,22 @@ namespace milia
 
     inline double flrw::vol(double z) const
     {
-      return m_r_h * m_r_h * m_r_h * m_flrw.vol(z);
+      return m_r_h * m_r_h * m_r_h * flrw_nat::vol(z);
     }
 
     inline double flrw::dl(double z) const
     {
-      return m_r_h * m_flrw.dl(z);
+      return m_r_h * flrw_nat::dl(z);
     }
 
     inline double flrw::age() const
     {
-      return m_t_h * m_flrw.age();
+      return m_t_h * flrw_nat::age();
     }
 
     inline double flrw::age(double z) const
     {
-      return m_t_h * m_flrw.age(z);
+      return m_t_h * flrw_nat::age(z);
     }
 
   } // namespace metrics

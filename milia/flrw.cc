@@ -37,7 +37,8 @@ namespace milia
   {
 
     flrw::flrw(double h, double m, double v) :
-      m_hu(h), m_flrw(m, v), m_r_h(ms_hubble_radius / m_hu), m_t_h(
+      flrw_nat(m, v),
+      m_hu(h), m_r_h(ms_hubble_radius / m_hu), m_t_h(
           ms_hubble_time / m_hu)
     {
 
@@ -48,8 +49,8 @@ namespace milia
     std::string flrw::to_string() const
     {
       std::stringstream out;
-      out << "flrw(hubble=" << m_hu << ", matter=" << m_flrw.get_matter()
-          << ", vacuum=" << m_flrw.get_vacuum() << ")";
+      out << "flrw(hubble=" << m_hu << ", matter=" << flrw_nat::get_matter()
+          << ", vacuum=" << flrw_nat::get_vacuum() << ")";
       return out.str();
     }
 
