@@ -26,7 +26,7 @@
 #include <string>
 #include <ostream>
 
-#include "flrw_nat.h"
+#include <milia/flrw_nat.h>
 
 namespace milia
 {
