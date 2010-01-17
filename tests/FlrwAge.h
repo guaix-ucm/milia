@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Sergio Pascual
+ * Copyright 2009-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
