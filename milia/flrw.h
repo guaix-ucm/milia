@@ -199,6 +199,10 @@ namespace milia
          */
         double angular_scale(double z) const;
 
+        double hubble_radius() const;
+
+        double hubble_time() const;
+
       private:
         static const double ms_hubble_radius = 299792.458; // Hubble Radius in Mpc
         static const double ms_hubble_time = 977.792222; // Hubble time in Gyr
@@ -261,6 +265,17 @@ namespace milia
     {
       return m_r_h * m_r_h * m_r_h * flrw_nat::vol(z);
     }
+
+    inline double flrw::hubble_radius() const
+    {
+      return m_r_h;
+    }
+
+    inline double flrw::hubble_time() const
+    {
+      return m_t_h;
+    }
+
 
   } // namespace metrics
 
