@@ -1,6 +1,20 @@
+Version 0.3.0
+(18 January 2010, from /milia/branches/0.3.x revision 157)
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.3.9
+
+Enhancements:
+ * A class flrw_nat that provides cosmological values
+   in natural units
+ * Class flrw has two new methods, hubble_radius and
+   hubble_time that return the lenght scale and the time
+   scale
+
 Bugfixes:
  * Tests don't work in Fedora 10, changed boost::math::pow 
-   by gsl_pow_*   
+   by gsl_pow_*
+   
+Removed:
+ * The class flrw_cache has been removed
 
 Version 0.2.3
 (11 November 2009, from /milia/branches/0.2.x revision 137)
