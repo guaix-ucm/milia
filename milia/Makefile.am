@@ -12,10 +12,10 @@ libmilia_la_SOURCES = flrw.cc flrw_prec.h \
 ## If the source code has changed, rev += 1
 
 libmilia_la_LDFLAGS = -version-info 1:0:1
-libmilia_la_LIBADD = $(GSL_LIBS)
+libmilia_la_LIBADD = $(GSL_LIBS) $(BOOST_LDFLAGS)
 
 pkginclude_HEADERS = metric.h flrw.h flrw_nat.h \
   exception.h schechter.h
 
-AM_CPPFLAGS = $(GSL_CFLAGS) -I$(top_srcdir)
+AM_CPPFLAGS = $(GSL_CFLAGS) $(BOOST_CPPFLAGS) -I$(top_srcdir)
 

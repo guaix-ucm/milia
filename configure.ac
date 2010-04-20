@@ -7,7 +7,7 @@ LT_INIT([disable-shared])
 AC_PROG_CXX
 
 AC_LANG([C++])
-AC_CHECK_HEADER([boost/function.hpp],[],[AC_MSG_ERROR([no boost])])
+AX_BOOST_BASE([1.39.0], [], [AC_MSG_ERROR([no boost installed])])
 PKG_CHECK_MODULES([GSL], [gsl])
 # For the tests
 PKG_CHECK_MODULES([CPPUNIT], [cppunit], [testen=1], [
