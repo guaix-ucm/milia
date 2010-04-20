@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2009 Sergio Pascual
+ * Copyright 2008-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -17,8 +17,6 @@
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-// $Id$
 
 #include "FlrwTestData.h"
 

@@ -1,12 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 
-# $Id$
-
 AC_INIT([milia],[0.3.0])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT([disable-shared])
-
-AC_REVISION($Revision$)
 
 AC_PROG_CXX
 

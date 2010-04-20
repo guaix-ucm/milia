@@ -1,4 +1,3 @@
-## $Id$
 
 if TESTS_ENABLED
 TESTS = flrw_test

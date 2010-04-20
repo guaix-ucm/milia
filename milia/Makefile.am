@@ -1,4 +1,3 @@
-## $Id$
 
 lib_LTLIBRARIES = libmilia.la
 libmilia_la_SOURCES = flrw.cc flrw_prec.h \

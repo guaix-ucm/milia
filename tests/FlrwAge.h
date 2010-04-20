@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Sergio Pascual
+ * Copyright 2009-2010 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -17,8 +17,6 @@
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-// $Id$
 
 #ifndef MILIA_FLRW_AGE_H
 #define MILIA_FLRW_AGE_H
