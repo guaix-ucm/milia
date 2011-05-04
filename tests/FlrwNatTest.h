@@ -18,23 +18,19 @@
  *
  */
 
-#ifndef MILIA_FLRW_TEST_H
-#define MILIA_FLRW_TEST_H
+#ifndef MILIA_FLRW_NAT_TEST_H
+#define MILIA_FLRW_NAT_TEST_H
 
 #include "milia/exception.h"
-#include "FlrwTestData.h"
+#include "FlrwTestDataMixin.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
+class FlrwNatTest : public CppUnit::TestFixture, public FlrwTestDataMixin
 {
-    CPPUNIT_TEST_SUITE(FlrwTest);
-    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
+    CPPUNIT_TEST_SUITE(FlrwNatTest);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse11Throws, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse12Throws, milia::recollapse);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
@@ -51,21 +47,11 @@ public:
 
     void tearDown();
 
-    /** Tests hubble = 0 */
-    void testHubbleZeroThrows();
-
-    /** Tests hubble < 0 */
-    void testHubbleLessThanZeroThrows();
-
     /** Tests matter density < 0 */
     void testMatterLessThanZeroThrows();
 
     /** Tests vacuum energy density < 0 (Universe recollapses) */
     void testVacuumLessThanZeroThrows();
-    /** Tests recollapse where ov > 0 and b = 2 */
-    void testRecollapse11Throws();
-    /** Tests recollapse where ov > 0 and b < 2 */
-    void testRecollapse12Throws();
 
     /** Tests no Big Bang where om < 0.5 and b = 2 */
     void testNoBigBangThrows21();
@@ -90,4 +76,4 @@ public:
 };
 
 
-#endif // MILIA_FLRW_TEST_H
+#endif // MILIA_FLRW_NAT_TEST_H

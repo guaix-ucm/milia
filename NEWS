@@ -1,22 +1,44 @@
-
+Version 0.3.0
+(18 January 2010, from /milia/branches/0.3.x revision 157)
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.3.9
 
 Enhancements:
- * Added documentation (thanks to Nicolas Gruel for the patch)
- * Add methods arcsec2pc and pc2arcsec which transform an angular 
-   size in the sky into physical length and viceversa (thanks to Nicolas Gruel 
-   for the patch)
- * Implemented luminosity distance for Om = 0 Universes (ticket #12)
- 
+ * A class flrw_nat that provides cosmological values
+   in natural units
+ * Class flrw has two new methods, hubble_radius and
+   hubble_time that return the lenght scale and the time
+   scale
+
+Bugfixes:
+ * Tests don't work in Fedora 10, changed boost::math::pow 
+   by gsl_pow_*
+   
+Removed:
+ * The class flrw_cache has been removed
+
+Version 0.2.3
+(11 November 2009, from /milia/branches/0.2.x revision 137)
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.3
+
+Bugfixes:
+ * Bad signature of getters and setters
+
+Version 0.2.2
+(25 October 2009, from /milia/branches/0.2.x revision 124)
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.2
+
+Enhancements: 
+ * Added documentation (thanks to N. Gruel) 
+ * Add methods angular_scale  which helps transforming an angular  
+   size in the sky into physical length and viceversa (thanks to N. Gruel)
+ * Distances for Om = 0 (ticket #12)
+
 Bugfixes:
  * Comoving volume for curvature != 0 doesn't work (ticket #27)
- 
-Changes:
- * Removed flrw_cache 
-
 
 Version 0.2.1
-(02 May 2009, from /milia/trunk)
-http://guaix.fis.ucm.es/svn/milia/tags/0.2.1/
+(02 May 2009, from /milia/trunk revision 72)
+https://guaix.fis.ucm.es/svn/milia/milia/tags/0.2.1/
 
 Bugfixes:
  * Wrong comma position in schechter::to_str (ticket #17)
