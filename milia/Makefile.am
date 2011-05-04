@@ -2,7 +2,7 @@
 lib_LTLIBRARIES = libmilia.la
 libmilia_la_SOURCES = flrw.cc flrw_prec.h \
     flrw_nat.cc flrw_nat_distance.cc flrw_nat_age.cc \
-    exception.cc schechter.cc 
+    exception.cc
     
 
 ## Version info is in current : revision : age form
@@ -11,11 +11,11 @@ libmilia_la_SOURCES = flrw.cc flrw_prec.h \
 
 ## If the source code has changed, rev += 1
 
-libmilia_la_LDFLAGS = -version-info 1:0:1
+libmilia_la_LDFLAGS = -version-info 4:0:0
 libmilia_la_LIBADD = $(GSL_LIBS) $(BOOST_LDFLAGS)
 
 pkginclude_HEADERS = metric.h flrw.h flrw_nat.h \
-  exception.h schechter.h
+  exception.h
 
 AM_CPPFLAGS = $(GSL_CFLAGS) $(BOOST_CPPFLAGS) -I$(top_srcdir)
 
