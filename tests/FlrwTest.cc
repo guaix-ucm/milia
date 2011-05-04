@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #include <cmath>
 
 #include "FlrwTest.h"

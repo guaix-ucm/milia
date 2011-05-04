@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #ifndef MILIA_FLRW_TEST_DATA_MIXIN_H
 #define MILIA_FLRW_TEST_DATA_MIXIN_H
 

@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #include "FlrwAge.h"
 #include "milia/flrw_nat.h"
 #include "milia/exception.h"

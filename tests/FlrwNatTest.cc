@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #include "FlrwNatTest.h"
 #include "milia/flrw_nat.h"
 
