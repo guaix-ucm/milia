@@ -1,5 +1,3 @@
-## $Id$
-
 lib_LTLIBRARIES = libmilia.la
 libmilia_la_SOURCES = flrw_nat.cc flrw.cc flrw_nat_distance.cc flrw_nat_age.cc \
     exception.cc flrw_prec.h schechter.cc

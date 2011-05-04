@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #include "flrw_nat.h"
 #include "exception.h"
 #include "flrw_prec.h"

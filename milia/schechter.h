@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #ifndef MILIA_SCHECHTER_H
 #define MILIA_SCHECHTER_H
 

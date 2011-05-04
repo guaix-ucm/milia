@@ -18,8 +18,6 @@
  * 
  */
 
-// $Id$
-
 #ifndef MILIA_METRIC_H
 #define MILIA_METRIC_H
 

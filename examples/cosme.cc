@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Sergio Pascual
+ * Copyright 2008-2011 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -17,9 +17,6 @@
  * along with Milia.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
-// $Id$
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

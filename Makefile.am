@@ -1,5 +1,3 @@
-## $Id$
-
 
 SUBDIRS = milia tests examples
 EXTRA_DIST = Doxyfile.in

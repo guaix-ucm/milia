@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #include "schechter.h"
 
 #include <cmath>

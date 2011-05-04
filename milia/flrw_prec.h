@@ -18,8 +18,6 @@
  *
  */
 
-// $Id$
-
 #ifndef MILIA_FLRW_PREC_H
 #define MILIA_FLRW_PREC_H
 

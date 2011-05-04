@@ -18,8 +18,6 @@
  * 
  */
 
-// $Id$
-
 #ifndef MILIA_EXCEPTION_H
 #define MILIA_EXCEPTION_H
 
