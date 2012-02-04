@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -58,7 +58,6 @@ namespace milia
          *
          * @pre Hubble parameter > 0 matter_density >= 0 lambda_density >= 0
          * @pre the parameters allow a Big-Bang to occur and the Universe doesn't recollapse
-         * @param hubble a float, it's the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
          * @param matter a float, it's the matter density (dimensionless)
          * @param vacuum a float, it's the vaccum energy density (dimensionless)
          * @throws milia::recollapse

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -27,40 +27,53 @@
 namespace milia
 {
 
+    /** class
+ */
     class exception : public std::exception
     {
     public:
+        /**
+ 	* Constructor 
+ 	*/
         exception(const std::string& information);
 
         virtual ~exception() throw();
 
+	/** member
+ 	*/ 
         const char* what() const throw();
 
     private:
         std::string m_message;
     };
 
+    /** class
+ */
     class recollapse : public milia::exception
     {
     public:
+        /**
+ 	* Constructor 
+ 	*/
         recollapse(const std::string& information);
 
         virtual ~recollapse() throw();
             
     };
 
+    /** class
+ */
     class no_big_bang : public milia::exception
     {
     public:
+        /**
+ 	* Constructor 
+ 	*/
         no_big_bang(const std::string& information);
 
         virtual ~no_big_bang() throw();
         
     };
-
-
-
-
 
 } // namespace milia
 
