@@ -23,6 +23,14 @@
 
 #include "flrw.h"
 
+/** \mainpage Milia Index Page
+ *
+ * \section sec1 Section 1
+ *
+ * \section sec2 Section 2
+ *
+ */
+
 namespace milia
 {
   typedef flrw metric;
