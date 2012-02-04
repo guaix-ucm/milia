@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -56,8 +56,8 @@ namespace
   const double M_4THRT3 = sqrt(M_SQRT3);
   double helper_fun_time(double z, void* pars)
   {
-    milia::metrics::flrw_nat* pmetric =
-        static_cast<milia::metrics::flrw_nat*> (pars);
+    milia::flrw_nat* pmetric =
+        static_cast<milia::flrw_nat*> (pars);
     const double om = pmetric->get_matter();
     const double ol = pmetric->get_vacuum();
     return 1. / ((1 + z) * (sqrt(pow<2> (1 + z) * (1 + om * z) - z * ol * (2
@@ -67,8 +67,6 @@ namespace
 
 namespace milia
 {
-  namespace metrics
-  {
     double flrw_nat::age() const
     {
       return m_uage;
@@ -273,5 +271,5 @@ namespace milia
       }
       return result;
     }
-  } // namespace metrics
+
 } // namespace milia

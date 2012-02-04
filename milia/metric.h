@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -25,8 +25,6 @@
 
 namespace milia
 {
-  using metrics::flrw;
-
   typedef flrw metric;
   
 } // namespace milia

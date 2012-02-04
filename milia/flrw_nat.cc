@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -38,9 +38,6 @@ using boost::math::pow;
 
 namespace milia
 {
-  namespace metrics
-  {
-
     flrw_nat::flrw_nat(double m, double v) :
       m_om(m), m_ov(v), m_ok(1 - m_om - m_ov), m_sqok(sqrt(abs(m_ok)))
     {
@@ -248,11 +245,9 @@ namespace milia
       }
     }
 
-  } //namespace metrics
-
 } //namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw_nat& iflrw)
+std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw)
 {
   os << iflrw.to_string();
   return os;

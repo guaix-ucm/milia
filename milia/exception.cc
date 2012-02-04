@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -54,7 +54,5 @@ namespace milia
 
     no_big_bang::~no_big_bang() throw()
     {}
-
-
 
 }

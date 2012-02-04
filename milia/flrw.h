@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -29,9 +29,6 @@
 
 namespace milia
 {
-  namespace metrics
-  {
-
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
      *
@@ -259,10 +256,8 @@ namespace milia
       return m_t_h * flrw_nat::age(z);
     }
 
-  } // namespace metrics
-
 } // namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw);
+std::ostream& operator<<(std::ostream& os, milia::flrw& iflrw);
 
 #endif /* MILIA_FLRW_H */

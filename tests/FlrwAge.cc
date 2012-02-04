@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 Sergio Pascual
+ * Copyright 2009-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -103,7 +103,7 @@ void FlrwAge::testAge()
       }
       try
       {
-        const milia::metrics::flrw_nat m(om, ol);
+        const milia::flrw_nat m(om, ol);
         cv = m.age(z);
       } catch (milia::recollapse& e)
       {

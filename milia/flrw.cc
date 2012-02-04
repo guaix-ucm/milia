@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -31,9 +31,6 @@
 
 namespace milia
 {
-  namespace metrics
-  {
-
     flrw::flrw(double h, double m, double v) :
       flrw_nat(m, v),
       m_hu(h), m_r_h(ms_hubble_radius / m_hu), m_t_h(
@@ -71,11 +68,9 @@ namespace milia
       return da(z) * 1e6 / arcsec_to_rad;
     }
 
-  } //namespace metrics
-
 } //namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw)
+std::ostream& operator<<(std::ostream& os, milia::flrw& iflrw)
 {
   os << iflrw.to_string();
   return os;

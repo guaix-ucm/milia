@@ -26,9 +26,6 @@
 
 namespace milia
 {
-  namespace metrics
-  {
-
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
      *
@@ -298,10 +295,8 @@ namespace milia
       return vol(z, dm(z, dl(z)));
     }
 
-  } // namespace metrics
-
 } // namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw_nat& iflrw);
+std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw);
 
 #endif /* MILIA_FLRW_NAT_H */
