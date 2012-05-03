@@ -24,13 +24,13 @@
 
 #include <cmath>
 #include <sstream>
+#include <stdexcept>
 
 #include <boost/math/special_functions/asinh.hpp>
 #include <boost/math/special_functions/pow.hpp>
 
 #include "flrw_nat.h"
 #include "flrw_prec.h"
-#include "exception.h"
 
 using std::abs;
 using boost::math::asinh;
@@ -47,11 +47,11 @@ namespace milia
 
       //om < 0 not allowed
       if (m_om < 0)
-        throw milia::exception("Matter density < 0 not allowed");
+        throw std::domain_error("Matter density < 0 not allowed");
 
       //ov < 0 makes the universe recollapse
       if (m_ov < -FLRW_EQ_TOL)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
       m_crit = -13.5 * pow<2> (m_om) * m_ov / (pow<3> (m_ok));
 
@@ -62,11 +62,11 @@ namespace milia
       {
         if (m_om >= 1 && m_crit <= 2)
         {
-          throw milia::recollapse("The Universe recollapses"); // Recollapse
+          throw std::domain_error("The Universe recollapses"); // Recollapse
         }
 
         if (m_ov >= 1 && m_crit <= 2)
-          throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
+          throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
       }
 
@@ -116,17 +116,17 @@ namespace milia
     {
       if (matter < 0)
       {
-        throw milia::exception("Matter density < 0 not allowed");
+        throw std::domain_error("Matter density < 0 not allowed");
       }
 
       const double OK = 1 - m_ov - matter;
       double B = -13.5 * pow<2> (matter) * m_ov / pow<3> (OK);
 
       if (matter >= 1 && B <= 2)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
       if (m_ov >= 1 && B <= 2)
-        throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
+        throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
       // Time and space scale
       m_om = matter;
@@ -141,16 +141,16 @@ namespace milia
     void flrw_nat::set_vacuum(double vacuum)
     {
       if (vacuum < 0)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
       const double OK = 1 - m_om - vacuum;
       double B = -13.5 * pow<2> (m_om) * vacuum / pow<3> (OK);
 
       if (m_om >= 1 && B <= 2)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
       if (vacuum >= 1 && B <= 2)
-        throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
+        throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
       m_ov = vacuum;
       m_ok = OK;

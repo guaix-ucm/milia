@@ -20,9 +20,9 @@
 
 #include "FlrwAge.h"
 #include "milia/flrw_nat.h"
-#include "milia/exception.h"
 
 #include <cmath>
+#include <stdexcept>
 
 #include <boost/math/special_functions/pow.hpp>
 
@@ -69,7 +69,7 @@ namespace
     gsl_set_error_handler(oldhandler);
     if (status)
     {
-      throw milia::exception(std::string("gsl error: ") + gsl_strerror(status));
+      throw std::runtime_error(std::string("gsl error: ") + gsl_strerror(status));
     }
     return result;
   }
@@ -97,7 +97,7 @@ void FlrwAge::testAge()
       try
       {
         iv = integrate_time(z, om, ol);
-      } catch (milia::exception& e)
+      } catch (std::exception& e)
       {
         infll = true;
       }
@@ -105,10 +105,7 @@ void FlrwAge::testAge()
       {
         const milia::metrics::flrw_nat m(om, ol);
         cv = m.age(z);
-      } catch (milia::recollapse& e)
-      {
-        infll = true;
-      } catch (milia::no_big_bang& e)
+      } catch (std::domain_error& e)
       {
         infll = true;
       }

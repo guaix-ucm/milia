@@ -21,24 +21,23 @@
 #ifndef MILIA_FLRW_TEST_H
 #define MILIA_FLRW_TEST_H
 
-#include "milia/exception.h"
 #include "FlrwTestData.h"
-
+#include <stdexcept>
 #include <cppunit/extensions/HelperMacros.h>
 
 class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
 {
     CPPUNIT_TEST_SUITE(FlrwTest);
-    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse11Throws, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse12Throws, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
+    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testRecollapse11Throws, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testRecollapse12Throws, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, std::domain_error);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);
