@@ -23,6 +23,7 @@
 #endif
 
 #include <cmath>
+#include <stdexcept>
 
 #include <boost/math/special_functions/ellint_1.hpp>
 #include <boost/math/special_functions/ellint_3.hpp>
@@ -36,7 +37,6 @@
 
 #include "flrw_nat.h"
 #include "flrw_prec.h"
-#include "exception.h"
 
 using std::sqrt;
 using std::atan;
@@ -266,7 +266,7 @@ namespace milia
       gsl_set_error_handler(oldhandler);
       if (status)
       {
-        throw milia::exception(std::string("gsl error: ")
+        throw std::runtime_error(std::string("gsl error: ")
             + gsl_strerror(status));
       }
       return result;

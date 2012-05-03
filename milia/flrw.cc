@@ -24,10 +24,10 @@
 
 #include <cmath>
 #include <sstream>
+#include <stdexcept>
 
 #include "flrw.h"
 #include "flrw_prec.h"
-#include "exception.h"
 
 namespace milia
 {
@@ -38,7 +38,7 @@ namespace milia
     {
 
       if (m_hu <= 0)
-        throw milia::exception("Hubble constant <= 0 not allowed");
+        throw std::domain_error("Hubble constant <= 0 not allowed");
     }
 
     std::string flrw::to_string() const
@@ -58,7 +58,7 @@ namespace milia
         m_t_h = ms_hubble_time / m_hu;
       }
       else
-        throw milia::exception("Hubble constant <= 0 not allowed");
+        throw std::domain_error("Hubble constant <= 0 not allowed");
     }
 
     double flrw::angular_scale(double z) const
