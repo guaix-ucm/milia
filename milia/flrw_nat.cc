@@ -31,6 +31,7 @@
 
 #include "flrw_nat.h"
 #include "flrw_prec.h"
+#include "util.h"
 
 using std::abs;
 using boost::math::asinh;
@@ -38,6 +39,7 @@ using boost::math::pow;
 
 namespace milia
 {
+
     flrw_nat::flrw_nat(double m, double v) :
       m_om(m), m_ov(v), m_ok(1 - m_om - m_ov), m_sqok(sqrt(abs(m_ok)))
     {
@@ -46,23 +48,32 @@ namespace milia
       if (m_om < 0)
         throw std::domain_error("Matter density < 0 not allowed");
 
-      //ov < 0 makes the universe recollapse
-      if (m_ov < -FLRW_EQ_TOL)
-        throw std::domain_error("The Universe recollapses"); // Recollapse
+      //ov < 0 not allowed
+      if (m_ov < 0)
+        throw std::domain_error("Vacuum density < 0 not allowed");
 
       m_crit = -13.5 * pow<2> (m_om) * m_ov / (pow<3> (m_ok));
 
       m_kap = m_ok > 0 ? -1 : 1;
       m_case = select_case();
 
+      /*
+          NO_CASE, // error condition
+          OM_OV_0, //om = ov = 0
+          OV_1, //ov = 0 0 < om < 1
+          OV_2, //ov = 0 om > 1
+          OV_EDS, //ov = 0 om = 1, Einstein-de Sitter Universe
+          OM, //om = 0 0 < ov < 1
+          OM_DS, //om = 0 ov = 1, de Sitter Universe
+          OM_OV_1, //om + ol = 1
+          A1, //om+ov != 1 b < 0 || b > 2
+          A2_1, //om+ov != 1 b = 2 Lower b=2 curve
+          A2_2, //om+ov != 1 0 < b < 2 Only valid in the lower part
+      */
+
       if (m_case == A2_1 or m_case == A2_2)
       {
-        if (m_om >= 1 && m_crit <= 2)
-        {
-          throw std::domain_error("The Universe recollapses"); // Recollapse
-        }
-
-        if (m_ov >= 1 && m_crit <= 2)
+        if (m_ov > m_om) // we are in the upper region
           throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
       }
@@ -78,23 +89,7 @@ namespace milia
       return out.str();
     }
 
-    double flrw_nat::sinc(double k, double a, double x)
-    {
-      if (k > 0)
-        return sin(a * x) / a;
-      if (k < 0)
-        return sinh(a * x) / a;
-      return x;
-    }
 
-    double flrw_nat::asinc(double k, double a, double x)
-    {
-      if (k > 0)
-        return asin(a * x) / a;
-      if (k < 0)
-        return asinh(a * x) / a;
-      return x;
-    }
 
     bool flrw_nat::does_recollapse(double matter, double vacuum)
     {
@@ -162,7 +157,7 @@ namespace milia
     {
       const bool l3 = (abs(m_om) < FLRW_EQ_TOL);
       const bool l4 = (abs(m_ov) < FLRW_EQ_TOL);
-      // om = ov = 0
+      // om = ov = 0 Degenerate case
       if (l3 && l4)
         return OM_OV_0;
       // ov = 0 om == 1. Einstein-de Sitter Universe
@@ -207,9 +202,12 @@ namespace milia
     {
       // de Sitter's Universe age is infinity
       // but look-back time is valid
-      if (m_case == OM_DS)
-        return log(1 + z);
-      return m_uage - age(z);
+      switch(m_case) {
+        case OM_DS:
+         return log(1 + z);
+        default:
+         return m_uage - age(z);
+      }
     }
 
     double flrw_nat::dc(double z, double dm) const
@@ -222,9 +220,7 @@ namespace milia
         case OM_OV_1: // Flat
           return dm;
         default:
-        {
           return asinc(m_kap, m_sqok, dm);
-        }
       }
     }
 
@@ -238,10 +234,8 @@ namespace milia
         case OM_OV_1: // Flat
           return pow<3> (dm) / 3.0;
         default:
-        {
           return (dm * sqrt(1 + m_ok * pow<2> (dm)) - asinc(m_kap,
               m_sqok, dm)) / (2 * m_ok);
-        }
       }
     }
 

@@ -46,14 +46,6 @@ void FlrwTest::testVacuumLessThanZeroThrows() {
 	const milia::flrw test00(50, 1, -1); // Recollapse
 }
 
-void FlrwTest::testRecollapse11Throws() {
-	const milia::flrw test00(50, 1.5, 0.008665856); // Recollapse b = 2
-}
-
-void FlrwTest::testRecollapse12Throws() {
-	const milia::flrw test00(50, 1.5, 0.007); // Recollapse b < 2
-}
-
 void FlrwTest::testNoBigBangThrows21() {
 	const milia::flrw test00(50, 0.3, 1.713460403); // No Big Bang, b = 2 and om < 0.5
 }

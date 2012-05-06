@@ -236,10 +236,6 @@ namespace milia
         ComputationCases m_case;
         ComputationCases select_case() const;
 
-        // Convenience functions, sin or sinh depending on m_kap
-        static double sinc(double k, double a, double x);
-        static double asinc(double k, double a, double x);
-
         // Distances and volumes from other distance
         double da(double z, double dl) const;
         double dc(double z, double dm) const;

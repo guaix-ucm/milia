@@ -30,6 +30,7 @@
 #include <boost/math/special_functions/pow.hpp>
 
 #include "flrw_nat.h"
+#include "util.h"
 
 using std::sqrt;
 using std::abs;

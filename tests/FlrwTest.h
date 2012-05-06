@@ -32,8 +32,6 @@ class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
     CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse11Throws, std::domain_error);
-    CPPUNIT_TEST_EXCEPTION(testRecollapse12Throws, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, std::domain_error);
