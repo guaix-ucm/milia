@@ -21,8 +21,6 @@
 #ifndef MILIA_FLRW_AGE_H
 #define MILIA_FLRW_AGE_H
 
-#include "milia/exception.h"
-
 #include <cppunit/extensions/HelperMacros.h>
 
 class FlrwAge : public CppUnit::TestFixture
