@@ -30,7 +30,9 @@
 #include <boost/math/special_functions/pow.hpp>
 
 #include "flrw_nat.h"
+
 #include "flrw_prec.h"
+#include "metric.h"
 #include "util.h"
 
 using std::abs;
@@ -93,15 +95,7 @@ namespace milia
 
     bool flrw_nat::does_recollapse(double matter, double vacuum)
     {
-      if (vacuum < 0)
-        return true;
-      if (matter < 1)
-        return false;
-      const double critical = 4 * matter * pow<3> (cos(1. / 3. * acos(1.
-          / matter - 1.) + 4 * M_PI / 3.));
-      if (vacuum > critical)
-        return false;
-      return true;
+       return check_recollapse(matter, vacuum);
     }
 
     void flrw_nat::set_matter(double matter)

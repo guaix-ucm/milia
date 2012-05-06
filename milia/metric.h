@@ -34,6 +34,10 @@
 namespace milia
 {
   typedef flrw metric;
+
+  bool check_recollapse(double matter, double vacuum);
+
+  bool check_bigbang(double matter, double vacuum);
   
 } // namespace milia
 
