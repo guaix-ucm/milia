@@ -61,8 +61,6 @@ namespace milia
       if (m_ov >= 1 && m_crit <= 2)
         throw milia::no_big_bang("No Big Bang"); // No Big bang with these parameters
 
-      Flags m_flags;
-
       m_flags.time_ends = false;
       m_flags.time_begins = true;
 
@@ -195,9 +193,12 @@ namespace milia
     {
       // de Sitter's Universe age is infinity
       // but look-back time is valid
-      if (m_case == OM_DS)
+      switch (m_case) {
+       case OM_DS:
         return log(1 + z);
-      return m_flags.time_begin_scale - age(z);
+       default:
+        return m_flags.time_begin_scale - age(z);
+      }
     }
 
     double flrw_nat::dc(double z, double dm) const

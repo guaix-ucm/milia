@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT(milia,0.3.0)
+AC_INIT(milia,0.3.1)
 AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CXX

@@ -256,7 +256,7 @@ namespace milia
 
     inline double flrw::lt(double z) const
     {
-      return flrw_nat::lt(z);
+      return m_t_h * flrw_nat::lt(z);
     }
 
     inline double flrw::vol(double z) const
