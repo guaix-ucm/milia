@@ -4,7 +4,7 @@ The library is written in C++ and requires gsl and boost in order to compile.
 The tests require cppunit. If it isn't present, tests are disabled.
 The example requires additionally the popt library.
 
-This library is distributed under GPL , either version 3 of the License, or
+This library is distributed under GPL, either version 3 of the License, or
 (at your option) any later version. See the file COPYING for details.
 
 Maintainer: sergiopr@fis.ucm.es

@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT(milia,0.3.1)
+AC_INIT(milia,0.3.2)
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT([disable-shared])
 
