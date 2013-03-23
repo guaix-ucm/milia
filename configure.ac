@@ -2,14 +2,14 @@
 
 AC_INIT(milia,0.3.1)
 AM_INIT_AUTOMAKE([foreign])
+LT_INIT([disable-shared])
+
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CXX
-AC_PROG_LIBTOOL
-
-PKG_CHECK_MODULES([STUFF], [gsl])
 AC_LANG([C++])
-AC_CHECK_HEADER([boost/function.hpp],[],[AC_MSG_ERROR([no boost])])
-
+AX_BOOST_BASE([1.39.0], [], [AC_MSG_ERROR([no boost installed])])
+PKG_CHECK_MODULES([STUFF], [gsl])
 # For the tests
 PKG_CHECK_MODULES([CPPUNIT], [cppunit], [testen=1], [
 AC_MSG_WARN([Cppunit is needed by the tests. Checking is disabled])
