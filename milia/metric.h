@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  * 
  * This file is part of Milia
  * 
@@ -23,11 +23,21 @@
 
 #include "flrw.h"
 
+/** \mainpage Milia Index Page
+ *
+ * \section sec1 Section 1
+ *
+ * \section sec2 Section 2
+ *
+ */
+
 namespace milia
 {
-  using metrics::flrw;
-
   typedef flrw metric;
+
+  bool check_recollapse(double matter, double vacuum);
+
+  bool check_bigbang(double matter, double vacuum);
   
 } // namespace milia
 

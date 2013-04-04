@@ -1,6 +1,8 @@
 lib_LTLIBRARIES = libmilia.la
-libmilia_la_SOURCES = flrw_nat.cc flrw.cc flrw_nat_distance.cc flrw_nat_age.cc \
-    exception.cc flrw_prec.h schechter.cc
+libmilia_la_SOURCES = flrw.cc flrw_prec.h metric.cc\
+    flrw_nat.cc flrw_nat_distance.cc flrw_nat_age.cc util.cc util.h
+
+    
 
 ## Version info is in current : revision : age form
 ## A library supports interfaces from current downto current - age
@@ -8,10 +10,10 @@ libmilia_la_SOURCES = flrw_nat.cc flrw.cc flrw_nat_distance.cc flrw_nat_age.cc \
 
 ## If the source code has changed, rev += 1
 
-libmilia_la_LDFLAGS = -version-info 3:1:0
-libmilia_la_LIBADD = $(STUFF_LIBS)
+libmilia_la_LDFLAGS = -version-info 4:0:0
+libmilia_la_LIBADD = $(GSL_LIBS) $(BOOST_LDFLAGS)
 
-pkginclude_HEADERS = metric.h flrw.h flrw_nat.h exception.h schechter.h
+pkginclude_HEADERS = metric.h flrw.h flrw_nat.h 
 
-AM_CPPFLAGS = -I$(top_srcdir) $(STUFF_CFLAGS) 
+AM_CPPFLAGS = $(GSL_CFLAGS) $(BOOST_CPPFLAGS) -I$(top_srcdir)
 

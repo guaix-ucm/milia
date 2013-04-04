@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -21,11 +21,6 @@
 #ifndef MILIA_FLRW_PREC_H
 #define MILIA_FLRW_PREC_H
 
-#define FLRW_EQ_TOL 1.e-14
-
-#include <gsl/gsl_mode.h>
-/* Precision of the elliptical funcions in gsl */
-/* Single is about 10^-7 */
-#define ELLIP_PREC GSL_PREC_SINGLE
+const double FLRW_EQ_TOL = 1.0e-14;
 
 #endif /* MILIA_FLRW_PREC_H */

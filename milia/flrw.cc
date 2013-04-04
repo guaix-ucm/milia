@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -18,43 +18,34 @@
  *
  */
 
-#include "flrw.h"
-#include "exception.h"
-#include "flrw_prec.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <cmath>
 #include <sstream>
+#include <stdexcept>
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_errno.h>
-
-#ifndef HAVE_ASINH
-#define asinh gsl_asinh
-#endif
-
-#ifndef HAVE_ATANH
-#define atanh gsl_atanh
-#endif
+#include "flrw.h"
+#include "flrw_prec.h"
 
 namespace milia
 {
-  namespace metrics
-  {
-    using std::abs;
-
     flrw::flrw(double h, double m, double v) :
       flrw_nat(m, v),
-      m_hu(h), m_r_h(ms_hubble_radius / m_hu), m_t_h(ms_hubble_time / m_hu)
+      m_hu(h), m_r_h(ms_hubble_radius / m_hu), m_t_h(
+          ms_hubble_time / m_hu)
     {
+
       if (m_hu <= 0)
-        throw milia::exception("Hubble constant <= 0 not allowed");
+        throw std::domain_error("Hubble constant <= 0 not allowed");
     }
 
     std::string flrw::to_string() const
     {
       std::stringstream out;
-      out << "flrw(hubble=" << m_hu << ", matter=" << get_matter()
-          << ", vacuum=" << get_vacuum() << ")";
+      out << "flrw(hubble=" << m_hu << ", matter=" << flrw_nat::get_matter()
+          << ", vacuum=" << flrw_nat::get_vacuum() << ")";
       return out.str();
     }
 
@@ -65,17 +56,9 @@ namespace milia
         m_hu = hubble;
         m_r_h = ms_hubble_radius / m_hu;
         m_t_h = ms_hubble_time / m_hu;
-        return;
       }
       else
-      {
-        throw milia::exception("Hubble constant <= 0 not allowed");
-      }
-    }
-
-    double flrw::DM(double z) const
-    {
-      return 5 * log10(dl(z)) + 25;
+        throw std::domain_error("Hubble constant <= 0 not allowed");
     }
 
     double flrw::angular_scale(double z) const
@@ -85,10 +68,9 @@ namespace milia
       return da(z) * 1e6 / arcsec_to_rad;
     }
 
-  } //namespace metrics
 } //namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw)
+std::ostream& operator<<(std::ostream& os, milia::flrw& iflrw)
 {
   os << iflrw.to_string();
   return os;

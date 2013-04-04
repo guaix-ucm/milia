@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -21,16 +21,14 @@
 #ifndef MILIA_FLRW_H
 #define MILIA_FLRW_H
 
+#include <milia/flrw_nat.h>
+
 #include <string>
 #include <ostream>
-
-#include <milia/flrw_nat.h>
+#include <cmath>
 
 namespace milia
 {
-  namespace metrics
-  {
-
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
      *
@@ -71,12 +69,18 @@ namespace milia
         flrw(double hubble, double matter, double vacuum);
 
         /**
-         * Computes the Hubble parameter at redshift z
+         * Set the Hubble parameter \f[ H_0\f]
          *
-         * @param z redshift
-         * @return the Hubble parameter at the given redshift
+         * @pre Hubble parameter > 0
+         * @param hubble Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
+         * @throw milia::exception
          */
-        double hubble(double z) const;
+        void set_hubble(double hubble);
+
+        /**
+         * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
+         */
+        double get_hubble() const;
 
         /**
          * Computes the Hubble parameter at redshift z
@@ -85,20 +89,6 @@ namespace milia
          * @return the Hubble parameter at the given redshift
          */
         double get_hubble(double z) const;
-        
-        /**
-         * Get the value of the Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$.
-         */
-        double get_hubble() const;
-
-        /**
-         * Set the Hubble parameter \f[ H_0\f]
-         *
-         * @pre Hubble parameter > 0
-         * @param hubble Hubble parameter in \f$ km\ s^{-1}\ Mpc^{-1} \f$
-         * @throw milia::exception
-         */
-        void set_hubble(double hubble);
 
         /**
          * Comoving distance (line of sight) in Mpc
@@ -181,7 +171,7 @@ namespace milia
         double lt(double z) const;
 
         /**
-         * String with characteristics of the FLRW universe (Hubble parameter,
+         * String with caracteristics of the FLRW universe (Hubble parameter,
          * Matter density, vacuum energy density.
          *
          * @return a string
@@ -197,36 +187,33 @@ namespace milia
          */
         double angular_scale(double z) const;
 
-        double hubble_radius() const;
-
-        double hubble_time() const;
-
       private:
-        static const double ms_hubble_radius = 299792.458; // Hubble Radius in Mpc
-        static const double ms_hubble_time = 977.792222; // Hubble time in Gyr
+        // Hubble Radius in Mpc for H = 1 km s^-1
+        static const double ms_hubble_radius = 299792.458;
+        // Hubble time in Gyr for H = 1 km s^-1
+        static const double ms_hubble_time = 977.792222;
 
-        // Current Hubble parameter
+        // Hubble parameter
         double m_hu;
         // Current Hubble radius
         double m_r_h;
-        // Current Hubble age
+        // Current Hubble time
         double m_t_h;
     };
-
-
-    inline double flrw::get_hubble(double z) const
-    {
-      return m_hu * flrw_nat::hubble(z);
-    }
 
     inline double flrw::get_hubble() const
     {
       return m_hu;
     }
 
-    inline double flrw::dl(double z) const
+    inline double flrw::get_hubble(double z) const
     {
-      return m_r_h * flrw_nat::dl(z);
+      return m_hu * flrw_nat::get_hubble(z);
+    }
+
+    inline double flrw::lt(double z) const
+    {
+      return m_t_h * flrw_nat::lt(z);
     }
 
     inline double flrw::dc(double z) const
@@ -244,6 +231,21 @@ namespace milia
       return m_r_h * flrw_nat::da(z);
     }
 
+    inline double flrw::DM(double z) const
+    {
+      return 5 * log10(dl(z)) + 25;
+    }
+
+    inline double flrw::vol(double z) const
+    {
+      return m_r_h * m_r_h * m_r_h * flrw_nat::vol(z);
+    }
+
+    inline double flrw::dl(double z) const
+    {
+      return m_r_h * flrw_nat::dl(z);
+    }
+
     inline double flrw::age() const
     {
       return m_t_h * flrw_nat::age();
@@ -254,31 +256,8 @@ namespace milia
       return m_t_h * flrw_nat::age(z);
     }
 
-    inline double flrw::lt(double z) const
-    {
-      return m_t_h * flrw_nat::lt(z);
-    }
-
-    inline double flrw::vol(double z) const
-    {
-      return m_r_h * m_r_h * m_r_h * flrw_nat::vol(z);
-    }
-
-    inline double flrw::hubble_radius() const
-    {
-      return m_r_h;
-    }
-
-    inline double flrw::hubble_time() const
-    {
-      return m_t_h;
-    }
-
-
-  } // namespace metrics
-
 } // namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw& iflrw);
+std::ostream& operator<<(std::ostream& os, milia::flrw& iflrw);
 
 #endif /* MILIA_FLRW_H */

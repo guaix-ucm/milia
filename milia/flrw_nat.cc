@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -18,186 +18,189 @@
  *
  */
 
-#include "flrw_nat.h"
-#include "exception.h"
-#include "flrw_prec.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <cmath>
 #include <sstream>
-#include <limits>
+#include <stdexcept>
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_errno.h>
+#include <boost/math/special_functions/asinh.hpp>
+#include <boost/math/special_functions/pow.hpp>
 
-#ifndef HAVE_ASINH
-#define asinh gsl_asinh
-#endif
+#include "flrw_nat.h"
 
-#ifndef HAVE_ATANH
-#define atanh gsl_atanh
-#endif
+#include "flrw_prec.h"
+#include "metric.h"
+#include "util.h"
+
+using std::abs;
+using boost::math::asinh;
+using boost::math::pow;
 
 namespace milia
 {
-  namespace metrics
-  {
-    using std::abs;
 
     flrw_nat::flrw_nat(double m, double v) :
-          m_om(m), m_ov(v), m_ok(1 - m_om - m_ov), m_sqok(sqrt(abs(m_ok))),
-          m_kap(m_ok > 0 ? -1 : 1), m_crit(-13.5 * gsl_pow_2(m_om) * m_ov
-              / gsl_pow_3(m_ok)), m_case(select_case(m_om, m_ov, m_ok, m_crit))
+      m_om(m), m_ov(v), m_ok(1 - m_om - m_ov), m_sqok(sqrt(abs(m_ok)))
     {
-      gsl_set_error_handler_off();
 
-      // om < 0 not allowed
-      if (m_om < -FLRW_EQ_TOL)
-        throw milia::exception("Matter density < 0 not allowed");
+      //om < 0 not allowed
+      if (m_om < 0)
+        throw std::domain_error("Matter density < 0 not allowed");
 
-      //ov < 0 makes the universe recollapse
-      if (m_ov < -FLRW_EQ_TOL)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+      //ov < 0 not allowed
+      if (m_ov < 0)
+        throw std::domain_error("Vacuum density < 0 not allowed");
 
-      if (m_ov >= 1 && m_crit <= 2)
-        throw milia::no_big_bang("No Big Bang"); // No Big bang with these parameters
+      m_crit = -13.5 * pow<2> (m_om) * m_ov / (pow<3> (m_ok));
 
-      m_flags.time_ends = false;
-      m_flags.time_begins = true;
+      m_kap = m_ok > 0 ? -1 : 1;
+      m_case = select_case();
 
-      switch(m_case) {
-      case OM_DS:
-        m_flags.time_begins = false;
-        m_flags.time_begin_scale = std::numeric_limits<double>::infinity();
-      default:
-        m_flags.time_begin_scale = age(0);
+      /*
+          NO_CASE, // error condition
+          OM_OV_0, //om = ov = 0
+          OV_1, //ov = 0 0 < om < 1
+          OV_2, //ov = 0 om > 1
+          OV_EDS, //ov = 0 om = 1, Einstein-de Sitter Universe
+          OM, //om = 0 0 < ov < 1
+          OM_DS, //om = 0 ov = 1, de Sitter Universe
+          OM_OV_1, //om + ol = 1
+          A1, //om+ov != 1 b < 0 || b > 2
+          A2_1, //om+ov != 1 b = 2 Lower b=2 curve
+          A2_2, //om+ov != 1 0 < b < 2 Only valid in the lower part
+      */
+
+      if (m_case == A2_1 or m_case == A2_2)
+      {
+        if (m_ov > m_om) // we are in the upper region
+          throw std::domain_error("No Big Bang"); // No Big bang with this parameters
+
       }
 
+      m_uage = m_case != OM_DS ? age(0) : 0;
     }
 
     std::string flrw_nat::to_string() const
     {
       std::stringstream out;
-      out << "flrw_nat(matter=" << m_om << ", vacuum=" << m_ov << ")";
+      out << "flrw_nat(matter=" << m_om << ", vacuum="
+          << m_ov << ")";
       return out.str();
     }
 
+
+
     bool flrw_nat::does_recollapse(double matter, double vacuum)
     {
-      if (vacuum < 0)
-        return true;
-      if (matter < 1)
-        return false;
-      const double critical = 4 * matter * gsl_pow_3(cos(1. / 3. * acos(1.
-          / matter - 1.) + 4 * M_PI / 3.));
-      if (vacuum > critical)
-        return false;
-      return true;
+       return check_recollapse(matter, vacuum);
     }
 
-    void flrw_nat::set_matter(double M)
+    void flrw_nat::set_matter(double matter)
     {
-      if (M < -FLRW_EQ_TOL)
+      if (matter < 0)
       {
-        throw milia::exception("Matter density < 0 not allowed");
+        throw std::domain_error("Matter density < 0 not allowed");
       }
 
-      const double OK = 1 - m_ov - M;
-      double B = -13.5 * gsl_pow_2(M) * m_ov / gsl_pow_3(OK);
+      const double OK = 1 - m_ov - matter;
+      double B = -13.5 * pow<2> (matter) * m_ov / pow<3> (OK);
 
-      if (M >= 1 && B <= 2)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+      if (matter >= 1 && B <= 2)
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
       if (m_ov >= 1 && B <= 2)
-        throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
+        throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
-      m_om = M;
+      // Time and space scale
+      m_om = matter;
       m_ok = OK;
+      m_sqok = sqrt(abs(OK));
       m_crit = B;
       m_kap = (m_ok > 0 ? -1 : 1);
-      m_sqok = sqrt(abs(m_ok));
-      m_case = select_case(m_om, m_ov, m_ok, m_crit);
-      m_flags.time_begin_scale = age(0);
+      m_case = select_case();
+      m_uage = m_case != OM_DS ? age() : 0;
     }
 
-    void flrw_nat::set_vacuum(double L)
+    void flrw_nat::set_vacuum(double vacuum)
     {
-      if (L < -FLRW_EQ_TOL)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+      if (vacuum < 0)
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
-      const double OK = 1 - m_om - L;
-      const double B = -13.5 * gsl_pow_2(m_om) * L / gsl_pow_3(OK);
+      const double OK = 1 - m_om - vacuum;
+      double B = -13.5 * pow<2> (m_om) * vacuum / pow<3> (OK);
 
       if (m_om >= 1 && B <= 2)
-        throw milia::recollapse("The Universe recollapses"); // Recollapse
+        throw std::domain_error("The Universe recollapses"); // Recollapse
 
-      if (L >= 1 && B <= 2)
-        throw milia::no_big_bang("No Big Bang"); // No Big bang with this parameters
+      if (vacuum >= 1 && B <= 2)
+        throw std::domain_error("No Big Bang"); // No Big bang with this parameters
 
-      m_ov = L;
+      m_ov = vacuum;
       m_ok = OK;
+      m_sqok = sqrt(abs(OK));
       m_crit = B;
       m_kap = (m_ok > 0 ? -1 : 1);
-      m_kap = (m_ok > 0 ? -1 : 1);
-      m_sqok = sqrt(abs(m_ok));
-      m_case = select_case(m_om, m_ov, m_ok, m_crit);
-      m_flags.time_begin_scale = age(0);
+      m_case = select_case();
+      m_uage = m_case != OM_DS ? age(0) : 0;
     }
 
-    flrw_nat::ComputationCases flrw_nat::select_case(double om, double ov, double ok,
-        double crit)
+    flrw_nat::ComputationCases flrw_nat::select_case() const
     {
-      const bool l3 = (abs(om) < FLRW_EQ_TOL);
-      const bool l4 = (abs(ov) < FLRW_EQ_TOL);
-      // om = ov = 0
+      const bool l3 = (abs(m_om) < FLRW_EQ_TOL);
+      const bool l4 = (abs(m_ov) < FLRW_EQ_TOL);
+      // om = ov = 0 Degenerate case
       if (l3 && l4)
         return OM_OV_0;
       // ov = 0 om == 1. Einstein-de Sitter Universe
-      if (l4 && abs(om - 1) < FLRW_EQ_TOL)
+      if (l4 && abs(m_om - 1) < FLRW_EQ_TOL)
         return OV_EDS;
       // ov=0 0<om<1
-      if (l4 && om < 1)
+      if (l4 && m_om < 1)
         return OV_1;
       // ov=0 om>1
-      if (l4 && om > 1)
+      if (l4 && m_om > 1)
         return OV_2;
+
       // om = 0 ov = 1 de Sitter Universe
-      if (l3 and (abs(ov - 1) < FLRW_EQ_TOL))
+      if (l3 and (abs(m_ov - 1) < FLRW_EQ_TOL))
         return OM_DS;
       // om = 0 0 < ov < 1
-      if (l3 and (ov > 0) and (ov < 1))
+      if (l3 and (m_ov > 0) and (m_ov < 1))
         return OM;
       // om + ov == 1, flat Universe
-      if (abs(ok) < FLRW_EQ_TOL)
+      if (abs(m_ok) < FLRW_EQ_TOL)
         return OM_OV_1;
-      // crit == 2
-      if (abs(crit - 2) < FLRW_EQ_TOL)
+      // b == 2
+      if (abs(m_crit - 2) < FLRW_EQ_TOL)
         return A2_1;
-      // om+ov != 1 and crit < 0 or crit > 2
-      if ((crit < 0) || (crit > 2))
+      // om+ov != 1 b<0 || b>2
+      if ((m_crit < 0) || (m_crit > 2))
         return A1;
 
-      // om+ov != 1 and 0 < crit < 2
-      if ((crit > 0) && (crit < 2))
+      // om+ov != 1 0 < b < 2
+      if ((m_crit > 0) && (m_crit < 2))
         return A2_2;
       //
       return NO_CASE;
     }
 
-    double flrw_nat::hubble(double z) const
+    double flrw_nat::get_hubble(double z) const
     {
-      return sqrt(m_ov * gsl_pow_3(1 + z) + m_ok * gsl_pow_2(1 + z)
-          + m_ov);
+      return sqrt(m_om * pow<3> (1 + z) + m_ok * pow<2> (1 + z) + m_ov);
     }
 
     double flrw_nat::lt(double z) const
     {
       // de Sitter's Universe age is infinity
       // but look-back time is valid
-      switch (m_case) {
-       case OM_DS:
-        return log(1 + z);
-       default:
-        return m_flags.time_begin_scale - age(z);
+      switch(m_case) {
+        case OM_DS:
+         return log(1 + z);
+        default:
+         return m_uage - age(z);
       }
     }
 
@@ -211,10 +214,7 @@ namespace milia
         case OM_OV_1: // Flat
           return dm;
         default:
-        {
-          const double r = dm;
-          return asinc(m_kap, m_sqok, r);
-        }
+          return asinc(m_kap, m_sqok, dm);
       }
     }
 
@@ -226,39 +226,16 @@ namespace milia
         case OV_EDS: // EdS
         case OM_DS: // dS
         case OM_OV_1: // Flat
-          return gsl_pow_3(dm) / 3.0;
+          return pow<3> (dm) / 3.0;
         default:
-        {
-          const double r = dm;
-          return (r * sqrt(1 + m_ok * gsl_pow_2(r)) - asinc(
-              m_kap, m_sqok, r)) / (2 * m_ok);
-        }
-
+          return (dm * sqrt(1 + m_ok * pow<2> (dm)) - asinc(m_kap,
+              m_sqok, dm)) / (2 * m_ok);
       }
     }
 
-    double flrw_nat::sinc(double k, double a, double x)
-    {
-      if (k > 0)
-        return sin(a * x) / a;
-      if (k < 0)
-        return sinh(a * x) / a;
-      return -1;
-    }
-
-    double flrw_nat::asinc(double k, double a, double x)
-    {
-      if (k > 0)
-        return asin(a * x) / a;
-      if (k < 0)
-        return asinh(a * x) / a;
-      return -1;
-    }
-
-  } //namespace metrics
 } //namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw_nat& iflrw)
+std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw)
 {
   os << iflrw.to_string();
   return os;

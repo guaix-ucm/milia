@@ -21,16 +21,21 @@
 #ifndef MILIA_FLRW_TEST_H
 #define MILIA_FLRW_TEST_H
 
-#include "milia/exception.h"
-#include "FlrwTestDataMixin.h"
-
+#include "FlrwTestData.h"
+#include <stdexcept>
 #include <cppunit/extensions/HelperMacros.h>
 
-class FlrwTest : public CppUnit::TestFixture, public FlrwTestDataMixin
+class FlrwTest : public CppUnit::TestFixture, public FlrwTestData
 {
     CPPUNIT_TEST_SUITE(FlrwTest);
-    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, milia::exception);
+    CPPUNIT_TEST_EXCEPTION(testHubbleZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, std::domain_error);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);
@@ -49,6 +54,25 @@ public:
     /** Tests hubble < 0 */
     void testHubbleLessThanZeroThrows();
 
+    /** Tests matter density < 0 */
+    void testMatterLessThanZeroThrows();
+
+    /** Tests vacuum energy density < 0 (Universe recollapses) */
+    void testVacuumLessThanZeroThrows();
+    /** Tests recollapse where ov > 0 and b = 2 */
+    void testRecollapse11Throws();
+    /** Tests recollapse where ov > 0 and b < 2 */
+    void testRecollapse12Throws();
+
+    /** Tests no Big Bang where om < 0.5 and b = 2 */
+    void testNoBigBangThrows21();
+    /** Tests no Big Bang where om < 0.5 and b < 2 */
+    void testNoBigBangThrows22();
+    /** Tests no Big Bang where om > 0.5 and b = 2 */
+    void testNoBigBangThrows23();
+    /** Tests no Big Bang where om > 0.5 and b = 2 */
+    void testNoBigBangThrows24();
+
     void testLuminosityDistance();
 
     void testComovingDistance();
@@ -60,11 +84,6 @@ public:
     void testAge();
 
     void testComovingVolume();
-
-private:
-    static const double ms_rel_tol = 1e-4;
-    static const double ms_z = 0.1;
-    static const double ms_hubble = 65;
 };
 
 

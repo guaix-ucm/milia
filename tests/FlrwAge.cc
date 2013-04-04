@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 Sergio Pascual
+ * Copyright 2009-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -20,19 +20,22 @@
 
 #include "FlrwAge.h"
 #include "milia/flrw_nat.h"
-#include "milia/exception.h"
 
 #include <cmath>
+#include <stdexcept>
+
+#include <boost/math/special_functions/pow.hpp>
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf_ellint.h>
-#include <gsl/gsl_math.h>
+
+using boost::math::pow;
 
 namespace
 {
   const double ITOL = 1.0e-7;
-  const size_t NPOINTS = 1000;
+
   struct Params
   {
       double m;
@@ -44,18 +47,21 @@ namespace
     Params* pmetric = static_cast<Params*> (pars);
     const double om = pmetric->m;
     const double ol = pmetric->v;
-    return 1. / ((1. + z) * (sqrt(gsl_pow_2 (1. + z) * (1. + om * z) - z * ol
+    return 1. / ((1. + z) * (sqrt(pow<2> (1. + z) * (1. + om * z) - z * ol
         * (2. + z))));
   }
 
   double integrate_time(double z, double m, double v)
   {
+    const size_t NPOINTS = 1000;
+    const double ITOL = 1e-7;
     gsl_error_handler_t* oldhandler = gsl_set_error_handler_off();
     gsl_integration_workspace* w = gsl_integration_workspace_alloc(NPOINTS);
     double result, error;
     gsl_function F;
     F.function = &helper_fun_time;
-    Params p = { m, v };
+    Params p =
+    { m, v };
     F.params = static_cast<void*> (&p);
     const int status = gsl_integration_qagiu(&F, z, 0, ITOL, NPOINTS, w,
         &result, &error);
@@ -63,7 +69,7 @@ namespace
     gsl_set_error_handler(oldhandler);
     if (status)
     {
-      throw milia::exception(std::string("gsl error: ") + gsl_strerror(status));
+      throw std::runtime_error(std::string("gsl error: ") + gsl_strerror(status));
     }
     return result;
   }
@@ -82,8 +88,8 @@ void FlrwAge::tearDown()
 void FlrwAge::testAge()
 {
   const double z = 1;
-  for (double om = 0.00; om < 2.01; om += 0.01)
-    for (double ol = 0.00; ol < 2.01; ol += 0.01)
+  for (double om = 0.00; om < 1.01; om += 0.01)
+    for (double ol = 0.00; ol < 1.01; ol += 0.01)
     {
       bool infll = false;
       double iv = -1;
@@ -91,24 +97,21 @@ void FlrwAge::testAge()
       try
       {
         iv = integrate_time(z, om, ol);
-      } catch (milia::exception& e)
+      } catch (std::exception& e)
       {
         infll = true;
       }
       try
       {
-        const milia::metrics::flrw_nat m(om, ol);
+        const milia::flrw_nat m(om, ol);
         cv = m.age(z);
-      } catch (milia::recollapse& e)
-      {
-        infll = true;
-      } catch (milia::no_big_bang& e)
+      } catch (std::domain_error& e)
       {
         infll = true;
       }
       if (not infll)
       {
-        CPPUNIT_ASSERT_DOUBLES_EQUAL(iv, cv, ITOL);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(cv, iv, ITOL);
       }
     }
 }

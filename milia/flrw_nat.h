@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -26,15 +26,12 @@
 
 namespace milia
 {
-  namespace metrics
-  {
-
     /**
      * The Friedmann-Lemaître-Robertson-Walker metric
      *
-     * This class represents a FLRW metric in natural units (Hubble radius and Hubble time equal to 1).
-     * Its methods compute the common cosmological distances and times.
-     * It uses elliptical functions from Gsl.
+     * This class represents a FLRW metric. Its methods compute the
+     * common cosmological distances and times.
+     * It uses elliptical functions from boost.
      * It is based on the paper <a href="http://xxx.unizar.es/abs/astro-ph/9905116">%astro-ph/9905116</a>
      * for the relations between distances.
      * The age and distance luminosity are computed from
@@ -56,7 +53,7 @@ namespace milia
          *
          * From Cosmological Physics, Peacock pags 82-83
          *
-         * @pre Matter_density >= 0 lambda_density >= 0
+         * @pre Hubble parameter > 0 matter_density >= 0 lambda_density >= 0
          * @pre the parameters allow a Big-Bang to occur and the Universe doesn't recollapse
          * @param matter a float, it's the matter density (dimensionless)
          * @param vacuum a float, it's the vaccum energy density (dimensionless)
@@ -83,23 +80,9 @@ namespace milia
         static bool does_recollapse(double matter, double vacuum);
 
         /**
-         * Computes the Hubble parameter at redshift z
-         *
-         * @param z redshift
-         * @return the Hubble parameter at the given redshift
-         */
-        double hubble(double z) const;
-
-        /**
          * Get the value of the matter density \f[\Omega_m \f]
          */
         double get_matter() const;
-
-        /**
-         * Get the value of the vacuum energy density \f[ \Omega_v \f]
-         *
-         */
-        double get_vacuum() const;
 
         /**
          * Set the value of the matter density  \f[\Omega_m \f]
@@ -112,6 +95,12 @@ namespace milia
         void set_matter(double matter);
 
         /**
+         * Get the value of the vacuum energy density \f[ \Omega_v \f]
+         *
+         */
+        double get_vacuum() const;
+
+        /**
          * Set the value of the vacuum energy density \f[ \Omega_v \f]
          *
          * @param vacuum vacuum energy density
@@ -122,9 +111,17 @@ namespace milia
         void set_vacuum(double vacuum);
 
         /**
+         * Computes the Hubble parameter at redshift z
+         *
+         * @param z redshift
+         * @return the Hubble parameter at the given redshift
+         */
+        double get_hubble(double z) const;
+
+        /**
          * Comoving distance (line of sight) in Mpc
          * \f[
-         * D_c(z)=\int_0^z \frac{dt}{\sqrt{\Omega_m(1+t)^3+\Omega_k(1+t)^2+\Omega_v}}
+         * D_c(z)=\frac{c}{H_0}\int_0^z \frac{dt}{\sqrt{\Omega_m(1+t)^3+\Omega_k(1+t)^2+\Omega_v}}
          * \f]
          *
          * @param z redshift
@@ -201,11 +198,15 @@ namespace milia
         std::string to_string() const;
 
       private:
+
         // Matter density
         double m_om;
 
         // Vacuum energy density
         double m_ov;
+
+        // Critical parameter
+        double m_crit;
 
         // Curvature parameter
         // m_om + m_ov + m_ok = 1
@@ -214,9 +215,8 @@ namespace milia
         double m_sqok;
         // Negative of the sign of the curvature parameter
         short m_kap;
-
-        // Critical parameter
-        double m_crit;
+        // Current Universe age (may be infinity in certain models)
+        double m_uage;
 
         enum ComputationCases
         {
@@ -228,31 +228,13 @@ namespace milia
           OM, //om = 0 0 < ov < 1
           OM_DS, //om = 0 ov = 1, de Sitter Universe
           OM_OV_1, //om + ol = 1
-          A1, //om+ov != 1 crit < 0 || crit > 2
-          A2_1, //om+ov != 1 crit = 2
-          A2_2, //om+ov != 1 0 < crit < 2
+          A1, //om+ov != 1 b < 0 || b > 2
+          A2_1, //om+ov != 1 b = 2
+          A2_2, //om+ov != 1 0 < b < 2
         };
 
         ComputationCases m_case;
-
-        struct Flags {
-          bool time_ends;
-          bool time_begins;
-          double time_begin_scale;
-          double time_end_scale;
-        };
-
-        Flags m_flags;
-
-        // Current Universe age (may be infinity in certain models)
-        //double m_uage;
-
-        static ComputationCases select_case(double om, double ov, double m_ok,
-            double crit);
-
-        // Convenience functions, sin or sinh depending on k
-        static double sinc(double k, double a, double x);
-        static double asinc(double k, double a, double x);
+        ComputationCases select_case() const;
 
         // Distances and volumes from other distance
         double da(double z, double dl) const;
@@ -306,13 +288,11 @@ namespace milia
 
     inline double flrw_nat::vol(double z) const
     {
-      return vol(z, dm(z));
+      return vol(z, dm(z, dl(z)));
     }
-
-  } // namespace metrics
 
 } // namespace milia
 
-std::ostream& operator<<(std::ostream& os, milia::metrics::flrw_nat& iflrw);
+std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw);
 
-#endif /* MILIA_FLRW_H */
+#endif /* MILIA_FLRW_NAT_H */

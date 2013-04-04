@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -22,29 +22,38 @@
 #include <config.h>
 #endif
 
-#include "flrw_nat.h"
-#include "flrw_prec.h"
-#include "exception.h"
-
 #include <cmath>
 #include <cstdlib>
 
-// Provides M_SQRT3
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf_ellint.h>
+#include <boost/math/special_functions/ellint_1.hpp>
+#include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/pow.hpp>
+
+#include "flrw_nat.h"
+#include "util.h"
+
+using std::sqrt;
+using std::abs;
+using std::sin;
+using std::sinh;
+using std::acos;
+using std::atan;
+using std::log;
+
+using boost::math::ellint_1;
+using boost::math::cbrt;
+using boost::math::asinh;
+using boost::math::atanh;
+using boost::math::pow;
 
 namespace
 {
-  static const double M_4THRT3 = sqrt(M_SQRT3);
-  static const double FLAT_K = sqrt(0.5 + 0.25 * M_SQRT3);
+  const double M_SQRT3 = sqrt(3);
+  const double M_4THRT3 = sqrt(M_SQRT3);
 }
 
 namespace milia
 {
-  namespace metrics
-  {
-    using std::abs;
-
     // Luminosity distance
     double flrw_nat::dl(double z) const
     {
@@ -52,44 +61,37 @@ namespace milia
       {
         case OM_OV_0:
           return 0.5 * z * (z + 2);
-          break;
         case OV_1:
         case OV_2:
         case OV_EDS:
-          return 2. * ((2. - m_om * (1. - z) - (2. - m_om) * sqrt(1
-              + m_om * z))) / (m_om * m_om);
-          break;
+          return 2 * ((2 - m_om * (1 - z) - (2 - m_om) * sqrt(1 + m_om * z)))
+              / pow<2> (m_om);
         case OM:
           return ((1 + z) / m_ov) * (1 + z - sqrt(m_ov + (1 - m_ov)
-              * gsl_pow_2(1 + z)));
+              * pow<2> (1 + z)));
         case OM_DS:
           return z * (1 + z);
-          break;
         case A1:
-          //om+ol != 1, crit < 0 || crit > 2
+          //om+ol != 1 b < 0 || b > 2
         {
-          const double v = pow(m_kap * (m_crit - 1.) + sqrt(m_crit * (m_crit
-              - 2.)), 1. / 3.);
-          const double y = (-1. + m_kap * (v + 1. / v)) / 3.;
-          const double A = sqrt(y * (3. * y + 2.));
+          const double v = cbrt(m_kap * (m_crit - 1) + sqrt(m_crit * (m_crit - 2)));
+          const double y = (-1 + m_kap * (v + 1. / v)) / 3.;
+          const double A = sqrt(y * (3 * y + 2));
           const double g = 1. / sqrt(A);
-          const double k = sqrt(0.5 + 0.25 * gsl_pow_2(g) * (v + 1. / v));
+          const double k = sqrt(0.5 + 0.25 * pow<2> (g) * (v + 1. / v));
           const double sup = m_om / abs(m_ok);
-          const double phi = acos(((1. + z) * sup + m_kap * y - A) / ((1. + z)
+          const double phi = acos(((1 + z) * sup + m_kap * y - A) / ((1 + z)
               * sup + m_kap * y + A));
           const double phi0 = acos((sup + m_kap * y - A)
               / (sup + m_kap * y + A));
-          return (1 + z) / m_sqok * sinc(m_kap, 1.0, g
-              * (gsl_sf_ellint_F(phi0, k, ELLIP_PREC) - gsl_sf_ellint_F(phi, k,
-                  ELLIP_PREC)));
+          return (1 + z) / m_sqok * sinc(m_kap, 1.0, g * (ellint_1(k,
+              phi0) - ellint_1(k, phi)));
         }
-        case A2_1:
-          // crit = 2, lower region
-        case A2_2:
-          // 0 < crit < 2, lower region
+        case A2_1: // b=2
+        case A2_2: // 0 < b < 2
         {
-          const double arg0 = acos(1. - m_crit) / 3.;
-          const double arg1 = m_om / m_sqok;
+          const double arg0 = acos(1 - m_crit) / 3.;
+          const double arg1 = m_om / abs(m_ok);
           const double y1 = (-1. + cos(arg0) + M_SQRT3 * sin(arg0)) / 3.;
           const double y2 = (-1. - 2. * cos(arg0)) / 3.;
           const double y3 = (-1. + cos(arg0) - M_SQRT3 * sin(arg0)) / 3.;
@@ -97,25 +99,23 @@ namespace milia
           const double k = sqrt((y1 - y3) / (y1 - y2));
           const double phi = asin(sqrt((y1 - y2) / ((1 + z) * arg1 + y1)));
           const double phi0 = asin(sqrt((y1 - y2) / (arg1 + y1)));
-          return (1. + z) / m_sqok * sin(g * (gsl_sf_ellint_F(phi0, k,
-              ELLIP_PREC) - gsl_sf_ellint_F(phi, k, ELLIP_PREC)));
+          return (1. + z) / m_sqok * sin(g * (ellint_1(k, phi0) - ellint_1(k,
+              phi)));
         }
         case OM_OV_1:
         {
-          // om + ov = 1
-          const double arg0 = pow((1 / m_om - 1), 1. / 3);
+          // om + ol = 1
+          const double k = sqrt(0.5 + 0.25 * M_SQRT3);
+          const double c1 = M_4THRT3;
+          const double arg0 = cbrt((1 / m_om - 1));
           const double down = 1 + (1 + M_SQRT3) * arg0;
           const double up = 1 + (1 - M_SQRT3) * arg0;
           const double phi = acos((z + up) / (z + down));
           const double phi0 = acos(up / down);
-          return (1 + z) / (M_4THRT3 * sqrt(m_om) * sqrt(arg0))
-              * (gsl_sf_ellint_F(phi0, FLAT_K, ELLIP_PREC) - gsl_sf_ellint_F(
-                  phi, FLAT_K, ELLIP_PREC));
+          return (1 + z) / (c1 * sqrt(m_om) * sqrt(arg0)) * (ellint_1(k, phi0)
+              - ellint_1(k, phi));
         }
-        default:
-          break;
       }
       return -1;
     }
-  } // namespace metrics
-} //namespace milia
+} // namespace milia

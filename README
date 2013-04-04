@@ -1,6 +1,7 @@
 This is milia, a library that provides distances and ages in cosmology.
 
-The library is written in C++ and requires gsl and boost in order to compile.
+The library is written in C++ and requires boost > 1.39 and Gsl in order 
+to compile.
 The tests require cppunit. If it isn't present, tests are disabled.
 The example requires additionally the popt library.
 

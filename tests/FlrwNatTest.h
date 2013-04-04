@@ -21,20 +21,20 @@
 #ifndef MILIA_FLRW_NAT_TEST_H
 #define MILIA_FLRW_NAT_TEST_H
 
-#include "milia/exception.h"
 #include "FlrwTestDataMixin.h"
 
 #include <cppunit/extensions/HelperMacros.h>
+#include <stdexcept>
 
 class FlrwNatTest : public CppUnit::TestFixture, public FlrwTestDataMixin
 {
     CPPUNIT_TEST_SUITE(FlrwNatTest);
-    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, milia::exception);
-    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, milia::recollapse);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, milia::no_big_bang);
-    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, milia::no_big_bang);
+    CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows21, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows22, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows23, std::domain_error);
+    CPPUNIT_TEST_EXCEPTION(testNoBigBangThrows24, std::domain_error);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testAngularDistance);
     CPPUNIT_TEST(testComovingTransverseDistance);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 Sergio Pascual
+ * Copyright 2008-2012 Sergio Pascual
  *
  * This file is part of Milia
  *
@@ -18,24 +18,14 @@
  *
  */
 
-#ifndef MILIA_FLRW_AGE_H
-#define MILIA_FLRW_AGE_H
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
-#include <cppunit/extensions/HelperMacros.h>
-
-class FlrwAge : public CppUnit::TestFixture
+namespace milia
 {
-    CPPUNIT_TEST_SUITE(FlrwAge);
-    CPPUNIT_TEST(testAge);
-    CPPUNIT_TEST_SUITE_END();
-public:
-    void setUp();
+    double sinc(int k, double a, double x);
 
-    void tearDown();
+    double asinc(int k, double a, double x);
 
-    /** Checks the age is OK */
-    void testAge();
-};
-
-
-#endif // MILIA_FLRW_AGE_H
+} //namespace milia
