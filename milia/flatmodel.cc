@@ -24,7 +24,22 @@
 
 #include <cmath>
 
+#include <boost/math/special_functions/ellint_1.hpp>
+#include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/pow.hpp>
+
 #include "flatmodel.h"
+
+using boost::math::asinh;
+using boost::math::pow;
+using boost::math::ellint_1;
+using boost::math::cbrt;
+
+namespace
+{
+  const double M_SQRT3 = sqrt(3);
+  const double M_4THRT3 = sqrt(M_SQRT3);
+}
 
 namespace milia
 {
@@ -41,6 +56,38 @@ namespace milia
       return 2 / (3 * (1 + z) * std::sqrt(1 + z));
     }
 
+    double flrw_nat_OM_DS::dl(double z) const
+    {
+      return z * (z + 1);
+    }
+
+    double flrw_nat_OM_DS::age(double z) const
+    {
+      return 0;
+    }
+
+    double flrw_nat_OM_DS::lt(double z) const
+    {
+      return std::log(1 + z);
+    }
+
+    double flrw_nat_OM_OV_1::age(double z) const
+    {
+      return 2. / (3. * std::sqrt(this->get_vacuum())) * asinh(std::sqrt((1 / get_matter() - 1) / pow<3>(1 + z)));
+    }
+
+    double flrw_nat_OM_OV_1::dl(double z) const
+    {
+      const double k = sqrt(0.5 + 0.25 * M_SQRT3);
+      const double c1 = M_4THRT3;
+      const double arg0 = cbrt((1 / matter() - 1));
+      const double down = 1 + (1 + M_SQRT3) * arg0;
+      const double up = 1 + (1 - M_SQRT3) * arg0;
+      const double phi = acos((z + up) / (z + down));
+      const double phi0 = acos(up / down);
+      return (1 + z) / (c1 * sqrt(matter()) * sqrt(arg0)) * (ellint_1(k, phi0)
+           - ellint_1(k, phi));
+    }
   } //namespace impl
 
 } //namespace milia

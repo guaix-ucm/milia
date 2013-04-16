@@ -45,6 +45,16 @@ namespace milia
 
     flrw_nat_impl* flrw_nat_impl::construct(double matter, double vacuum)
     {
+      if (matter + vacuum == 1) {
+        if (matter == 1) {
+           return new flrw_nat_OM_DS();
+        }
+        else if (matter == 0) {
+            return new flrw_nat_OV_EDS();
+        }
+        else
+            return new flrw_nat_OM_OV_1(matter);
+      }
       return new flrw_nat_OV_EDS();
     }
 

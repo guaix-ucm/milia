@@ -30,6 +30,26 @@ namespace milia
       public:
         flrw_nat_impl(double matter, double vacuum)
         {}
+
+        double vacuum() const 
+        {
+          return m_ov;
+        }
+
+        double matter() const 
+        {
+          return m_om;
+        }
+        
+        double get_vacuum() const 
+        {
+          return m_ov;
+        }
+
+        double get_matter() const 
+        {
+          return m_om;
+        }
         
         static flrw_nat_impl* construct(double matter, double vacuum);
 

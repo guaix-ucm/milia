@@ -56,6 +56,31 @@ namespace milia
         double age(double z) const;
     };
  
+    class flrw_nat_OM_DS : public flrw_nat_flat
+    {
+      public:
+        flrw_nat_OM_DS() :
+         flrw_nat_flat(0.0, 1.0)
+        {}
+
+        double dl(double z) const;
+        double age(double z) const;
+        double lt(double z) const;
+    };
+
+    class flrw_nat_OM_OV_1 : public flrw_nat_flat
+    {
+      public:
+        flrw_nat_OM_OV_1(double matter) :
+         flrw_nat_flat(matter, 1 - matter)
+        {}
+
+        double dl(double z) const;
+
+        double age(double z) const;
+
+      private:
+    };
   } // namespace impl
 
 } // namespace milia
