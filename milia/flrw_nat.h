@@ -23,6 +23,9 @@
 
 #include <string>
 #include <ostream>
+#include <memory>
+
+#include "flrw_nat_impl.h"
 
 namespace milia
 {
@@ -294,5 +297,64 @@ namespace milia
 } // namespace milia
 
 std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw);
+
+namespace milia
+{
+    class flrw_nat_new
+    {
+      public:
+        flrw_nat_new(double matter, double vacuum);
+        static bool does_recollapse(double matter, double vacuum);
+
+        double get_matter() const;
+        double get_vacuum() const;
+        double get_hubble(double z) const;
+
+        double dc(double z) const;
+        double dm(double z) const;
+        double da(double z) const;
+        double dl(double z) const;
+        double vol(double z) const;
+        double age() const;
+        double age(double z) const;
+        double lt(double z) const;
+      private:
+        std::auto_ptr<impl::flrw_nat_impl> m_impl;
+
+    };
+
+    inline double flrw_nat_new::get_matter() const
+    {
+//      return m_impl->get_matter();
+      return 0.0;
+    }
+
+    inline double flrw_nat_new::get_vacuum() const
+    {
+      return 0.0;
+      // return m_impl->get_vacuum();
+    }
+
+    inline double flrw_nat_new::dc(double z) const
+    {
+      return m_impl->dc(z);
+    }
+
+    inline double flrw_nat_new::dm(double z) const
+    {
+      return m_impl->dm(z);
+    }
+
+    inline double flrw_nat_new::da(double z) const
+    {
+      return m_impl->da(z);
+    }
+
+    inline double flrw_nat_new::vol(double z) const
+    {
+      return m_impl->vol(z);
+    }
+
+} // namespace milia
 
 #endif /* MILIA_FLRW_NAT_H */

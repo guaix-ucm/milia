@@ -35,6 +35,8 @@
 #include "metric.h"
 #include "util.h"
 
+#include "flatmodel.h"
+
 using std::abs;
 using boost::math::asinh;
 using boost::math::pow;
@@ -239,4 +241,12 @@ std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw)
 {
   os << iflrw.to_string();
   return os;
+}
+
+namespace milia {
+    flrw_nat_new::flrw_nat_new(double m, double v) {
+    
+      m_impl.reset(impl::flrw_nat_impl::construct(m, v));
+    }
+
 }

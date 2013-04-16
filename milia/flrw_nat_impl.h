@@ -30,6 +30,8 @@ namespace milia
       public:
         flrw_nat_impl(double matter, double vacuum)
         {}
+        
+        static flrw_nat_impl* construct(double matter, double vacuum);
 
         virtual double dc(double z) const = 0;
 

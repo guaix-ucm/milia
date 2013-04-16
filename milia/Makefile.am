@@ -1,7 +1,7 @@
 lib_LTLIBRARIES = libmilia.la
 libmilia_la_SOURCES = flrw.cc flrw_prec.h metric.cc\
     flrw_nat.cc flrw_nat_distance.cc flrw_nat_age.cc util.cc util.h \
-    flatmodel.cc flatmodel.h flrw_nat_impl.h
+    flatmodel.cc flatmodel.h flrw_nat_impl.h flrw_nat_impl.cc
 
     
 
