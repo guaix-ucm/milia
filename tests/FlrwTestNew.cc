@@ -56,11 +56,33 @@ void FlrwTestNew::testLuminosityDistance() {
         //const int val = 7;
         const int val = 1;
         for (int j = 1; j < val; ++j) {
-                const milia::flrw_nat test00(lum_model[j][0],
+                const milia::flrw_nat_new test00(lum_model[j][0],
                     lum_model[j][1]);
                 for (int i = 0; i < 5; ++i) {
                         CPPUNIT_ASSERT_DOUBLES_EQUAL(lum_table[j][i][0],
                                         test00.dl(lum_table[j][i][1]), lum_table[j][i][2]);
             }
         }
-}
+  }
+
+  void FlrwTestNew::testComovingDistance() {
+        const int val = 0;
+        for (int j = 0; j < val; ++j) {
+          const milia::flrw_nat_new test00(com_model[j][0], com_model[j][1]);
+            for (int i = 0; i < 5; ++i) {
+              CPPUNIT_ASSERT_DOUBLES_EQUAL(com_table[j][i][0],
+                   test00.dc(com_table[j][i][1]), com_table[j][i][2]);
+            }
+        }
+   }
+
+  void FlrwTestNew::testComovingTransverseDistance() {
+        const int val = 0;
+        for (int j = 0; j < val; ++j) {
+          const milia::flrw_nat_new test00(cotran_model[j][0], cotran_model[j][1]);
+            for (int i = 0; i < 5; ++i) {
+              CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
+                   test00.dm(cotran_table[j][i][1]), cotran_table[j][i][2]);
+            }
+        }
+   }
