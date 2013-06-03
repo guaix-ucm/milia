@@ -23,6 +23,7 @@
 #endif
 
 #include <cmath>
+#include <iostream>
 
 #include <boost/math/special_functions/ellint_1.hpp>
 #include <boost/math/special_functions/cbrt.hpp>

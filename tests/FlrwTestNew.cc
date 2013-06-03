@@ -54,25 +54,34 @@ void FlrwTestNew::testLuminosityDistance() {
 
         // Number of lum_models
         //const int val = 7;
-        const int val = 1;
+        const int val = 2;
         for (int j = 1; j < val; ++j) {
-                const milia::flrw_nat_new test00(lum_model[j][0],
-                    lum_model[j][1]);
-                for (int i = 0; i < 5; ++i) {
-                        CPPUNIT_ASSERT_DOUBLES_EQUAL(lum_table[j][i][0],
-                                        test00.dl(lum_table[j][i][1]), lum_table[j][i][2]);
-            }
+          const double h = lum_model[j][0];
+          const double m = lum_model[j][1];
+          const double v = lum_model[j][2];
+          const milia::flrw_nat_new test00(m, v);
+          for (int i = 0; i < 5; ++i) {
+            const double dis = lum_table[j][i][0] * h / 299792.458;
+            const double z = lum_table[j][i][1];
+            const double tol = lum_table[j][i][2];
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.dl(z), tol);
+          }
         }
   }
 
   void FlrwTestNew::testComovingDistance() {
-        const int val = 0;
+        const int val = 1;
         for (int j = 0; j < val; ++j) {
-          const milia::flrw_nat_new test00(com_model[j][0], com_model[j][1]);
-            for (int i = 0; i < 5; ++i) {
-              CPPUNIT_ASSERT_DOUBLES_EQUAL(com_table[j][i][0],
-                   test00.dc(com_table[j][i][1]), com_table[j][i][2]);
-            }
+          const double h = com_model[j][0];
+          const double m = com_model[j][1];
+          const double v = com_model[j][2];
+          const milia::flrw_nat_new test00(m, v);
+          for (int i = 0; i < 5; ++i) {
+            const double dis = com_table[j][i][0] * h / 299792.458;
+            const double z = com_table[j][i][1];
+            const double tol = com_table[j][i][2];
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.dc(z), tol);
+          }
         }
    }
 

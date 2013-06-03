@@ -246,6 +246,7 @@ std::ostream& operator<<(std::ostream& os, milia::flrw_nat& iflrw)
 namespace milia {
     flrw_nat_new::flrw_nat_new(double m, double v) {
     
+      std::cerr << "m= "<< m << " v= " << v << std::endl;
       m_impl.reset(impl::flrw_nat_impl::construct(m, v));
     }
 

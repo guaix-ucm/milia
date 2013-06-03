@@ -21,6 +21,10 @@
 #ifndef MILIA_FLRW_NAT_IMPL_H
 #define MILIA_FLRW_NAT_IMPL_H
 
+#include <cmath>
+
+using std::abs;
+
 namespace milia
 {
   namespace impl
@@ -28,8 +32,15 @@ namespace milia
     class flrw_nat_impl
     {
       public:
-        flrw_nat_impl(double matter, double vacuum)
-        {}
+        flrw_nat_impl(double matter, double vacuum) : 
+          m_om(matter), 
+          m_ov(vacuum), 
+          m_ok(1 - m_om - m_ov), 
+          m_sqok(sqrt(abs(m_ok)))
+        {
+          m_kap = m_ok > 0 ? -1 : 1;
+        }
+
 
         double vacuum() const 
         {
@@ -69,7 +80,7 @@ namespace milia
         // double age() const = 0;
         virtual double age(double z) const = 0;
         //double lt(double z) const = 0;
-      private:
+      protected:
 
         // Matter density
         double m_om;
@@ -77,6 +88,7 @@ namespace milia
         // Vacuum energy density
         double m_ov;
 
+      private:
         // Critical parameter
         double m_crit;
 

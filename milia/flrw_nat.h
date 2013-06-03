@@ -340,6 +340,11 @@ namespace milia
       return m_impl->dc(z);
     }
 
+    inline double flrw_nat_new::dl(double z) const
+    {
+      return m_impl->dl(z);
+    }
+
     inline double flrw_nat_new::dm(double z) const
     {
       return m_impl->dm(z);

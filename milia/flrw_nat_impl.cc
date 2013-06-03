@@ -27,6 +27,8 @@
 #include <stdexcept>
 #include <memory>
 
+#include <iostream>
+
 #include "flrw_nat.h"
 
 #include "flrw_prec.h"
@@ -55,14 +57,19 @@ namespace milia
 
       if (matter + vacuum == 1) {
         if (matter == 1) {
+           std::cout << "OM_DS" << std::endl;
            return new flrw_nat_OM_DS();
         }
         else if (matter == 0) {
+           std::cout << "OV_EDS" << std::endl;
             return new flrw_nat_OV_EDS();
         }
-        else
+        else {
+           std::cout << "OM_OV_1" << std::endl;
             return new flrw_nat_OM_OV_1(matter);
+        }
       }
+      std::cout << "end case" << std::endl;
       return new flrw_nat_OV_EDS();
     }
 

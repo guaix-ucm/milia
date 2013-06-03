@@ -32,7 +32,7 @@ class FlrwTestNew : public CppUnit::TestFixture, public FlrwTestData
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testComovingDistance);
-    CPPUNIT_TEST(testComovingTransverseDistance);
+//    CPPUNIT_TEST(testComovingTransverseDistance); 
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
