@@ -19,7 +19,7 @@
  */
 
 #include "FlrwTestNew.h"
-#include "milia/metric.h"
+#include "milia/flrw_nat.h"
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION(FlrwTestNew);
@@ -30,3 +30,10 @@ void FlrwTestNew::setUp() {
 void FlrwTestNew::tearDown() {
 }
 
+void FlrwTestNew::testMatterLessThanZeroThrows() {
+  const milia::flrw_nat_new test00(-1, 1);
+} 
+
+void FlrwTestNew::testVacuumLessThanZeroThrows() {
+   const milia::flrw_nat_new test00(1, -1); // Recollapse
+}

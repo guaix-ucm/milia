@@ -45,6 +45,14 @@ namespace milia
 
     flrw_nat_impl* flrw_nat_impl::construct(double matter, double vacuum)
     {
+      if (matter < 0 ) {
+        throw std::domain_error("matter < 0 not allowed");
+      }
+
+      if (vacuum < 0 ) {
+        throw std::domain_error("vacuum < 0 not allowed");
+      }
+
       if (matter + vacuum == 1) {
         if (matter == 1) {
            return new flrw_nat_OM_DS();
