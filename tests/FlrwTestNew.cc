@@ -37,3 +37,30 @@ void FlrwTestNew::testMatterLessThanZeroThrows() {
 void FlrwTestNew::testVacuumLessThanZeroThrows() {
    const milia::flrw_nat_new test00(1, -1); // Recollapse
 }
+
+void FlrwTestNew::testLuminosityDistance() {
+        /* test cases
+         * O_m == 0 and O_v == 0               case OM_OV_0
+         * O_m == 0 and O_v < 1                case OM
+         * O_m == 0 and O_v == 0               case OM_EDS
+         * 0 < O_m < 1 and O_v == 0            case OV_1
+         * O_m > 1 and O_v == 0                case OV_2
+         * O_m == 1 and O_v == 0               case OV_DS
+         * O_v != 0 and O_m + O_v == 1         case OM_OV_1
+         * O_m + O_v != 1 and b == 2           case A2_1
+         * O_m + O_v != 1 and (b > 2 or b < 0) case A1
+         * O_m + O_v != 1 and 0 < b < 2        case A2_2
+         */
+
+        // Number of lum_models
+        //const int val = 7;
+        const int val = 1;
+        for (int j = 1; j < val; ++j) {
+                const milia::flrw_nat test00(lum_model[j][0],
+                    lum_model[j][1]);
+                for (int i = 0; i < 5; ++i) {
+                        CPPUNIT_ASSERT_DOUBLES_EQUAL(lum_table[j][i][0],
+                                        test00.dl(lum_table[j][i][1]), lum_table[j][i][2]);
+            }
+        }
+}
