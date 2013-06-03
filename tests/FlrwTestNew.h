@@ -44,6 +44,7 @@ public:
     void testLuminosityDistance();
     void testComovingDistance();
     void testComovingTransverseDistance();
+    void testAngularDistance();
 };
 
 

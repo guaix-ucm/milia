@@ -86,3 +86,14 @@ void FlrwTestNew::testLuminosityDistance() {
             }
         }
    }
+
+  void FlrwTestNew::testAngularDistance() {
+        const int val = 1;
+        for (int j = 0; j < val; ++j) {
+          const milia::flrw_nat_new test00(ang_model[j][0], ang_model[j][1]);
+            for (int i = 0; i < 5; ++i) {
+              CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
+                   test00.da(ang_table[j][i][1]), ang_table[j][i][2]);
+            }
+        }
+   }
