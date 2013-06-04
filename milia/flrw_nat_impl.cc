@@ -37,6 +37,7 @@
 
 #include "flrw_nat_impl.h"
 #include "flatmodel.h"
+#include "nonflatmodel.h"
 
 using std::abs;
 
@@ -69,7 +70,39 @@ namespace milia
             return new flrw_nat_OM_OV_1(matter);
         }
       }
-      std::cout << "end case" << std::endl;
+      else {
+        if (vacuum == 0) {
+          if (matter == 0) {
+            return new flrw_nat_OM_OV_0();
+          }
+          if (matter < 1) {
+            return new flrw_nat_OV_1(matter);
+          }
+          if (matter > 1) {
+            return new flrw_nat_OV_2(matter);
+          }
+        }
+        if (matter == 0) {
+          if (vacuum < 1) {
+          return new flrw_nat_OM(vacuum);
+        }
+       }
+      }
+
+      double crit = -13.5 * pow<2> (matter) * vacuum / (pow<3> (1 - matter - vacuum));
+
+      if (crit == 2) {
+        return new flrw_nat_A2_1(matter, vacuum);
+      }
+      
+      if (crit < 0 || crit > 2) {
+        return new flrw_nat_A1(matter, vacuum);
+      }
+
+      if (crit > 0 && crit < 2) {
+        return new flrw_nat_A2_2(matter, vacuum);
+      }
+
       return new flrw_nat_OV_EDS();
     }
 
