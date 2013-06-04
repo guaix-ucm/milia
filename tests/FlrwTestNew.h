@@ -28,10 +28,13 @@
 class FlrwTestNew : public CppUnit::TestFixture, public FlrwTestData
 {
     CPPUNIT_TEST_SUITE(FlrwTestNew);
+    CPPUNIT_TEST_EXCEPTION(testHubbleLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testMatterLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST_EXCEPTION(testVacuumLessThanZeroThrows, std::domain_error);
     CPPUNIT_TEST(testLuminosityDistance);
     CPPUNIT_TEST(testComovingDistance);
+    CPPUNIT_TEST(testComovingVolume);
+    CPPUNIT_TEST(testAge);
     CPPUNIT_TEST(testComovingTransverseDistance); 
     CPPUNIT_TEST_SUITE_END();
 public:
@@ -39,10 +42,13 @@ public:
 
     void tearDown();
 
+    void testHubbleLessThanZeroThrows();
     void testMatterLessThanZeroThrows();
     void testVacuumLessThanZeroThrows();
     void testLuminosityDistance();
     void testComovingDistance();
+    void testComovingVolume();
+    void testAge();
     void testComovingTransverseDistance();
     void testAngularDistance();
 };

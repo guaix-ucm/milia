@@ -340,7 +340,10 @@ namespace milia
           m_hu(hubble),
           m_r_h(ms_hubble_radius / m_hu),
           m_t_h(ms_hubble_time / m_hu)
-      {}
+      {
+         if (m_hu <= 0)
+            throw std::domain_error("hubble parameter < 0 not allowed");
+      }
  
       double da(double z) const
       {
