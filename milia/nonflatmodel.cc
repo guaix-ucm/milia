@@ -77,6 +77,10 @@ namespace milia
      return (lm * sqrt(1 + m_ok * pow<2> (lm)) - asinc(m_kap, m_sqok, lm)) / (2 * m_ok);
    }
 
+   const char* flrw_nat_OM_OV_0::model() const {
+         return "OM_OV_0";
+   }
+
    double flrw_nat_OM_OV_0::dl(double z) const 
    {
      return 0.5 * z * (z + 2);
@@ -93,11 +97,18 @@ namespace milia
                    / pow<2> (m_om);
     }
 
+   const char* flrw_nat_OV_1::model() const {
+         return "OV_1";
+   }
    double flrw_nat_OV_1::age(double z) const 
    {
      const double pre0 = 1 - m_om;
      const double prez = sqrt(1 + m_om * z);
      return (prez / (1 + z) - m_om / sqrt(pre0) * atanh(sqrt(pre0) / prez)) / pre0;
+   }
+
+   const char* flrw_nat_OV_2::model() const {
+         return "OV_2";
    }
 
    double flrw_nat_OV_2::age(double z) const 
@@ -107,6 +118,10 @@ namespace milia
      return (prez / (1 + z) - m_om / sqrt(-pre0) * atan(sqrt(-pre0) / prez)) / pre0;
    }
   
+   const char* flrw_nat_OM::model() const {
+         return "OM";
+   }
+
    double flrw_nat_OM::dl(double z) const 
    {
      return ((1 + z) / m_ov) * (1 + z - sqrt(m_ov + (1 - m_ov)
@@ -154,6 +169,9 @@ namespace milia
       return result;
    }
 
+   const char* flrw_nat_A1::model() const {
+         return "A1";
+   }
 
    double flrw_nat_A2::dl(double z) const
    {
@@ -177,6 +195,10 @@ namespace milia
                     / (sqrt(1 - 3 * arg) - 1))) / sqrt(m_ov);
    }
 
+   const char* flrw_nat_A2_1::model() const {
+         return "A2_1";
+   }
+
    double flrw_nat_A2_2::age(double z) const
    {
      const double arg = acos(1 - m_crit) / 3;
@@ -192,6 +214,11 @@ namespace milia
      const double arg4 = y1 * abs(m_ok) * sqrt(-arg3 * m_ok);
      return 2 * m_om / arg4 * (ellint_3(k, n, phi) - ellint_1(k, phi));
    }
+
+   const char* flrw_nat_A2_2::model() const {
+         return "A2_2";
+   }
+
 
    // CASE A1
    double flrw_nat_A1::age(double z) const

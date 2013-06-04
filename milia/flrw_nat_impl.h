@@ -64,6 +64,8 @@ namespace milia
           return dl(z) / ((1 + z) * (1 + z));
         }
 
+        virtual const char* model() const = 0;
+
         virtual double dl(double z) const = 0;
 
         virtual double vol(double z) const = 0;
@@ -78,7 +80,7 @@ namespace milia
         double m_ov;
 
         // Critical parameter
-        double m_crit;
+        //double m_crit;
 
         // Curvature parameter
         // m_om + m_ov + m_ok = 1
@@ -87,11 +89,6 @@ namespace milia
         double m_sqok;
         // Negative of the sign of the curvature parameter
         short m_kap;
-
-      private:
-        // Current Universe age (may be infinity in certain models)
-        double m_uage;
-
     };
 
   } // namespace impl

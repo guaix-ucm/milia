@@ -46,6 +46,9 @@ namespace milia
 {
 
   namespace impl {
+    const char* flrw_nat_OV_EDS::model() const {
+      return "OV_EDS";
+    }
 
     double flrw_nat_OV_EDS::dl(double z) const
     {
@@ -55,6 +58,10 @@ namespace milia
     double flrw_nat_OV_EDS::age(double z) const
     {
       return 2 / (3 * (1 + z) * std::sqrt(1 + z));
+    }
+
+    const char* flrw_nat_OM_DS::model() const {
+      return "OM_DS";
     }
 
     double flrw_nat_OM_DS::dl(double z) const
@@ -70,6 +77,10 @@ namespace milia
     double flrw_nat_OM_DS::lt(double z) const
     {
       return std::log(1 + z);
+    }
+
+    const char* flrw_nat_OM_OV_1::model() const {
+      return "OM_OV_1";
     }
 
     double flrw_nat_OM_OV_1::age(double z) const

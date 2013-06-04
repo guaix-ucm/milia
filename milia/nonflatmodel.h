@@ -37,11 +37,15 @@ namespace milia
      public:
        flrw_nat_nonflat(double matter, double vacuum) :
          flrw_nat_impl(matter, vacuum)
-       {}
+       {
+         m_crit = -13.5 * pow<2> (matter) * vacuum / (pow<3> (1 - matter - vacuum));
+       }
 
         double dc(double z) const;
 
         double vol(double z) const;
+      protected:
+        double m_crit;
     };
 
     class flrw_nat_OM_OV_0: public flrw_nat_nonflat 
@@ -53,6 +57,7 @@ namespace milia
         double dl(double z) const;
 
         double age(double z) const;
+        const char* model() const;
 
     };
 
@@ -72,6 +77,7 @@ namespace milia
       {}
 
       double age(double z) const;
+      const char* model() const;
   };
 
   class flrw_nat_OV_2: public flrw_nat_OV 
@@ -81,6 +87,7 @@ namespace milia
       {}
 
       double age(double z) const;
+      const char* model() const;
   };
 
   class flrw_nat_OM: public flrw_nat_nonflat 
@@ -91,6 +98,7 @@ namespace milia
 
       double dl(double z) const;
       double age(double z) const;
+      const char* model() const;
   };
 
   class flrw_nat_A1: public flrw_nat_nonflat 
@@ -101,6 +109,7 @@ namespace milia
 
       double dl(double z) const;
       double age(double z) const;
+      const char* model() const;
     private:
       double ti(double z) const;
   };
@@ -121,6 +130,7 @@ namespace milia
       {}
 
       double age(double z) const;
+      const char* model() const;
   };
 
   class flrw_nat_A2_2: public flrw_nat_A2
@@ -130,6 +140,7 @@ namespace milia
       {}
 
       double age(double z) const;
+      const char* model() const;
   };
 
   } // namespace impl

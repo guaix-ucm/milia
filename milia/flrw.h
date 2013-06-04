@@ -283,6 +283,10 @@ namespace milia
         double vol(double z) const;
         double age(double z) const;
         double lt(double z) const;
+    const char* model() const
+    {
+      return m_impl->model();
+    }
       private:
         std::auto_ptr<impl::flrw_nat_impl> m_impl;
     };
@@ -327,6 +331,7 @@ namespace milia
       return m_impl->age(z);
     }
 
+
     class flrw
     {
       public:
@@ -366,6 +371,10 @@ namespace milia
       {
         return m_t_h * m_nat.age(z);
       }
+    const char* model() const
+    {
+      return m_nat.model();
+    }
       private:
         flrw_nat m_nat;
         static const double ms_hubble_radius = 299792.458;

@@ -52,6 +52,7 @@ namespace milia
         {}
 
 
+        const char* model() const;
         double dl(double z) const;
         double age(double z) const;
     };
@@ -66,6 +67,7 @@ namespace milia
         double dl(double z) const;
         double age(double z) const;
         double lt(double z) const;
+        const char* model() const;
     };
 
     class flrw_nat_OM_OV_1 : public flrw_nat_flat
@@ -78,6 +80,7 @@ namespace milia
         double dl(double z) const;
 
         double age(double z) const;
+        const char* model() const;
 
       private:
     };

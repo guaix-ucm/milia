@@ -55,8 +55,7 @@ void FlrwTestNew::testLuminosityDistance() {
          */
 
         // Number of lum_models
-        //const int val = 7;
-        const int val = 0;
+        const int val = 7;
         for (int j = 0; j < val; ++j) {
           const double h = lum_model[j][0];
           const double m = lum_model[j][1];
@@ -72,8 +71,7 @@ void FlrwTestNew::testLuminosityDistance() {
   }
 
   void FlrwTestNew::testComovingDistance() {
-        //const int val = 3;
-        const int val = 0;
+        const int val = 3;
         for (int j = 0; j < val; ++j) {
           const double h = com_model[j][0];
           const double m = com_model[j][1];
@@ -90,7 +88,6 @@ void FlrwTestNew::testLuminosityDistance() {
 
   void FlrwTestNew::testComovingTransverseDistance() {
         const int val = 1;
-        //const int val = 0;
         for (int j = 0; j < val; ++j) {
           const double h = cotran_model[j][0];
           const double m = cotran_model[j][1];
@@ -106,8 +103,7 @@ void FlrwTestNew::testLuminosityDistance() {
    }
 
   void FlrwTestNew::testAngularDistance() {
-        //const int val = 1;
-        const int val = 0;
+        const int val = 1;
         for (int j = 0; j < val; ++j) {
           const double h = ang_model[j][0];
           const double m = ang_model[j][1];
