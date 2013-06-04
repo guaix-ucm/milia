@@ -88,7 +88,6 @@ namespace milia
         // Vacuum energy density
         double m_ov;
 
-      private:
         // Critical parameter
         double m_crit;
 
@@ -99,6 +98,7 @@ namespace milia
         double m_sqok;
         // Negative of the sign of the curvature parameter
         short m_kap;
+      private:
         // Current Universe age (may be infinity in certain models)
         double m_uage;
 
