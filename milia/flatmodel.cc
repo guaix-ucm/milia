@@ -74,19 +74,19 @@ namespace milia
 
     double flrw_nat_OM_OV_1::age(double z) const
     {
-      return 2. / (3. * std::sqrt(this->get_vacuum())) * asinh(std::sqrt((1 / get_matter() - 1) / pow<3>(1 + z)));
+      return 2. / (3. * std::sqrt(m_ov)) * asinh(std::sqrt((1 / m_om - 1) / pow<3>(1 + z)));
     }
 
     double flrw_nat_OM_OV_1::dl(double z) const
     {
       const double k = sqrt(0.5 + 0.25 * M_SQRT3);
       const double c1 = M_4THRT3;
-      const double arg0 = cbrt((1 / matter() - 1));
+      const double arg0 = cbrt((1 / m_om - 1));
       const double down = 1 + (1 + M_SQRT3) * arg0;
       const double up = 1 + (1 - M_SQRT3) * arg0;
       const double phi = acos((z + up) / (z + down));
       const double phi0 = acos(up / down);
-      return (1 + z) / (c1 * sqrt(matter()) * sqrt(arg0)) * (ellint_1(k, phi0)
+      return (1 + z) / (c1 * sqrt(m_om) * sqrt(arg0)) * (ellint_1(k, phi0)
            - ellint_1(k, phi));
     }
   } //namespace impl
