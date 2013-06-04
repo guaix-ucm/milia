@@ -101,6 +101,8 @@ namespace milia
 
       double dl(double z) const;
       double age(double z) const;
+    private:
+      double ti(double z) const;
   };
 
   class flrw_nat_A2: public flrw_nat_nonflat 
