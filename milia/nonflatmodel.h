@@ -39,14 +39,9 @@ namespace milia
          flrw_nat_impl(matter, vacuum)
        {}
 
-        double dc(double z) const {
-          return asinc(m_kap, m_sqok, dm(z));
-        }
+        double dc(double z) const;
 
-        double vol(double z) const {
-          const double lm = dm(z);
-          return (lm * sqrt(1 + m_ok * pow<2> (lm)) - asinc(m_kap, m_sqok, lm)) / (2 * m_ok);
-        }
+        double vol(double z) const;
     };
 
     class flrw_nat_OM_OV_0: public flrw_nat_nonflat 
@@ -55,19 +50,48 @@ namespace milia
         flrw_nat_OM_OV_0(): flrw_nat_nonflat(0.0, 0.0)
         {}
 
-        double dl(double z) const 
-        {
-          return 0.5 * z * (z + 2);
-        }
+        double dl(double z) const;
 
-        double age(double z) const
-        {
-          return 1.0 / (1 + z);
-        }
+        double age(double z) const;
 
     };
 
+  class flrw_nat_OV: public flrw_nat_nonflat 
+  {
+    public:
+      flrw_nat_OV(double matter) : flrw_nat_nonflat(matter, 0.0)
+      {}
 
+      double dl(double z) const;
+  };
+
+  class flrw_nat_OV_1: public flrw_nat_OV 
+  {
+    public:
+      flrw_nat_OV_1(double matter) : flrw_nat_OV(matter)
+      {}
+
+      double age(double z) const;
+  };
+
+  class flrw_nat_OV_2: public flrw_nat_OV 
+  {
+    public:
+      flrw_nat_OV_2(double matter) : flrw_nat_OV(matter)
+      {}
+
+      double age(double z) const;
+  };
+
+  class flrw_nat_OM: public flrw_nat_nonflat 
+  {
+    public:
+      flrw_nat_OM(double vacuum) : flrw_nat_nonflat(0.0, vacuum)
+      {}
+
+      double dl(double z) const;
+      double age(double z) const;
+  };
   } // namespace impl
 
 } // namespace milia
