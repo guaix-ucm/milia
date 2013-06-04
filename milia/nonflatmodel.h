@@ -92,6 +92,44 @@ namespace milia
       double dl(double z) const;
       double age(double z) const;
   };
+
+  class flrw_nat_A1: public flrw_nat_nonflat 
+  {
+    public:
+      flrw_nat_A1(double matter, double vacuum) : flrw_nat_nonflat(matter, vacuum)
+      {}
+
+      double dl(double z) const;
+      double age(double z) const;
+  };
+
+  class flrw_nat_A2: public flrw_nat_nonflat 
+  {
+    public:
+      flrw_nat_A2(double matter, double vacuum) : flrw_nat_nonflat(matter, vacuum)
+      {}
+
+      double dl(double z) const;
+  };
+
+  class flrw_nat_A2_1: public flrw_nat_A2
+  {
+    public:
+      flrw_nat_A2_1(double matter, double vacuum) : flrw_nat_A2(matter, vacuum)
+      {}
+
+      double age(double z) const;
+  };
+
+  class flrw_nat_A2_2: public flrw_nat_A2
+  {
+    public:
+      flrw_nat_A2_2(double matter, double vacuum) : flrw_nat_A2(matter, vacuum)
+      {}
+
+      double age(double z) const;
+  };
+
   } // namespace impl
 
 } // namespace milia
