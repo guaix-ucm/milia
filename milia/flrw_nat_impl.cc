@@ -56,11 +56,11 @@ namespace milia
       }
 
       if (matter + vacuum == 1) {
-        if (matter == 1) {
+        if (matter == 0) {
            std::cout << "OM_DS" << std::endl;
            return new flrw_nat_OM_DS();
         }
-        else if (matter == 0) {
+        else if (matter == 1) {
            std::cout << "OV_EDS" << std::endl;
             return new flrw_nat_OV_EDS();
         }
