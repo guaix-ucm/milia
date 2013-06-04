@@ -41,37 +41,27 @@ namespace milia
           m_kap = m_ok > 0 ? -1 : 1;
         }
 
-
-        double vacuum() const 
-        {
-          return m_ov;
-        }
-
-        double matter() const 
-        {
-          return m_om;
-        }
-        
-        double get_vacuum() const 
-        {
-          return m_ov;
-        }
-
-        double get_matter() const 
-        {
-          return m_om;
-        }
-        
         static flrw_nat_impl* construct(double matter, double vacuum);
 
         virtual double dc(double z) const = 0;
 
-        double dm(double z) const {
-          return this->dl(z) / (1 + z);
-        };
+        double get_matter() const
+        {
+          return m_om;
+        }
+
+        double get_vacuum() const
+        {
+          return m_om;
+        }
+        double dm(double z) const 
+        {
+          return dl(z) / (1 + z);
+        }
         
-        double da(double z) const {
-          return this->dl(z) / ((1 + z) * (1 + z));
+        double da(double z) const 
+        {
+          return dl(z) / ((1 + z) * (1 + z));
         }
 
         virtual double dl(double z) const = 0;
@@ -81,7 +71,6 @@ namespace milia
         virtual double age(double z) const = 0;
         //double lt(double z) const = 0;
       protected:
-
         // Matter density
         double m_om;
 
@@ -98,6 +87,7 @@ namespace milia
         double m_sqok;
         // Negative of the sign of the curvature parameter
         short m_kap;
+
       private:
         // Current Universe age (may be infinity in certain models)
         double m_uage;

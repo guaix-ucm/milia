@@ -19,10 +19,12 @@
  */
 
 #include "FlrwTestNew.h"
-#include "milia/flrw_nat.h"
+#include "milia/flrw.h"
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION(FlrwTestNew);
+
+using milia::rei::flrw;
 
 void FlrwTestNew::setUp() {
 }
@@ -31,11 +33,11 @@ void FlrwTestNew::tearDown() {
 }
 
 void FlrwTestNew::testMatterLessThanZeroThrows() {
-  const milia::flrw_nat_new test00(-1, 1);
+  const flrw test00(50, -1, 1);
 } 
 
 void FlrwTestNew::testVacuumLessThanZeroThrows() {
-   const milia::flrw_nat_new test00(1, -1); // Recollapse
+   const flrw test00(50, 1, -1); // Recollapse
 }
 
 void FlrwTestNew::testLuminosityDistance() {
@@ -54,14 +56,14 @@ void FlrwTestNew::testLuminosityDistance() {
 
         // Number of lum_models
         //const int val = 7;
-        const int val = 2;
-        for (int j = 1; j < val; ++j) {
+        const int val = 0;
+        for (int j = 0; j < val; ++j) {
           const double h = lum_model[j][0];
           const double m = lum_model[j][1];
           const double v = lum_model[j][2];
-          const milia::flrw_nat_new test00(m, v);
+          const flrw test00(h, m, v);
           for (int i = 0; i < 5; ++i) {
-            const double dis = lum_table[j][i][0] * h / 299792.458;
+            const double dis = lum_table[j][i][0];
             const double z = lum_table[j][i][1];
             const double tol = lum_table[j][i][2];
             CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.dl(z), tol);
@@ -70,14 +72,15 @@ void FlrwTestNew::testLuminosityDistance() {
   }
 
   void FlrwTestNew::testComovingDistance() {
-        const int val = 1;
+        //const int val = 3;
+        const int val = 0;
         for (int j = 0; j < val; ++j) {
           const double h = com_model[j][0];
           const double m = com_model[j][1];
           const double v = com_model[j][2];
-          const milia::flrw_nat_new test00(m, v);
+          const flrw test00(h, m, v);
           for (int i = 0; i < 5; ++i) {
-            const double dis = com_table[j][i][0] * h / 299792.458;
+            const double dis = com_table[j][i][0];
             const double z = com_table[j][i][1];
             const double tol = com_table[j][i][2];
             CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.dc(z), tol);
@@ -86,23 +89,35 @@ void FlrwTestNew::testLuminosityDistance() {
    }
 
   void FlrwTestNew::testComovingTransverseDistance() {
-        const int val = 0;
+        const int val = 1;
+        //const int val = 0;
         for (int j = 0; j < val; ++j) {
-          const milia::flrw_nat_new test00(cotran_model[j][0], cotran_model[j][1]);
-            for (int i = 0; i < 5; ++i) {
-              CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
-                   test00.dm(cotran_table[j][i][1]), cotran_table[j][i][2]);
+          const double h = cotran_model[j][0];
+          const double m = cotran_model[j][1];
+          const double v = cotran_model[j][2];
+          const flrw test00(h, m, v);
+          for (int i = 0; i < 5; ++i) {
+            const double dis = cotran_table[j][i][0];
+            const double z = cotran_table[j][i][1];
+            const double tol = cotran_table[j][i][2];
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.dm(z), tol);
             }
         }
    }
 
   void FlrwTestNew::testAngularDistance() {
-        const int val = 1;
+        //const int val = 1;
+        const int val = 0;
         for (int j = 0; j < val; ++j) {
-          const milia::flrw_nat_new test00(ang_model[j][0], ang_model[j][1]);
-            for (int i = 0; i < 5; ++i) {
-              CPPUNIT_ASSERT_DOUBLES_EQUAL(cotran_table[j][i][0],
-                   test00.da(ang_table[j][i][1]), ang_table[j][i][2]);
+          const double h = ang_model[j][0];
+          const double m = ang_model[j][1];
+          const double v = ang_model[j][2];
+          const flrw test00(h, m, v);
+          for (int i = 0; i < 5; ++i) {
+            const double dis = ang_table[j][i][0];
+            const double z = ang_table[j][i][1];
+            const double tol = ang_table[j][i][2];
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(dis, test00.da(z), tol);
             }
         }
    }

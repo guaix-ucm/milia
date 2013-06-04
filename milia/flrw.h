@@ -260,4 +260,122 @@ namespace milia
 
 std::ostream& operator<<(std::ostream& os, milia::flrw& iflrw);
 
+#include <milia/flrw_nat_impl.h>
+
+
+namespace milia
+{
+ namespace rei {
+    class flrw_nat
+    {
+      public:
+        flrw_nat(double matter, double vacuum);
+        static bool does_recollapse(double matter, double vacuum);
+
+        double get_matter() const;
+        double get_vacuum() const;
+        double get_hubble(double z) const;
+
+        double dc(double z) const;
+        double dm(double z) const;
+        double da(double z) const;
+        double dl(double z) const;
+        double vol(double z) const;
+        double age(double z) const;
+        double lt(double z) const;
+      private:
+        std::auto_ptr<impl::flrw_nat_impl> m_impl;
+    };
+
+    inline double flrw_nat::get_matter() const
+    {
+      return m_impl->get_matter();
+    }
+
+    inline double flrw_nat::get_vacuum() const
+    {
+      return m_impl->get_vacuum();
+    }
+
+    inline double flrw_nat::dc(double z) const
+    {
+      return m_impl->dc(z);
+    }
+
+    inline double flrw_nat::dl(double z) const
+    {
+      return m_impl->dl(z);
+    }
+
+    inline double flrw_nat::dm(double z) const
+    {
+      return m_impl->dm(z);
+    }
+
+    inline double flrw_nat::da(double z) const
+    {
+      return m_impl->da(z);
+    }
+
+    inline double flrw_nat::vol(double z) const
+    {
+      return m_impl->vol(z);
+    }
+
+    inline double flrw_nat::age(double z) const
+    {
+      return m_impl->age(z);
+    }
+
+    class flrw
+    {
+      public:
+        flrw(double hubble, double matter, double vacuum) :
+          m_nat(matter, vacuum),
+          m_hu(hubble),
+          m_r_h(ms_hubble_radius / m_hu),
+          m_t_h(ms_hubble_time / m_hu)
+      {}
+ 
+      double da(double z) const
+      {
+        return m_r_h * m_nat.da(z);
+      }
+
+      double dl(double z) const
+      {
+        return m_r_h * m_nat.dl(z);
+      }
+
+      double dc(double z) const
+      {
+        return m_r_h * m_nat.dc(z);
+      }
+
+      double dm(double z) const
+      {
+        return m_r_h * m_nat.dm(z);
+      }
+
+      double vol(double z) const
+      {
+        return m_r_h * m_r_h * m_r_h * m_nat.vol(z);
+      }
+
+      double age(double z) const
+      {
+        return m_t_h * m_nat.age(z);
+      }
+      private:
+        flrw_nat m_nat;
+        static const double ms_hubble_radius = 299792.458;
+        static const double ms_hubble_time = 977.792222;
+        double m_hu;
+        double m_r_h;
+        double m_t_h;
+    };
+
+  } // namespace rei
+} // namespace milia
+
 #endif /* MILIA_FLRW_H */
