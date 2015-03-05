@@ -6,7 +6,7 @@ compiler:
 
 before_install:
  - sudo apt-get update -qq
- - sudo apt-get install -qq libboost-dev libcppunit-dev
+ - sudo apt-get install -qq libboost-dev libcppunit-dev libgsl0-dev
 
 # before build script, run autoreconf
 before_script: ./autogen.sh
