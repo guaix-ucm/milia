@@ -189,9 +189,9 @@ namespace milia
 
       private:
         // Hubble Radius in Mpc for H = 1 km s^-1
-        static const double ms_hubble_radius = 299792.458;
+        const double ms_hubble_radius;
         // Hubble time in Gyr for H = 1 km s^-1
-        static const double ms_hubble_time = 977.792222;
+        const double ms_hubble_time;
 
         // Hubble parameter
         double m_hu;
@@ -336,6 +336,8 @@ namespace milia
     {
       public:
         flrw(double hubble, double matter, double vacuum) :
+          ms_hubble_radius(299792.458),
+          ms_hubble_time(977.792222),
           m_nat(matter, vacuum),
           m_hu(hubble),
           m_r_h(ms_hubble_radius / m_hu),
@@ -380,8 +382,8 @@ namespace milia
     }
       private:
         flrw_nat m_nat;
-        static const double ms_hubble_radius = 299792.458;
-        static const double ms_hubble_time = 977.792222;
+        const double ms_hubble_radius;
+        const double ms_hubble_time;
         double m_hu;
         double m_r_h;
         double m_t_h;

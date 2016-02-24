@@ -31,8 +31,12 @@
 
 namespace milia
 {
+
+
     flrw::flrw(double h, double m, double v) :
       flrw_nat(m, v),
+      ms_hubble_radius(299792.458),
+      ms_hubble_time(977.792222),
       m_hu(h), m_r_h(ms_hubble_radius / m_hu), m_t_h(
           ms_hubble_time / m_hu)
     {

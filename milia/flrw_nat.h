@@ -233,7 +233,7 @@ namespace milia
           OM_OV_1, //om + ol = 1
           A1, //om+ov != 1 b < 0 || b > 2
           A2_1, //om+ov != 1 b = 2
-          A2_2, //om+ov != 1 0 < b < 2
+          A2_2 //om+ov != 1 0 < b < 2
         };
 
         ComputationCases m_case;
